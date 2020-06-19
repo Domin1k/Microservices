@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card mb-3">
+            <h3 class="card-header">{{food?.name}}</h3>
+            <img style="height: 200px; width: 100%; display: block;" src="{{food?.image}}" alt="Card image">
+            <div class="card-body">
+                <p class="card-text">{{food?.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+            <div class="card-body">
+                <a (click)="addToCart(food)" class="card-link">Add To Cart</a>
+            </div>
+            <div class="card-footer text-muted">
+                Price {{food?.price}}
+            </div>
+        </div>
+    </div>
+</div>

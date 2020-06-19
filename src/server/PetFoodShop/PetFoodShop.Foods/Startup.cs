@@ -1,12 +1,11 @@
-namespace PetFoodShop.Identity
+namespace PetFoodShop.Foods
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using PetFoodShop.Identity.Data;
-    using PetFoodShop.Identity.Infrastructure.Extensions;
-    using PetFoodShop.Identity.Services;
+    using PetFoodShop.Foods.Data;
+    using PetFoodShop.Foods.Infrastructure.Extensions;
     using PetFoodShop.Infrastructure.Extensions;
 
     public class Startup
@@ -20,13 +19,13 @@ namespace PetFoodShop.Identity
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<AppIdentityDbContext>(this.Configuration)
-                .AddUserStorage()
-                .AddTransient<IIdentityService, IdentityService>();
+                .AddWebService<PetFoodDbContext>(this.Configuration)
+                .AddApplicationServices();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)
-                .ApplyMigration();
+                .ApplyMigration()
+                .SeedData();
     }
 }

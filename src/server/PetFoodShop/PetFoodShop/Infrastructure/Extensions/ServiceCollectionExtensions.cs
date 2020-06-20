@@ -35,7 +35,7 @@
            => services
                .AddScoped<DbContext, TDbContext>()
                .AddDbContext<TDbContext>(options => options
-                   .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                   .UseSqlServer(configuration.GetConnectionString(InfrastructureConstants.DefaultConnectionString)));
 
         public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration configuration)
         {

@@ -40,12 +40,13 @@
                     options.RoutePrefix = string.Empty;
                 });
 
-        public static IApplicationBuilder ApplyMigration(this IApplicationBuilder app)
+        public static IApplicationBuilder ApplyMigration<TDbContext>(this IApplicationBuilder app)
+            where TDbContext : DbContext
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
             var serviceProvider = serviceScope.ServiceProvider;
 
-            var db = serviceProvider.GetRequiredService<DbContext>();
+            var db = serviceProvider.GetRequiredService<TDbContext>();
 
             db.Database.Migrate();
 

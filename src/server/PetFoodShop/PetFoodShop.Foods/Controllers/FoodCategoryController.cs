@@ -4,6 +4,7 @@
     using PetFoodShop.Foods.Services;
     using PetFoodShop.Controllers;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
 
     [Route("categories")]
     public class FoodCategoryController : ApiController
@@ -16,6 +17,7 @@
         }
 
         [HttpGet]
+        [Authorize]
         [Route("all")]
         public async Task<IActionResult> GetAll()
         {

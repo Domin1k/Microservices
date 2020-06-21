@@ -6,7 +6,6 @@ namespace PetFoodShop.Identity
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Identity.Data;
     using PetFoodShop.Identity.Infrastructure.Extensions;
-    using PetFoodShop.Identity.Services;
     using PetFoodShop.Infrastructure.Extensions;
 
     public class Startup
@@ -22,7 +21,7 @@ namespace PetFoodShop.Identity
             => services
                 .AddWebService<AppIdentityDbContext>(this.Configuration)
                 .AddUserStorage()
-                .AddTransient<IIdentityService, IdentityService>();
+                .AddApplicationServices();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

@@ -4,6 +4,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Identity.Data;
     using PetFoodShop.Identity.Data.Models;
+    using PetFoodShop.Identity.Services;
 
     public static class ServiceCollectionExtensions
     {
@@ -22,5 +23,9 @@
 
             return services;
         }
+
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+           => services
+               .AddTransient<IIdentityService, IdentityService>();
     }
 }

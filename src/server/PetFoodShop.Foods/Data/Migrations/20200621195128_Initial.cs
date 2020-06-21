@@ -1,9 +1,8 @@
 ﻿namespace PetFoodShop.Foods.Data.Migrations
 {
-    using System;
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class InitFoods : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,24 +17,6 @@
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FoodCategories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shippments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UniqueNumber = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(maxLength: 500, nullable: true),
-                    Address = table.Column<string>(maxLength: 500, nullable: false),
-                    ShippmentDate = table.Column<DateTime>(nullable: false),
-                    ExpectedDeliveryDate = table.Column<DateTime>(nullable: false),
-                    CustomerId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shippments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,9 +78,6 @@
         {
             migrationBuilder.DropTable(
                 name: "Foods");
-
-            migrationBuilder.DropTable(
-                name: "Shippments");
 
             migrationBuilder.DropTable(
                 name: "FoodBrands");

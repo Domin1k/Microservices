@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Data.Models
+﻿namespace PetFoodShop.Cart.Data.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;

@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Services.Models.Cart
+﻿namespace PetFoodShop.Cart.Services.Models
 {
     using System.Collections.Generic;
 

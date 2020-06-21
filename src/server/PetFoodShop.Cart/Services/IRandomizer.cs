@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Services.Common
+﻿namespace PetFoodShop.Cart.Services
 {
     public interface IRandomizer
     {

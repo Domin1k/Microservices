@@ -1,21 +1,19 @@
-﻿namespace PetFoodShop.Foods.Services.Cart
+﻿namespace PetFoodShop.Cart.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using PetFoodShop.Foods.Data;
-    using PetFoodShop.Foods.Data.Models;
-    using PetFoodShop.Foods.Services.Common;
-    using PetFoodShop.Foods.Services.Exceptions;
-    using PetFoodShop.Foods.Services.Models.Cart;
+    using PetFoodShop.Cart.Data;
+    using PetFoodShop.Cart.Data.Models;
+    using PetFoodShop.Cart.Infrastructure.Exceptions;
+    using PetFoodShop.Cart.Services.Models;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
     public class CartService : ICartService
     {
-        private readonly PetFoodDbContext dbContext;
+        private readonly CartDbContext dbContext;
         private readonly IRandomizer randomizer;
 
-        public CartService(PetFoodDbContext dbContext, IRandomizer randomizer)
+        public CartService(CartDbContext dbContext, IRandomizer randomizer)
         {
             this.dbContext = dbContext;
             this.randomizer = randomizer;

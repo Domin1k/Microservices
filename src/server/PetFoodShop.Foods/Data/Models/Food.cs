@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PetFoodShop.Foods.Data.Models
+﻿namespace PetFoodShop.Foods.Data.Models
 {
+    using PetFoodShop.Data;
+    using System.ComponentModel.DataAnnotations;
+
     public class Food
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MinLength(Validation.Common.MinNameLength)]
-        [MaxLength(Validation.Common.MaxNameLength)]
+        [MinLength(CommonValidation.Common.MinNameLength)]
+        [MaxLength(CommonValidation.Common.MaxNameLength)]
         public string Name { get; set; }
 
         [MaxLength(Validation.Food.MaxDescriptionLength)]

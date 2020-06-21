@@ -1,21 +1,7 @@
 ﻿namespace PetFoodShop.Foods.Data
 {
-    public static class Validation
+    internal static class Validation
     {
-        public static class Common
-        {
-            public const int MaxNameLength = 50;
-            public const int MinNameLength = 2;
-        }
-
-        public static class Shippment
-        {
-            public const int MaxDescriptionLength = 500;
-            public const int MinDescriptionLength = 10;
-            public const int MinAddressLength = 10;
-            public const int MaxAddressLength = 500;
-        }
-
         public static class Food
         {
             public const int MaxDescriptionLength = 1500;

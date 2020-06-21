@@ -1,15 +1,14 @@
-﻿namespace PetFoodShop.Foods.Controllers
+﻿namespace PetFoodShop.Cart.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PetFoodShop.Foods.Controllers.Models.User;
-    using PetFoodShop.Foods.Infrastructure.Extensions;
-    using PetFoodShop.Foods.Services.Cart;
-    using PetFoodShop.Foods.Services.Exceptions;
-    using PetFoodShop.Foods.Services.Models.Cart;
+    using PetFoodShop.Cart.Controllers.Models;
+    using PetFoodShop.Cart.Infrastructure.Exceptions;
+    using PetFoodShop.Cart.Services;
+    using PetFoodShop.Cart.Services.Models;
     using PetFoodShop.Controllers;
+    using PetFoodShop.Services;
     using System.Linq;
     using System.Threading.Tasks;
-    using PetFoodShop.Services;
 
     [Route("cart")]
     public class CartController : ApiController

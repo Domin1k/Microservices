@@ -1,13 +1,13 @@
-﻿namespace PetFoodShop.Foods.Infrastructure.Extensions
+﻿namespace PetFoodShop.Cart.Infrastructure.Extensions
 {
     using Microsoft.Extensions.DependencyInjection;
-    using PetFoodShop.Foods.Services;
+    using PetFoodShop.Cart.Services;
 
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
             => services
-                .AddTransient<IFoodService, FoodService>()
-                .AddTransient<IFoodCategoryService, FoodCategoryService>();
+                .AddTransient<IRandomizer, Randomizer>()
+                .AddTransient<ICartService, CartService>();
     }
 }

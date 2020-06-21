@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Services.Exceptions
+﻿namespace PetFoodShop.Cart.Infrastructure.Exceptions
 {
     using System;
 

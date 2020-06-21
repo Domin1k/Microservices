@@ -1,6 +1,6 @@
-﻿namespace PetFoodShop.Foods.Services.Cart
+﻿namespace PetFoodShop.Cart.Services
 {
-    using PetFoodShop.Foods.Services.Models.Cart;
+    using PetFoodShop.Cart.Services.Models;
     using System.Threading.Tasks;
 
     public interface ICartService

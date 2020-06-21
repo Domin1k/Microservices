@@ -16,8 +16,6 @@
 
         public DbSet<FoodCategory> FoodCategories { get; set; }
 
-        public DbSet<Shippment> Shippments { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<FoodCategory>()

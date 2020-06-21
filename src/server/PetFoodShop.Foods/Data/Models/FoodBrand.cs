@@ -1,5 +1,6 @@
 ﻿namespace PetFoodShop.Foods.Data.Models
 {
+    using PetFoodShop.Data;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -9,8 +10,8 @@
         public int Id { get; set; }
 
         [Required]
-        [MinLength(Validation.Common.MinNameLength)]
-        [MaxLength(Validation.Common.MaxNameLength)]
+        [MinLength(CommonValidation.Common.MinNameLength)]
+        [MaxLength(CommonValidation.Common.MaxNameLength)]
         public string Name { get; set; }
 
         public int FoodCategoryId { get; set; }

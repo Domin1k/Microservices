@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Controllers.Models.User
+﻿namespace PetFoodShop.Cart.Controllers.Models
 {
     public class CartDetailsModel
     {

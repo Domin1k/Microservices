@@ -1,6 +1,9 @@
-﻿namespace PetFoodShop.Foods.Services.Models.Food
+﻿namespace PetFoodShop.Foods.Services.Models
 {
-    public class FoodModel
+    using PetFoodShop.Foods.Data.Models;
+    using PetFoodShop.Models;
+
+    public class FoodModel : IMapFrom<Food>
     {
         public int Id { get; set; }
 

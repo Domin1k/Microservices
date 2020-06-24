@@ -1,12 +1,15 @@
 ﻿namespace PetFoodShop.Infrastructure.Extensions
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
+    using PetFoodShop.Models;
     using PetFoodShop.Services;
+    using System;
     using System.Reflection;
     using System.Text;
 
@@ -81,5 +84,14 @@
                        Version = "v1"
                    });
            });
+
+        public static IServiceCollection AddAutoMapperProfile(
+            this IServiceCollection services,
+            Assembly assembly)
+            => services
+                .AddAutoMapper(
+                    (_, config) => config
+                        .AddProfile(new MappingProfile(assembly)),
+                    Array.Empty<Assembly>());
     }
 }

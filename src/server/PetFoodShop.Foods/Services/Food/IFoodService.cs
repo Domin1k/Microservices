@@ -1,6 +1,6 @@
 ﻿namespace PetFoodShop.Foods.Services
 {
-    using PetFoodShop.Foods.Services.Models.Food;
+    using PetFoodShop.Foods.Services.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

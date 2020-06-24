@@ -9,7 +9,7 @@ import { CheckoutModel } from '../shared/model/checkout.model';
   providedIn: 'root'
 })
 export class CartService {
-  private path = environment.apiUrl + 'cart';
+  private path = environment.cartServiceUrl + 'cart';
   cartKey: string;
   
   constructor(private http: HttpClient) {

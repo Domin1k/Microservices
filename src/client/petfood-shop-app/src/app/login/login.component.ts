@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.loginForm.value).subscribe(data => {
       this.authService.saveToken(data['token']);
-      this.router.navigate([""]);
-      location.reload();
+      this.router.navigate([""]).then(() => location.reload());
     })
   }
 

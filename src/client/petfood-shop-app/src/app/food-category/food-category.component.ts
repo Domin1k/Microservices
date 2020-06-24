@@ -14,14 +14,14 @@ export class FoodCategoryComponent implements OnInit {
   constructor(private foodCategorySvc: PetFoodCategoryService) { }
 
   ngOnInit() {
-    this.foodCategorySvc.getAll().subscribe(categories => {
-      this.foodCategories = categories;
+    this.foodCategorySvc.getAll().subscribe(res => {
+      this.foodCategories = res;
     });
   }
 
   getCategoryBrands(foodCategoryId: number) {
-    this.foodCategorySvc.getCategoryBrands(foodCategoryId).subscribe(foodBrands => {
-      this.foodBrands = foodBrands;
+    this.foodCategorySvc.getCategoryBrands(foodCategoryId).subscribe(res => {
+      this.foodBrands = res;
     });
   }
 }

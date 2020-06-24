@@ -1,8 +1,9 @@
 ﻿namespace PetFoodShop.Foods.Services
 {
+    using AutoMapper;
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Foods.Data;
-    using PetFoodShop.Foods.Services.Models.Food;
+    using PetFoodShop.Foods.Services.Models;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,38 +11,22 @@
     public class FoodService : IFoodService
     {
         private readonly PetFoodDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public FoodService(PetFoodDbContext dbContext)
+        public FoodService(PetFoodDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<FoodDetailModel> DetailsAsync(int foodId)
-            => await this.dbContext.Foods
-                    .Where(x => x.Id == foodId)
-                    .Select(x => new FoodDetailModel
-                    {
-                        Id = x.Id,
-                        Description = x.Description,
-                        FoodBrandId = x.FoodBrandId,
-                        Image = x.Image,
-                        Name = x.Name,
-                        Price = x.Price,
-                        Quantity = x.Quantity
-                    })
-                    .FirstOrDefaultAsync();
+            => await this.mapper
+                        .ProjectTo<FoodDetailModel>(this.dbContext.Foods.Where(x => x.Id == foodId))
+                        .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<FoodModel>> FoodsPerBrand(int brandId)
-            => await this.dbContext.Foods
-                    .Where(x => x.FoodBrandId == brandId)
-                    .Select(x => new FoodModel
-                    {
-                        Id = x.Id,
-                        FoodBrandId = x.FoodBrandId,
-                        Image = x.Image,
-                        Name = x.Name,
-                        Price = x.Price,
-                    })
-                    .ToListAsync();
+            => await this.mapper
+                        .ProjectTo<FoodModel>(this.dbContext.Foods.Where(x => x.FoodBrandId == brandId))
+                        .ToListAsync();
     }
 }

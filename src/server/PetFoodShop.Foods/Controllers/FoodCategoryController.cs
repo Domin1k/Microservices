@@ -17,7 +17,6 @@
         }
 
         [HttpGet]
-        [Authorize]
         [Route("all")]
         public async Task<IActionResult> GetAll()
         {

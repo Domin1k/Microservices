@@ -19,7 +19,6 @@ import { CartComponent } from './cart/cart.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { FoodResolver } from './services/resolvers/food.resolver';
 import { HomeComponent } from './home/home.component';
-import { AnonymousGuardService } from './services/anonymous-guard.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +42,6 @@ import { AnonymousGuardService } from './services/anonymous-guard.service';
   providers: [
     AuthService,
     AuthGuardService,
-    AnonymousGuardService,
     PetFoodCategoryService,
     {
       provide: HTTP_INTERCEPTORS,

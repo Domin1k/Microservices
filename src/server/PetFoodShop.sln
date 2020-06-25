@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Foods", "PetFoo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Cart", "PetFoodShop.Cart\PetFoodShop.Cart.csproj", "{30E84CE2-1BFF-4EC6-A7EB-798FAB10C038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFoodShop.Statistics", "PetFoodShop.Statistics\PetFoodShop.Statistics.csproj", "{5BCDA9E5-9DF0-4D40-AF1D-BBE144F27DB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Statistics", "PetFoodShop.Statistics\PetFoodShop.Statistics.csproj", "{5BCDA9E5-9DF0-4D40-AF1D-BBE144F27DB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFoodShop.Admin", "PetFoodShop.Admin\PetFoodShop.Admin.csproj", "{B4E88F10-159A-464B-8CEE-EFD448BF8D65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5BCDA9E5-9DF0-4D40-AF1D-BBE144F27DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BCDA9E5-9DF0-4D40-AF1D-BBE144F27DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BCDA9E5-9DF0-4D40-AF1D-BBE144F27DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E88F10-159A-464B-8CEE-EFD448BF8D65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E88F10-159A-464B-8CEE-EFD448BF8D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E88F10-159A-464B-8CEE-EFD448BF8D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E88F10-159A-464B-8CEE-EFD448BF8D65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

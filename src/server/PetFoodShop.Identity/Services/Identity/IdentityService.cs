@@ -1,32 +1,83 @@
-﻿namespace PetFoodShop.Identity.Services
+﻿namespace PetFoodShop.Identity.Services.Identity
 {
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
-    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.AspNetCore.Identity;
+    using PetFoodShop.Identity.Data.Models;
+    using PetFoodShop.Identity.Services.Models;
+    using PetFoodShop.Services;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class IdentityService : IIdentityService
     {
-        public string GenerateJwtToken(string userId, string userName, string secret)
+        private const string InvalidErrorMessage = "Invalid credentials.";
+
+        private readonly UserManager<User> userManager;
+        private readonly ITokenGeneratorService jwtTokenGenerator;
+
+        public IdentityService(
+            UserManager<User> userManager,
+            ITokenGeneratorService jwtTokenGenerator)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            this.userManager = userManager;
+            this.jwtTokenGenerator = jwtTokenGenerator;
+        }
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+        public async Task<Result<User>> Register(UserInputModel userInput)
+        {
+            var user = new User
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userId),
-                    new Claim(ClaimTypes.Name, userName)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Email = userInput.Email,
+                UserName = userInput.Email
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var encryptedToken = tokenHandler.WriteToken(token);
 
-            return encryptedToken;
+            var identityResult = await this.userManager.CreateAsync(user, userInput.Password);
+
+            var errors = identityResult.Errors.Select(e => e.Description);
+
+            return identityResult.Succeeded
+                ? Result<User>.SuccessWith(user)
+                : Result<User>.Failure(errors);
+        }
+
+        public async Task<Result<UserOutputModel>> Login(UserInputModel userInput)
+        {
+            var user = await this.userManager.FindByEmailAsync(userInput.Email);
+            if (user == null)
+            {
+                return InvalidErrorMessage;
+            }
+
+            var passwordValid = await this.userManager.CheckPasswordAsync(user, userInput.Password);
+            if (!passwordValid)
+            {
+                return InvalidErrorMessage;
+            }
+
+            var roles = await this.userManager.GetRolesAsync(user);
+
+            var token = this.jwtTokenGenerator.GenerateToken(user, roles);
+
+            return new UserOutputModel(token);
+        }
+
+        public async Task<Result> ChangePassword(string userId, ChangePasswordInputModel changePasswordInput)
+        {
+            var user = await this.userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return InvalidErrorMessage;
+            }
+
+            var identityResult = await this.userManager.ChangePasswordAsync(
+                user,
+                changePasswordInput.CurrentPassword,
+                changePasswordInput.NewPassword);
+
+            var errors = identityResult.Errors.Select(e => e.Description);
+
+            return identityResult.Succeeded
+                ? Result.Success
+                : Result.Failure(errors);
         }
     }
 }

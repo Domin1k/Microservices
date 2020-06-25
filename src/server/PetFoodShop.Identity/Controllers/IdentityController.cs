@@ -1,75 +1,62 @@
 ﻿namespace PetFoodShop.Identity.Controllers
 {
-    using Data.Models;
-    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
     using PetFoodShop.Controllers;
-    using PetFoodShop.Identity.Controllers.Models.Identity;
-    using PetFoodShop.Identity.Services;
+    using PetFoodShop.Identity.Services.Identity;
+    using PetFoodShop.Identity.Services.Models;
+    using PetFoodShop.Services;
     using System.Threading.Tasks;
 
     public class IdentityController : ApiController
     {
-        private readonly UserManager<User> userManager;
-        private readonly IIdentityService identityService;
-        private readonly AppSettings appSettings;
+        private readonly IIdentityService identity;
+        private readonly ICurrentUserService currentUser;
 
         public IdentityController(
-            UserManager<User> userManager,
-            IIdentityService identityService,
-            IOptions<AppSettings> appSettings)
+            IIdentityService identity,
+            ICurrentUserService currentUser)
         {
-            this.userManager = userManager;
-            this.identityService = identityService;
-            this.appSettings = appSettings.Value;
+            this.identity = identity;
+            this.currentUser = currentUser;
         }
 
         [HttpPost]
         [Route(nameof(Register))]
-        public async Task<ActionResult> Register(RegisterRequestModel model)
+        public async Task<ActionResult<UserOutputModel>> Register(UserInputModel input)
         {
-            var user = new User
-            {
-                Email = model.Email,
-                UserName = model.UserName
-            };
+            var result = await this.identity.Register(input);
 
-            var result = await this.userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return Ok();
+                return BadRequest(result.Errors);
             }
 
-            return BadRequest(result.Errors);
+            return await Login(input);
         }
 
         [HttpPost]
         [Route(nameof(Login))]
-        public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel model)
+        public async Task<ActionResult<UserOutputModel>> Login(UserInputModel input)
         {
-            var user = await this.userManager.FindByNameAsync(model.UserName);
-            if (user == null)
+            var result = await this.identity.Login(input);
+
+            if (!result.Succeeded)
             {
-                return Unauthorized();
+                return BadRequest(result.Errors);
             }
 
-            var passwordValid = await this.userManager.CheckPasswordAsync(user, model.Password);
-            if (!passwordValid)
-            {
-                return Unauthorized();
-            }
-
-            var token = this.identityService.GenerateJwtToken(
-                user.Id,
-                user.UserName,
-                this.appSettings.Secret);
-
-            return new LoginResponseModel
-            {
-                Token = token
-            };
+            return new UserOutputModel(result.Data.Token);
         }
+
+        [HttpPut]
+        [Authorize]
+        [Route(nameof(ChangePassword))]
+        public async Task<ActionResult> ChangePassword(ChangePasswordInputModel input)
+            => await this.identity.ChangePassword(this.currentUser.UserId, new ChangePasswordInputModel
+            {
+                CurrentPassword = input.CurrentPassword,
+                NewPassword = input.NewPassword
+            });
     }
 }

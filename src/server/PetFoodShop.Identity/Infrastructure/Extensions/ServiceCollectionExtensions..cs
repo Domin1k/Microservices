@@ -26,6 +26,6 @@
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
            => services
-               .AddTransient<IIdentityService, IdentityService>();
+               .AddTransient<ITokenGeneratorService, TokenGeneratorService>();
     }
 }

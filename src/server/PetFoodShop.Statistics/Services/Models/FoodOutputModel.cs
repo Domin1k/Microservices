@@ -1,6 +1,6 @@
 ﻿namespace PetFoodShop.Statistics.Services.Models
 {
-    public class FoodOutputModel
+    public class FoodOutputModel 
     {
         public int FoodId { get; set; }
 

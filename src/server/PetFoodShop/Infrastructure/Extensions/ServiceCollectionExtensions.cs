@@ -22,6 +22,7 @@
                 .AddDatabase<TDbContext>(configuration)
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
+                .AddAutoMapperProfile(Assembly.GetCallingAssembly())
                 .AddSwagger()
                 .AddControllers();
 

@@ -2,8 +2,8 @@
 {
     public class StatisticsOutputModel
     {
-        public int TotalCarAds { get; set; }
+        public int TotalFoodViews { get; set; }
 
-        public int TotalRentedCars { get; set; }
+        public int TotalFoodBrands { get; set; }
     }
 }

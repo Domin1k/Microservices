@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Identity.Data
+﻿namespace PetFoodShop.Services.Identity
 {
     public static class IdentityValidation
     {

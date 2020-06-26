@@ -1,29 +1,25 @@
 ﻿namespace PetFoodShop.Statistics.Services
 {
+    using AutoMapper;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Statistics.Services.Models;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class StatisticsService : IStatisticsService
     {
         private readonly StatisticsDbContext db;
+        private readonly IMapper mapper;
 
-        public StatisticsService(StatisticsDbContext db)
+        public StatisticsService(StatisticsDbContext db, IMapper mapper)
         {
             this.db = db;
+            this.mapper = mapper;
         }
 
         public async Task<StatisticsOutputModel> Full()
-            => await this.db
-                .Statistics
-                .Select(x => new StatisticsOutputModel
-                {
-                    TotalFoodBrands = x.TotalFoodBrands,
-                    TotalFoodViews = x.TotalFoods
-                })
-                .SingleOrDefaultAsync();
-
+            => await this.mapper
+                        .ProjectTo<StatisticsOutputModel>(this.db.Statistics)
+                        .SingleOrDefaultAsync();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PetFoodShop.Identity.Services.Models
 {
-    using PetFoodShop.Identity.Data;
+    using PetFoodShop.Services.Identity;
     using System.ComponentModel.DataAnnotations;
 
     public class UserInputModel

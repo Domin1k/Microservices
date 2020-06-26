@@ -5,6 +5,8 @@
     using PetFoodShop.Identity.Data;
     using PetFoodShop.Identity.Data.Models;
     using PetFoodShop.Identity.Services;
+    using PetFoodShop.Identity.Services.Identity;
+    using PetFoodShop.Services;
 
     public static class ServiceCollectionExtensions
     {
@@ -26,6 +28,8 @@
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
            => services
-               .AddTransient<ITokenGeneratorService, TokenGeneratorService>();
+               .AddTransient<IDataSeeder, IdentityDataSeeder>()
+               .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
+               .AddTransient<IIdentityService, IdentityService>();
     }
 }

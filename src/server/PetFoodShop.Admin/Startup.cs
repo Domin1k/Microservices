@@ -9,6 +9,7 @@ namespace PetFoodShop.Admin
     using PetFoodShop.Admin.Infrastructure;
     using PetFoodShop.Admin.Services;
     using PetFoodShop.Admin.Services.Identity;
+    using PetFoodShop.Admin.Services.Statistics;
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
     using Refit;
@@ -40,6 +41,9 @@ namespace PetFoodShop.Admin
             services
                 .AddRefitClient<IIdentityService>()
                 .WithConfiguration(serviceEndpoints.Identity);
+            services
+                .AddRefitClient<IStatisticsService>()
+                .WithConfiguration(serviceEndpoints.Statistics);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

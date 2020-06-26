@@ -21,6 +21,11 @@
             this.mapper = mapper;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+            => View(nameof(Login));
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginFormModel model)

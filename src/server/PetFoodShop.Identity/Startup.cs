@@ -26,6 +26,6 @@ namespace PetFoodShop.Identity
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)
-                .ApplyMigration<AppIdentityDbContext>();
+                .Initialize();
     }
 }

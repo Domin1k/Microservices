@@ -12,6 +12,9 @@
             => this.statistics = statistics;
 
         public async Task<IActionResult> Index()
-            => View(await this.statistics.Full());
+        {
+            var model = await this.statistics.Full();
+            return View(model);
+        }
     }
 }

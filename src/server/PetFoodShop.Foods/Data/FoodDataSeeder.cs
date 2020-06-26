@@ -1,23 +1,25 @@
 ﻿namespace PetFoodShop.Foods.Infrastructure.Extensions
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Foods.Data;
     using PetFoodShop.Foods.Data.Models;
+    using PetFoodShop.Services;
     using System.Collections.Generic;
     using System.Linq;
 
-    public static class ApplicationBuilderExtensions
+    public class FoodDataSeeder : IDataSeeder
     {
-        public static IApplicationBuilder SeedData(this IApplicationBuilder app)
-        {
-            using var serviceScope = app.ApplicationServices.CreateScope();
-            var serviceProvider = serviceScope.ServiceProvider;
+        private readonly PetFoodDbContext dbContext;
 
-            var db = serviceProvider.GetRequiredService<PetFoodDbContext>();
-            if (db.FoodCategories.Any())
+        public FoodDataSeeder(PetFoodDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        public void SeedData()
+        {
+            if (this.dbContext.FoodCategories.Any())
             {
-                return app;
+                return;
             }
             var foodCategories = new List<FoodCategory>
             {
@@ -27,10 +29,10 @@
                 new FoodCategory { Name = "Small Pet" },
             };
 
-            db.FoodCategories.AddRange(foodCategories);
-            db.SaveChanges();
+            this.dbContext.FoodCategories.AddRange(foodCategories);
+            this.dbContext.SaveChanges();
 
-            foreach (var item in db.FoodCategories.ToList())
+            foreach (var item in this.dbContext.FoodCategories.ToList())
             {
                 var foodRC = new List<Food>
                 {
@@ -98,13 +100,10 @@
                     new FoodBrand { Name = $"James Wellbeloved {item.Name} Food" , FoodCategoryId = item.Id }
                 };
 
-                // db.FoodBrands.AddRange(foodBrands);
-                db.FoodBrands.AddRange(foodBrands);
-                db.SaveChanges();
+
+                this.dbContext.FoodBrands.AddRange(foodBrands);
+                this.dbContext.SaveChanges();
             }
-
-
-            return app;
-        }        
+        }
     }
 }

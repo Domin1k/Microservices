@@ -59,5 +59,11 @@
 
             return app;
         }
+
+        public static IApplicationBuilder UseJwtHeaderAuthentication(
+           this IApplicationBuilder app)
+           => app
+               .UseMiddleware<JwtHeaderAuthenticationMiddleware>()
+               .UseAuthentication();
     }
 }

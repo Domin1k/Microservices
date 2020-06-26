@@ -1,10 +1,9 @@
 ﻿namespace PetFoodShop.Foods.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PetFoodShop.Foods.Services;
     using PetFoodShop.Controllers;
+    using PetFoodShop.Foods.Services;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authorization;
 
     [Route("categories")]
     public class FoodCategoryController : ApiController

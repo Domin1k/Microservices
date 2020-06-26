@@ -9,7 +9,7 @@ import { PetFoodCategoryBrand } from '../shared/model/petFood-categoryBrand.mode
     providedIn: 'root'
 })
 export class PetFoodCategoryService {
-    private path = environment.foodServiceUrl + 'categories';
+    private path = environment.gatewayUrl + 'categories';
     constructor(private http: HttpClient) { }
 
     getAll(): Observable<Array<PetFoodCategoryModel>> {

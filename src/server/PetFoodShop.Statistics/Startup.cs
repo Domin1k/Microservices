@@ -5,8 +5,9 @@ namespace PetFoodShop.Statistics
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Infrastructure.Extensions;
+    using PetFoodShop.Services;
     using PetFoodShop.Statistics.Data;
-    using PetFoodShop.Statistics.Infrastructure.Extensions;
+    using PetFoodShop.Statistics.Services;
 
     public class Startup
     {
@@ -20,7 +21,9 @@ namespace PetFoodShop.Statistics
         public void ConfigureServices(IServiceCollection services)
             => services
                 .AddWebService<StatisticsDbContext>(this.Configuration)
-                .AddApplicationServices();
+                .AddTransient<IDataSeeder, StatisticsDataSeeder>()
+                .AddTransient<IStatisticsService, StatisticsService>()
+                .AddTransient<IFoodViewService, FoodViewService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

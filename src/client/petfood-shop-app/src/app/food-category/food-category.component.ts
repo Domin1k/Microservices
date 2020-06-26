@@ -22,6 +22,7 @@ export class FoodCategoryComponent implements OnInit {
   getCategoryBrands(foodCategoryId: number) {
     this.foodCategorySvc.getCategoryBrands(foodCategoryId).subscribe(res => {
       this.foodBrands = res;
+      console.log(res);
     });
   }
 }

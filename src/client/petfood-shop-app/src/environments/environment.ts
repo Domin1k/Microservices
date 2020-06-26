@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  foodServiceUrl: "https://localhost:5001/",
+  gatewayUrl: "https://localhost:5011/",
   identityServiceUrl: "https://localhost:5003/",
   cartServiceUrl: "https://localhost:5005/",
 };

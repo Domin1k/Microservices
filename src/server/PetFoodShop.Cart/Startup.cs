@@ -5,7 +5,7 @@ namespace PetFoodShop.Cart
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Cart.Data;
-    using PetFoodShop.Cart.Infrastructure.Extensions;
+    using PetFoodShop.Cart.Services;
     using PetFoodShop.Infrastructure.Extensions;
 
     public class Startup
@@ -20,7 +20,8 @@ namespace PetFoodShop.Cart
         public void ConfigureServices(IServiceCollection services)
              => services
                  .AddWebService<CartDbContext>(this.Configuration)
-                 .AddApplicationServices();
+                 .AddTransient<IRandomizer, Randomizer>()
+                 .AddTransient<ICartService, CartService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

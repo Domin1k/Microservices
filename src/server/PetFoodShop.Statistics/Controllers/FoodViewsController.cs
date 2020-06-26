@@ -19,14 +19,13 @@
         }
 
         [HttpGet]
-        [Route("Id")]
+        [Route("{id}")]
         public async Task<int> TotalViews(int id)
             => await this.foodViews.GetTotalViews(id);
 
         [HttpGet]
         [Authorize]
-        public async Task<IEnumerable<FoodOutputModel>> TotalViews(
-            [FromQuery] IEnumerable<int> ids)
+        public async Task<IEnumerable<FoodOutputModel>> TotalViews([FromQuery] IEnumerable<int> ids)
             => await this.foodViews.GetTotalViews(ids);
     }
 }

@@ -6,7 +6,9 @@ namespace PetFoodShop.Foods
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Foods.Data;
     using PetFoodShop.Foods.Infrastructure.Extensions;
+    using PetFoodShop.Foods.Services;
     using PetFoodShop.Infrastructure.Extensions;
+    using PetFoodShop.Services;
 
     public class Startup
     {
@@ -20,7 +22,9 @@ namespace PetFoodShop.Foods
         public void ConfigureServices(IServiceCollection services)
             => services
                 .AddWebService<PetFoodDbContext>(this.Configuration)
-                .AddApplicationServices();
+                .AddTransient<IDataSeeder, FoodDataSeeder>()
+                .AddTransient<IFoodService, FoodService>()
+                .AddTransient<IFoodCategoryService, FoodCategoryService>();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

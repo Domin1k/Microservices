@@ -4,10 +4,13 @@ namespace PetFoodShop.Foods.Gateway
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
     using PetFoodShop.Foods.Gateway.Services;
+    using PetFoodShop.Foods.Gateway.Services.Foods;
+    using PetFoodShop.Foods.Gateway.Services.Statistics;
+    using PetFoodShop.Infrastructure;
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
+    using Refit;
     using System.Reflection;
 
     public class Startup
@@ -28,31 +31,23 @@ namespace PetFoodShop.Foods.Gateway
             services
                 .AddAutoMapperProfile(Assembly.GetExecutingAssembly())
                 .AddTokenAuthentication(this.Configuration)
+                .AddSwagger()
                 .AddScoped<ICurrentTokenService, CurrentTokenService>()
-                //.AddTransient<JwtHeaderAuthenticationMiddleware>()
+                .AddTransient<JwtHeaderAuthenticationMiddleware>()
                 .AddControllers();
 
+            services
+                .AddRefitClient<IStatisticsService>()
+                .WithConfiguration(serviceEndpoints.Statistics);
+
+            services
+                .AddRefitClient<IFoodsService>()
+                .WithConfiguration(serviceEndpoints.Foods);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            //app.UseJwtHeaderAuthentication();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            => app
+                .UseWebService(env)
+                .UseJwtHeaderAuthentication();
     }
 }

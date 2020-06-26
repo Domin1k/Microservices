@@ -5,5 +5,6 @@ export interface PetFoodModel {
     quantity: number,
     price: number,
     image: string,
-    foodBrandId: number
+    foodBrandId: number,
+    totalViewsCount: number;
 }

@@ -8,7 +8,7 @@ import {PetFoodModel} from '../shared/model/petFood-food.model';
   providedIn: 'root'
 })
 export class PetFoodFoodService {
-  private path = environment.foodServiceUrl + 'foods';
+  private path = environment.gatewayUrl + 'foods';
   constructor(private http: HttpClient) { }
 
   getFoodPerBrand(brandId: number): Observable<Array<PetFoodModel>> {

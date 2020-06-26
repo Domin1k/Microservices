@@ -1,5 +1,6 @@
 export interface PetFoodCategoryBrand {
     id: number,
     name: string,
-    categoryId: number
+    categoryId: number,
+    totalFoods: number;
 }

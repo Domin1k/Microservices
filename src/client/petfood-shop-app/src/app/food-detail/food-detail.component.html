@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-8 offset-md-2">
         <div class="card mb-3">
-            <h3 class="card-header">{{food?.name}}</h3>
+            <h3 class="card-header">{{food?.name}} <span class="badge badge-primary badge-pill">views - {{food?.totalViewsCount}}</span></h3>
             <img style="height: 200px; width: 100%; display: block;" src="{{food?.image}}" alt="Card image">
             <div class="card-body">
                 <p class="card-text">{{food?.description}}</p>

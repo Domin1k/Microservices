@@ -12,7 +12,7 @@
         Task<FoodDetailModel> DetailsAsync(int id);
 
         [Get("/foods/{brandId}/brands")]
-        Task<IEnumerable<FoodModel>> FoodsPerBrand(int brandId);
+        Task<IEnumerable<FoodOutputModel>> FoodsPerBrand(int brandId);
 
         [Get("/categories/all")]
         Task<IEnumerable<AllFoodCategoriesModel>> AllAsync();

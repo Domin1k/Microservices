@@ -1,6 +1,6 @@
 ﻿namespace PetFoodShop.Foods.Services.Models
 {
-    public class FoodModel
+    public class FoodOutputModel
     {
         public int Id { get; set; }
 

@@ -7,7 +7,7 @@ using PetFoodShop.Foods.Data;
 
 namespace PetFoodShop.Foods.Data.Migrations
 {
-    [DbContext(typeof(PetFoodDbContext))]
+    [DbContext(typeof(FoodDbContext))]
     partial class PetFoodDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

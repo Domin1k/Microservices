@@ -3,9 +3,9 @@
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Foods.Data.Models;
 
-    public class PetFoodDbContext : DbContext
+    public class FoodDbContext : DbContext
     {
-        public PetFoodDbContext(DbContextOptions<PetFoodDbContext> options)
+        public FoodDbContext(DbContextOptions<FoodDbContext> options)
             : base(options)
         {
         }
@@ -29,12 +29,6 @@
                 .WithOne(x => x.FoodBrand)
                 .HasForeignKey(x => x.FoodBrandId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            /*builder.Entity<User>()
-               .HasMany(x => x.Shippments)
-               .WithOne(x => x.Customer)
-               .HasForeignKey(x => x.CustomerId)
-               .OnDelete(DeleteBehavior.Restrict);*/
 
             base.OnModelCreating(builder);
         }

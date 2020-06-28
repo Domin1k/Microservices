@@ -10,10 +10,10 @@
 
     public class FoodCategoryService : IFoodCategoryService
     {
-        private readonly PetFoodDbContext dbContext;
+        private readonly FoodDbContext dbContext;
         private readonly IMapper mapper;
 
-        public FoodCategoryService(PetFoodDbContext dbContext, IMapper mapper)
+        public FoodCategoryService(FoodDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;

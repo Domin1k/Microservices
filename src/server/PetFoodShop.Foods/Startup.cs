@@ -21,7 +21,7 @@ namespace PetFoodShop.Foods
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<PetFoodDbContext>(this.Configuration)
+                .AddWebService<FoodDbContext>(this.Configuration)
                 .AddTransient<IDataSeeder, FoodDataSeeder>()
                 .AddTransient<IFoodService, FoodService>()
                 .AddTransient<IFoodCategoryService, FoodCategoryService>();

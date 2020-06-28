@@ -8,9 +8,9 @@
 
     public class FoodDataSeeder : IDataSeeder
     {
-        private readonly PetFoodDbContext dbContext;
+        private readonly FoodDbContext dbContext;
 
-        public FoodDataSeeder(PetFoodDbContext dbContext)
+        public FoodDataSeeder(FoodDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

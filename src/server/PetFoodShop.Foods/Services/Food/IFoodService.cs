@@ -8,6 +8,8 @@
     {
         Task<FoodDetailModel> DetailsAsync(int foodId);
 
+        Task<FoodDetailModel> EditPrice(int foodId, decimal price);
+
         Task<IEnumerable<FoodModel>> FoodsPerBrand(int brandId);
     }
 }

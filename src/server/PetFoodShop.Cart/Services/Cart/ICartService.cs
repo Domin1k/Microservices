@@ -5,6 +5,6 @@
 
     public interface ICartService
     {
-        Task CheckoutCartAsync(string customerId, CartModel cart);
+        Task<CartOutputModel> CheckoutCartAsync(string customerId, CartModel cart);
     }
 }

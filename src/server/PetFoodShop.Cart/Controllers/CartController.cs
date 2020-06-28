@@ -1,5 +1,6 @@
 ﻿namespace PetFoodShop.Cart.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using PetFoodShop.Cart.Controllers.Models;
     using PetFoodShop.Cart.Infrastructure.Exceptions;
@@ -7,7 +8,7 @@
     using PetFoodShop.Cart.Services.Models;
     using PetFoodShop.Controllers;
     using PetFoodShop.Services;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [Route("cart")]
@@ -15,11 +16,13 @@
     {
         private readonly ICartService userService;
         private readonly ICurrentUserService currentUserService;
+        private readonly IMapper mapper;
 
-        public CartController(ICartService userService, ICurrentUserService currentUserService)
+        public CartController(ICartService userService, ICurrentUserService currentUserService, IMapper mapper)
         {
             this.userService = userService;
             this.currentUserService = currentUserService;
+            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -28,15 +31,10 @@
         {
             try
             {
-                var cartItems = model.Cart.Select(x => new CartItemModel()
-                {
-                    Id = x.ProductId,
-                    Name = x.ProductName,
-                    Price = x.Price,
-                    Quantity = x.ProductQuantity
-                });
-                await this.userService.CheckoutCartAsync(this.currentUserService.UserId, new CartModel(cartItems, model.DeliveryAddress));
-                return this.Ok();
+                var cartItems = this.mapper.Map<List<CartItemModel>>(model.Cart);
+                var shippmentModel = await this.userService.CheckoutCartAsync(this.currentUserService.UserId, new CartModel(cartItems, model.DeliveryAddress));
+                
+                return this.Ok(shippmentModel);
             }
             catch (CheckoutFailedException ex)
             {

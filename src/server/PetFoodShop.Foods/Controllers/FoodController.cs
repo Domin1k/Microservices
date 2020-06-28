@@ -1,8 +1,9 @@
 ﻿namespace PetFoodShop.Foods.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PetFoodShop.Foods.Services;
     using PetFoodShop.Controllers;
+    using PetFoodShop.Foods.Controllers.Models;
+    using PetFoodShop.Foods.Services;
     using System.Threading.Tasks;
 
     [Route("foods")]
@@ -21,6 +22,19 @@
         {
             var results = await this.foodService.FoodsPerBrand(brandId);
             return this.Ok(results);
+        }
+
+        [HttpPut]
+        [Route(nameof(EditPrice))]
+        public async Task<IActionResult> EditPrice(FoodPriceInputModel model)
+        {
+            var food = await this.foodService.EditPrice(model.FoodId, model.Price);
+            if (food == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(food);
         }
 
         [HttpGet]

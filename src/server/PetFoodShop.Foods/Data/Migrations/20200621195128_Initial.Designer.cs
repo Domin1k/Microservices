@@ -8,7 +8,7 @@ using PetFoodShop.Foods.Data;
 
 namespace PetFoodShop.Foods.Data.Migrations
 {
-    [DbContext(typeof(PetFoodDbContext))]
+    [DbContext(typeof(FoodDbContext))]
     [Migration("20200621195128_Initial")]
     partial class Initial
     {

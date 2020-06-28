@@ -10,10 +10,10 @@
 
     public class FoodService : IFoodService
     {
-        private readonly PetFoodDbContext dbContext;
+        private readonly FoodDbContext dbContext;
         private readonly IMapper mapper;
 
-        public FoodService(PetFoodDbContext dbContext, IMapper mapper)
+        public FoodService(FoodDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -23,6 +23,20 @@
             => await this.mapper
                         .ProjectTo<FoodDetailModel>(this.dbContext.Foods.Where(x => x.Id == foodId))
                         .FirstOrDefaultAsync();
+
+        public async Task<FoodDetailModel> EditPrice(int foodId, decimal price)
+        {
+            var food = await this.dbContext.Foods.FirstOrDefaultAsync(f => f.Id == foodId);
+            if (food == null)
+            {
+                return null;
+            }
+
+            food.Price = price;
+            this.dbContext.Foods.Update(food);
+            await this.dbContext.SaveChangesAsync();
+            return this.mapper.Map<FoodDetailModel>(food);
+        }
 
         public async Task<IEnumerable<FoodModel>> FoodsPerBrand(int brandId)
             => await this.mapper

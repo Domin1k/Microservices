@@ -4,6 +4,7 @@
     using PetFoodShop.Cart.Data.Models;
     using PetFoodShop.Cart.Infrastructure.Exceptions;
     using PetFoodShop.Cart.Services.Models;
+    using PetFoodShop.Services;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,26 +20,30 @@
             this.randomizer = randomizer;
         }
 
-        public async Task CheckoutCartAsync(string customerId, CartModel cart)
+        public async Task<CartOutputModel> CheckoutCartAsync(string customerId, CartModel cart)
         {
             if (cart.DeliveryAddress == null)
             {
                 throw new CheckoutFailedException($"Customer address is null");
             }
 
-            var shippments = cart.Items.Select(x => new Shippment
+            var shippment = new Shippment
             {
                 CustomerId = customerId,
-                Description = $"Ordered {x.Name} | Price {x.Price} | Quantity - {x.Quantity}",
+                Description = GetDescriptionFromCart(cart),
                 UniqueNumber = (int)this.randomizer.RandomNumber(),
                 ShippmentDate = DateTime.UtcNow,
                 ExpectedDeliveryDate = DateTime.UtcNow.AddDays(3),
                 Address = cart.DeliveryAddress
-            });
-
-            this.dbContext.Shippments.AddRange(shippments);
+            };
+            this.dbContext.Shippments.Add(shippment);
 
             await this.dbContext.SaveChangesAsync();
+
+            return new CartOutputModel(shippment.Description, shippment.Address, shippment.ShippmentDate, shippment.ExpectedDeliveryDate);
         }
+
+        private string GetDescriptionFromCart(CartModel cart)
+            => string.Join(", ", cart.Items.Select(x => $"Ordered {x.Name} | Price {x.Price} | Quantity - {x.Quantity}"));
     }
 }

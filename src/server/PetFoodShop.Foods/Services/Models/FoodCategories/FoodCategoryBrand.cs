@@ -1,11 +1,10 @@
 ﻿namespace PetFoodShop.Foods.Services.Models
 {
     using AutoMapper;
-    using PetFoodShop.Foods.Data.Models;
     using PetFoodShop.Models;
     using System.Linq;
 
-    public class FoodCategoryBrand : IMapFrom<FoodBrand>
+    public class FoodCategoryBrand : IMapFrom<Data.Models.FoodBrand>
     {
         public int Id { get; set; }
 
@@ -17,7 +16,7 @@
 
         public void Mapping(Profile mapper)
             => mapper
-                .CreateMap<FoodBrand, FoodCategoryBrand>()
+                .CreateMap<Data.Models.FoodBrand, FoodCategoryBrand>()
                 .ForMember(d => d.CategoryId, cfg => cfg.MapFrom(d => d.FoodCategoryId))
                 .ForMember(d => d.TotalFoods, cfg => cfg.MapFrom(d => d.Foods.Count()));
     }

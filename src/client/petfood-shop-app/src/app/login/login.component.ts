@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { 
     this.loginForm = this.fb.group({
-      'username': ['', Validators.required],
+      'email': ['', Validators.required],
       'password': ['', Validators.required]
     })
   }
@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  get username() {
-    return this.loginForm.get('username')
+  get getEmail() {
+    return this.loginForm.get('email')
   }
 
   get password() {

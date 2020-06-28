@@ -19,6 +19,7 @@ import { CartComponent } from './cart/cart.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { FoodResolver } from './services/resolvers/food.resolver';
 import { HomeComponent } from './home/home.component';
+import { ThankyouComponent } from './thankyou/thankyou.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HomeComponent } from './home/home.component';
     FoodComponent,
     FoodDetailComponent,
     CartComponent,
-    HomeComponent
+    HomeComponent,
+    ThankyouComponent
   ],
   imports: [
     BrowserModule,

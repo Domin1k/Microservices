@@ -4,7 +4,6 @@
     using PetFoodShop.Cart.Data.Models;
     using PetFoodShop.Cart.Infrastructure.Exceptions;
     using PetFoodShop.Cart.Services.Models;
-    using PetFoodShop.Services;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
@@ -22,6 +21,10 @@
 
         public async Task<CartOutputModel> CheckoutCartAsync(string customerId, CartModel cart)
         {
+            if (cart?.Items == null || cart.Items.Any())
+            {
+                throw new CheckoutFailedException($"Cannot send shippment for empty cart");
+            }
             if (cart.DeliveryAddress == null)
             {
                 throw new CheckoutFailedException($"Customer address is null");
@@ -40,7 +43,7 @@
 
             await this.dbContext.SaveChangesAsync();
 
-            return new CartOutputModel(shippment.Description, shippment.Address, shippment.ShippmentDate, shippment.ExpectedDeliveryDate);
+            return new CartOutputModel(shippment.UniqueNumber, shippment.Description, shippment.Address, shippment.ShippmentDate, shippment.ExpectedDeliveryDate);
         }
 
         private string GetDescriptionFromCart(CartModel cart)

@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import { CartComponent } from './cart/cart.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FoodResolver } from './services/resolvers/food.resolver';
+import { ThankyouComponent } from './thankyou/thankyou.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'foods/details/:id', component: FoodDetailComponent },
   { path: 'foods/:id/brands', component: FoodComponent, resolve: {resolvedFoods: FoodResolver } },
   { path: 'cart', component: CartComponent, canActivate: [AuthGuardService] },
-
+  { path: 'thank-you', component: ThankyouComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

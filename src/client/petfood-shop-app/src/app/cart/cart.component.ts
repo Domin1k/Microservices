@@ -43,9 +43,9 @@ export class CartComponent implements OnInit {
       deliveryAddress: this.cartForm.controls['deliveryAddress'].value
     }
 
-    this.cartService.checkout(model).subscribe(() => {
+    this.cartService.checkout(model).subscribe((res) => {
       this.cartService.clearCart();
-      this.router.navigate(['/'])
+      this.router.navigate(['/thank-you'], {state: {data: res} })
     });
   }
 

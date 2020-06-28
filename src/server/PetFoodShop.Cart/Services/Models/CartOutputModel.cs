@@ -4,8 +4,9 @@
 
     public class CartOutputModel
     {
-        public CartOutputModel(string description, string address, DateTime shippmentDate, DateTime expectedDeliveryDate)
+        public CartOutputModel(int uniqueNumber, string description, string address, DateTime shippmentDate, DateTime expectedDeliveryDate)
         {
+            UniqueNumber = uniqueNumber;
             Description = description;
             Address = address;
             ShippmentDate = shippmentDate;
@@ -19,5 +20,7 @@
         public DateTime ShippmentDate { get; }
 
         public DateTime ExpectedDeliveryDate { get; }
+
+        public int UniqueNumber { get; }
     }
 }

@@ -8,7 +8,6 @@
     using PetFoodShop.Foods.Gateway.Services.Models.Foods;
     using PetFoodShop.Foods.Gateway.Services.Statistics;
     using PetFoodShop.Foods.Services.Models;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
 
     public class FoodsController : ApiController
@@ -22,22 +21,6 @@
             this.foodsService = foodsService;
             this.statisticsService = statisticsService;
             this.mapper = mapper;
-        }
-
-        [HttpGet]
-        [Route("/categories/all")]
-        public async Task<IActionResult> GetAll()
-        {
-            var results = await this.foodsService.AllAsync();
-            return this.Ok(results);
-        }
-
-        [HttpGet]
-        [Route("/categories/{id}/brands")]
-        public async Task<IActionResult> GetCategoryBrands(int id)
-        {
-            var results = await this.foodsService.CategoryBrandsAsync(id);
-            return this.Ok(results);
         }
 
         [HttpGet]

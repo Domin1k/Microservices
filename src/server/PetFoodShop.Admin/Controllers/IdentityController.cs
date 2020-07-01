@@ -23,8 +23,7 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
-            => View(nameof(Login));
+        public IActionResult Login() => View(nameof(Login));
 
         [HttpPost]
         [AllowAnonymous]

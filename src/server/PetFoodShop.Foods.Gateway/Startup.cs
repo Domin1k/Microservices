@@ -43,6 +43,10 @@ namespace PetFoodShop.Foods.Gateway
             services
                 .AddRefitClient<IFoodsService>()
                 .WithConfiguration(serviceEndpoints.Foods);
+
+            services
+                .AddRefitClient<IFoodCategoriesService>()
+                .WithConfiguration(serviceEndpoints.Foods);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

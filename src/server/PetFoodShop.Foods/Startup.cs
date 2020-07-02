@@ -7,6 +7,7 @@ namespace PetFoodShop.Foods
     using PetFoodShop.Foods.Data;
     using PetFoodShop.Foods.Infrastructure.Extensions;
     using PetFoodShop.Foods.Services;
+    using PetFoodShop.Foods.Services.Food;
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
 
@@ -23,8 +24,10 @@ namespace PetFoodShop.Foods
             => services
                 .AddWebService<FoodDbContext>(this.Configuration)
                 .AddTransient<IDataSeeder, FoodDataSeeder>()
+                .AddTransient<IFoodBrandService, FoodBrandService>()
                 .AddTransient<IFoodService, FoodService>()
-                .AddTransient<IFoodCategoryService, FoodCategoryService>();
+                .AddTransient<IFoodCategoryService, FoodCategoryService>()
+                .AddMessaging();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

@@ -1,15 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PetFoodShop.Admin.Services.Models.Foods
+﻿namespace PetFoodShop.Admin.Services.Models.Foods
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class BrandInputModel
     {
-        public BrandInputModel(string name, int foodCategoryId)
-        {
-            Name = name;
-            FoodCategoryId = foodCategoryId;
-        }
-
         [Required]
         public string Name { get; set; }
 

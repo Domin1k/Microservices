@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/register', component: RegisterComponent },
-  { path: 'foods/details/:id', component: FoodDetailComponent },
+  { path: 'foods/details/:id', component: FoodDetailComponent, canActivate: [AuthGuardService] },
   { path: 'foods/:id/brands', component: FoodComponent, resolve: {resolvedFoods: FoodResolver } },
   { path: 'cart', component: CartComponent, canActivate: [AuthGuardService] },
   { path: 'thank-you', component: ThankyouComponent, canActivate: [AuthGuardService] },

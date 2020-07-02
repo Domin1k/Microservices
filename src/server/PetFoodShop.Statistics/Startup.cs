@@ -7,7 +7,10 @@ namespace PetFoodShop.Statistics
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
     using PetFoodShop.Statistics.Data;
+    using PetFoodShop.Statistics.Data.Models;
+    using PetFoodShop.Statistics.Messages;
     using PetFoodShop.Statistics.Services;
+    using System;
 
     public class Startup
     {
@@ -23,7 +26,8 @@ namespace PetFoodShop.Statistics
                 .AddWebService<StatisticsDbContext>(this.Configuration)
                 .AddTransient<IDataSeeder, StatisticsDataSeeder>()
                 .AddTransient<IStatisticsService, StatisticsService>()
-                .AddTransient<IFoodViewService, FoodViewService>();
+                .AddTransient<IFoodViewService, FoodViewService>()
+                .AddMessaging(new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) });
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

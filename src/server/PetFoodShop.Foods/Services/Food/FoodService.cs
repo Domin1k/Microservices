@@ -1,9 +1,12 @@
 ﻿namespace PetFoodShop.Foods.Services
 {
     using AutoMapper;
+    using MassTransit;
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Foods.Data;
     using PetFoodShop.Foods.Services.Models;
+    using PetFoodShop.Messages.Foods;
+    using PetFoodShop.Services;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,17 +15,32 @@
     {
         private readonly FoodDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly IBus bus;
+        private readonly ICurrentUserService currentUserService;
 
-        public FoodService(FoodDbContext dbContext, IMapper mapper)
+        public FoodService(
+            FoodDbContext dbContext, 
+            IMapper mapper, 
+            IBus bus,
+            ICurrentUserService currentUserService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.bus = bus;
+            this.currentUserService = currentUserService;
         }
 
         public async Task<FoodDetailModel> DetailsAsync(int foodId)
-            => await this.mapper
+        {
+            await this.bus.Publish(new FoodViewedMessage
+            {
+                FoodId = foodId,
+                UserId = this.currentUserService.UserId
+            });
+            return await this.mapper
                         .ProjectTo<FoodDetailModel>(this.dbContext.Foods.Where(x => x.Id == foodId))
                         .FirstOrDefaultAsync();
+        }
 
         public async Task<FoodDetailModel> EditPrice(int foodId, decimal price)
         {
@@ -35,6 +53,11 @@
             food.Price = price;
             this.dbContext.Foods.Update(food);
             await this.dbContext.SaveChangesAsync();
+            await this.bus.Publish(new PriceEditedMessage
+            {
+                FoodId = food.Id,
+                Price = food.Price
+            });
             return this.mapper.Map<FoodDetailModel>(food);
         }
 

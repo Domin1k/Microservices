@@ -15,10 +15,6 @@
         }
 
         [HttpGet]
-        [Route("/brands/create")]
-        public IActionResult Create(int id) => View(new BrandInputModel(null, id));
-
-        [HttpGet]
         [Route("/foods/{brandId}/brands")]
         public async Task<IActionResult> GetFoodsPerBrand(int brandId) => View(await this.foodService.FoodsPerBrand(brandId));
 
@@ -35,17 +31,6 @@
         public async Task<IActionResult> GetCategoryBrands(int id) => View(await this.foodService.CategoryBrandsAsync(id));
 
         [HttpPost]
-        [Route(nameof(Create))]
-        public async Task<IActionResult> Create(BrandInputModel model)
-            => await this.Handle(
-                async () =>
-                {
-                    await this.foodService.CreateBrand(model);
-                },
-                success: RedirectToAction(nameof(StatisticsController.Index), "Statistics"),
-                failure: View(nameof(Create), model));
-
-        [HttpPost]
         [Route(nameof(EditPrice))]
         public async Task<IActionResult> EditPrice(FoodPriceInputModel model)
             => await this.Handle(
@@ -53,7 +38,7 @@
                     {
                         await this.foodService.EditPrice(model);
                     },
-                    success: RedirectToAction(nameof(StatisticsController.Index), "Statistics"),
+                    success: RedirectToAction(nameof(HomeController.Index), "Home"),
                     failure: View(nameof(EditPrice), model));
     }
 }

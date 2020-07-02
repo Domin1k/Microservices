@@ -44,7 +44,7 @@
                             MaxAge = TimeSpan.FromDays(1)
                         });
                 },
-                success: RedirectToAction(nameof(StatisticsController.Index), "Statistics"),
+                success: RedirectToAction(nameof(HomeController.Index), "Home"),
                 failure: View("../Home/Index", model));
 
         [AuthorizeAdministrator]

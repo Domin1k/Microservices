@@ -70,8 +70,7 @@ namespace PetFoodShop.Admin
                 .UseRouting()
                 .UseJwtCookieAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => endpoints
-                    .MapDefaultControllerRoute());
+                .UseEndpoints(e => e.MapDefaultControllerRoute());
         }
     }
 }

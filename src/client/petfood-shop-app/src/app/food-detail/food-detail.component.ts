@@ -3,6 +3,7 @@ import { PetFoodFoodService } from '../services/pet-food-food.service';
 import { ActivatedRoute, Route, Router, NavigationStart } from '@angular/router';
 import { PetFoodModel } from '../shared/model/petFood-food.model';
 import { CartService } from '../services/cart.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-food-detail',
@@ -15,7 +16,8 @@ export class FoodDetailComponent implements OnInit {
   constructor(
     private foodService: PetFoodFoodService,
     private cartService: CartService, 
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.foodService.getFoodDetails(this.route.snapshot.params['id']).subscribe(food => {
@@ -25,5 +27,6 @@ export class FoodDetailComponent implements OnInit {
 
   addToCart(food: PetFoodModel) {
     this.cartService.addToCart(food);
+    this.toastr.success('Successfully added food to cart', 'Food');
   }
 }

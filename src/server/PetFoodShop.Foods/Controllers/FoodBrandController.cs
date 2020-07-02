@@ -1,6 +1,7 @@
 ﻿namespace PetFoodShop.Foods.Controllers
 {
     using AutoMapper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using PetFoodShop.Controllers;
     using PetFoodShop.Foods.Controllers.Models;
@@ -8,7 +9,7 @@
     using PetFoodShop.Foods.Services.Models.FoodBrand;
     using System.Threading.Tasks;
 
-    [Route("brands")]
+    [Authorize]
     public class FoodBrandController : ApiController
     {
         private readonly IFoodBrandService brandService;
@@ -21,12 +22,12 @@
         }
 
         [HttpPost]
-        [Route(nameof(Create))]
+        [Route("/brands/create")]
         public async Task<IActionResult> Create(BrandInputModel model)
         {
             var serviceModel = this.mapper.Map<BrandModel>(model);
             var foodBrandId = await this.brandService.Create(serviceModel);
-            return this.Created("/foods/{brandId}/brands", new { id = foodBrandId });
+            return this.Created($"/foods/{foodBrandId}/brands", foodBrandId);
         }
     }
 }

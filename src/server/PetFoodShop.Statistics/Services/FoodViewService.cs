@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Statistics.Data;
+    using PetFoodShop.Statistics.Data.Models;
     using PetFoodShop.Statistics.Services.Models;
     using System;
     using System.Collections.Generic;
@@ -15,6 +16,16 @@
         public FoodViewService(StatisticsDbContext db)
         {
             this.db = db;
+        }
+
+        public async Task AddFoodView(int foodId, string userId)
+        {
+            var foodView = new FoodView { FoodId = foodId, UserId = userId };
+            var statistics = await this.db.Statistics.SingleOrDefaultAsync();
+            statistics.TotalFoods++;
+            this.db.Statistics.Update(statistics);
+            this.db.FoodViews.Add(foodView);
+            await this.db.SaveChangesAsync();
         }
 
         public async Task<int> GetTotalViews(int foodId)

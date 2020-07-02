@@ -5,6 +5,8 @@
 
     public interface IStatisticsService
     {
+        Task IncrementBrandStatistics();
+
         Task<StatisticsOutputModel> Full();
     }
 }

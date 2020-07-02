@@ -5,6 +5,7 @@ import { PetFoodModel } from '../shared/model/petFood-food.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CheckoutModel, CartDetailModel } from '../shared/model/checkout.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,7 @@ export class CartComponent implements OnInit {
   cart: CartModel;
   cartForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private cartService: CartService, private router: Router) {
+  constructor(private fb: FormBuilder, private cartService: CartService, private router: Router, private toastr: ToastrService) {
     this.cartForm = this.fb.group({
       'deliveryAddress': ['', Validators.required]
     })
@@ -45,7 +46,8 @@ export class CartComponent implements OnInit {
 
     this.cartService.checkout(model).subscribe((res) => {
       this.cartService.clearCart();
-      this.router.navigate(['/thank-you'], {state: {data: res} })
+      this.router.navigate(['/thank-you'], {state: {data: res} });
+      this.toastr.success('Thank you for your purchase', 'Cart');
     });
   }
 

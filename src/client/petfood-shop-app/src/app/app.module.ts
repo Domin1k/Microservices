@@ -21,6 +21,9 @@ import { FoodResolver } from './services/resolvers/food.resolver';
 import { HomeComponent } from './home/home.component';
 import { ThankyouComponent } from './thankyou/thankyou.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +43,8 @@ import { ThankyouComponent } from './thankyou/thankyou.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     AuthService,

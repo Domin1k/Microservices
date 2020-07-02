@@ -21,5 +21,15 @@
             => await this.mapper
                         .ProjectTo<StatisticsOutputModel>(this.db.Statistics)
                         .SingleOrDefaultAsync();
+
+        public async Task IncrementBrandStatistics()
+        {
+            var statistics = await this.db.Statistics.SingleOrDefaultAsync();
+
+            statistics.TotalFoodBrands++;
+
+            this.db.Statistics.Update(statistics);
+            await this.db.SaveChangesAsync();
+        }
     }
 }

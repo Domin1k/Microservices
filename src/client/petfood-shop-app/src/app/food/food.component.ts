@@ -9,7 +9,7 @@ import { PetFoodModel } from '../shared/model/petFood-food.model';
 })
 export class FoodComponent implements OnInit {
   foods: Array<PetFoodModel>;
-  
+  token: string;
   constructor(private ar: ActivatedRoute) {}
 
 
@@ -17,5 +17,10 @@ export class FoodComponent implements OnInit {
     this.ar.data.subscribe(res => {
       this.foods = res.resolvedFoods;
     })
+    this.getToken();
+  }
+
+  getToken() {
+    this.token = localStorage.getItem('token')
   }
 }

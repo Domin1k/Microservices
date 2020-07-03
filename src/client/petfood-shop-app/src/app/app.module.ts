@@ -23,6 +23,7 @@ import { ThankyouComponent } from './thankyou/thankyou.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { NotificationsService } from './services/notifications.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ToastrModule } from 'ngx-toastr';
     AuthService,
     AuthGuardService,
     PetFoodCategoryService,
+    NotificationsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

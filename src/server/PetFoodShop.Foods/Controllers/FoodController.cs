@@ -1,10 +1,10 @@
 ﻿namespace PetFoodShop.Foods.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using PetFoodShop.Controllers;
     using PetFoodShop.Foods.Controllers.Models;
     using PetFoodShop.Foods.Services;
+    using PetFoodShop.Infrastructure;
     using System.Threading.Tasks;
 
     [Route("foods")]
@@ -26,7 +26,7 @@
         }
 
         [HttpPut]
-        [Authorize]
+        [AuthorizeAdministrator]
         [Route(nameof(EditPrice))]
         public async Task<IActionResult> EditPrice(FoodPriceInputModel model)
         {

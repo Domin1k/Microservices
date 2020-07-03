@@ -6,7 +6,7 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
 
-    public class HomeController : AdministrationController
+    public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
 

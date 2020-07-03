@@ -20,6 +20,18 @@ export class CartService {
     return this.http.post<CartModel>(`${this.path}/checkout`, data);
   }
 
+  getProductFromCart(foodId: number) {
+    return this.getCartItems().items.find(f => f.id === foodId);
+  }
+
+  recalculateCart(food: PetFoodModel, data: any) {
+    if (food) {
+      this.removeFromCart(food);
+      food.price = data.price;
+      this.addToCart(food);
+    }
+  }
+
   addToCart(data: PetFoodModel) {
     let food = data;
     if (!food) {

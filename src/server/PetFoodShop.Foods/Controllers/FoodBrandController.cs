@@ -7,6 +7,7 @@
     using PetFoodShop.Foods.Controllers.Models;
     using PetFoodShop.Foods.Services.Food;
     using PetFoodShop.Foods.Services.Models.FoodBrand;
+    using PetFoodShop.Infrastructure;
     using System.Threading.Tasks;
 
     [Authorize]
@@ -22,6 +23,7 @@
         }
 
         [HttpPost]
+        [AuthorizeAdministrator]
         [Route("/brands/create")]
         public async Task<IActionResult> Create(BrandInputModel model)
         {

@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Statistics", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Admin", "PetFoodShop.Admin\PetFoodShop.Admin.csproj", "{B4E88F10-159A-464B-8CEE-EFD448BF8D65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFoodShop.Foods.Gateway", "PetFoodShop.Foods.Gateway\PetFoodShop.Foods.Gateway.csproj", "{A3E70682-FC96-4F0D-8811-61C20918CD29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFoodShop.Foods.Gateway", "PetFoodShop.Foods.Gateway\PetFoodShop.Foods.Gateway.csproj", "{A3E70682-FC96-4F0D-8811-61C20918CD29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFoodShop.Notifications", "PetFoodShop.Notifications\PetFoodShop.Notifications.csproj", "{E0409CC0-BD28-469E-A99D-E8EFABA513C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{A3E70682-FC96-4F0D-8811-61C20918CD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3E70682-FC96-4F0D-8811-61C20918CD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3E70682-FC96-4F0D-8811-61C20918CD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0409CC0-BD28-469E-A99D-E8EFABA513C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0409CC0-BD28-469E-A99D-E8EFABA513C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0409CC0-BD28-469E-A99D-E8EFABA513C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0409CC0-BD28-469E-A99D-E8EFABA513C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

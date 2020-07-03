@@ -10,6 +10,7 @@
     using Microsoft.OpenApi.Models;
     using PetFoodShop.Models;
     using PetFoodShop.Services;
+    using RabbitMQ.Client;
     using System;
     using System.Reflection;
     using System.Text;
@@ -42,7 +43,10 @@
                .AddDbContext<TDbContext>(options => options
                    .UseSqlServer(configuration.GetConnectionString(InfrastructureConstants.DefaultConnectionString)));
 
-        public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddTokenAuthentication(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            JwtBearerEvents events = null)
         {
             var secret = configuration
                 .GetSection(nameof(AppSettings))
@@ -67,6 +71,11 @@
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+
+                    if (events != null)
+                    {
+                        bearer.Events = events;
+                    }
                 });
 
             services.AddHttpContextAccessor();

@@ -65,7 +65,7 @@ namespace PetFoodShop.Admin
             }
 
             app
-                .UseHttpsRedirection()
+                //.UseHttpsRedirection()
                 .UseStaticFiles()
                 .UseRouting()
                 .UseJwtCookieAuthentication()

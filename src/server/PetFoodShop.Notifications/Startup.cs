@@ -23,7 +23,7 @@ namespace PetFoodShop.Notifications
             => services
                 .AddCors()
                 .AddTokenAuthentication(this.Configuration, JwtConfiguration.BearerEvents)
-                .AddMessaging(new[] { typeof(PriceEditedConsumer), typeof(BrandCreatedConsumer) })
+                .AddMessaging(this.Configuration, new[] { typeof(PriceEditedConsumer), typeof(BrandCreatedConsumer) })
                 .AddSignalR();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

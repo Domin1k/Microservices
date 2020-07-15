@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Services.Food
+﻿namespace PetFoodShop.Foods.Services
 {
     using PetFoodShop.Foods.Services.Models.FoodBrand;
     using System.Threading.Tasks;

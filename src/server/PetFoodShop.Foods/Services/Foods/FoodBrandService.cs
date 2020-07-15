@@ -1,4 +1,4 @@
-﻿namespace PetFoodShop.Foods.Services.Food
+﻿namespace PetFoodShop.Foods.Services
 {
     using MassTransit;
     using Microsoft.EntityFrameworkCore.Internal;

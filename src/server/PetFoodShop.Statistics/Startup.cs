@@ -27,7 +27,7 @@ namespace PetFoodShop.Statistics
                 .AddTransient<IDataSeeder, StatisticsDataSeeder>()
                 .AddTransient<IStatisticsService, StatisticsService>()
                 .AddTransient<IFoodViewService, FoodViewService>()
-                .AddMessaging(new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) });
+                .AddMessaging(this.Configuration, new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) });
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app

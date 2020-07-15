@@ -2,13 +2,16 @@
 {
     using AutoMapper;
     using GreenPipes;
+    using Hangfire;
     using MassTransit;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
+    using PetFoodShop.Messages;
     using PetFoodShop.Models;
     using PetFoodShop.Services;
     using System;
@@ -26,6 +29,7 @@
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
                 .AddAutoMapperProfile(Assembly.GetCallingAssembly())
+                .AddHealthCheck(configuration)
                 .AddSwagger()
                 .AddControllers();
 
@@ -93,7 +97,7 @@
             return services;
         }
 
-        public static IServiceCollection AddMessaging(this IServiceCollection services, params Type[] consumers)
+        public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, params Type[] consumers)
         {
             services
                 .AddMassTransit(mt =>
@@ -108,6 +112,7 @@
                             host.Password("rabbitmq");
                         });
 
+                        rmq.UseHealthCheck(bus);
                         consumers.ForEach(consumer => 
                             rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
                             {
@@ -118,6 +123,15 @@
                     }));
                 })
                 .AddMassTransitHostedService();
+            services
+               .AddHangfire(config => config
+               .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+               .UseSimpleAssemblyNameTypeSerializer()
+               .UseRecommendedSerializerSettings()
+               .UseSqlServerStorage(configuration.GetConnectionString(DefaultConnectionString)))
+               .AddHangfireServer();
+
+            services.AddHostedService<MessagesHostedService>();
 
             return services;
         }
@@ -140,5 +154,16 @@
                     (_, config) => config
                         .AddProfile(new MappingProfile(assembly)),
                     Array.Empty<Assembly>());
+
+        public static IServiceCollection AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var healthChecks = services.AddHealthChecks();
+
+            healthChecks
+                .AddSqlServer(configuration.GetConnectionString(DefaultConnectionString))
+                .AddRabbitMQ(rabbitConnectionString: "amqp://rabbitmq:rabbitmq@rabbitmq/");
+
+            return services;
+        }
     }
 }

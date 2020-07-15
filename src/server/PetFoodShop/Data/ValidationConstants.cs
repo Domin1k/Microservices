@@ -1,6 +1,6 @@
 ﻿namespace PetFoodShop.Data
 {
-    public static class CommonValidation
+    public static class ValidationConstants
     {
         public static class Common
         {

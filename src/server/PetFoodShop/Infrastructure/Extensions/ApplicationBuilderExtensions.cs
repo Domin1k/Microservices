@@ -1,10 +1,14 @@
 ﻿namespace PetFoodShop.Infrastructure.Extensions
 {
+    using Hangfire;
+    using HealthChecks.UI.Client;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using PetFoodShop.Messages;
     using PetFoodShop.Services;
     using static InfrastructureConstants.SwaggerConstants;
     public static class ApplicationBuilderExtensions
@@ -25,8 +29,16 @@
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseSwaggerUI()
-                .UseEndpoints(endpoints => endpoints
-                    .MapControllers());
+                .UseHangFire()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                    {
+                        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    });
+
+                    endpoints.MapControllers();
+                });
 
             return app;
         }
@@ -59,8 +71,17 @@
             return app;
         }
 
-        public static IApplicationBuilder UseJwtHeaderAuthentication(
-           this IApplicationBuilder app)
+        public static IApplicationBuilder UseHangFire(this IApplicationBuilder app)
+        {
+            if (app.ApplicationServices.GetService<MessagesHostedService>() != null)
+            {
+                app.UseHangfireDashboard();
+            }
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseJwtHeaderAuthentication(this IApplicationBuilder app)
            => app
                .UseMiddleware<JwtHeaderAuthenticationMiddleware>()
                .UseAuthentication();

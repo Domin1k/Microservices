@@ -1,9 +1,11 @@
 ﻿namespace PetFoodShop.Foods.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using PetFoodShop.Data;
     using PetFoodShop.Foods.Data.Models;
+    using System.Reflection;
 
-    public class FoodDbContext : DbContext
+    public class FoodDbContext : MessageDbContext
     {
         public FoodDbContext(DbContextOptions<FoodDbContext> options)
             : base(options)
@@ -15,6 +17,8 @@
         public DbSet<FoodBrand> FoodBrands { get; set; }
 
         public DbSet<FoodCategory> FoodCategories { get; set; }
+
+        protected override Assembly ConfigurationsAssembly => Assembly.GetExecutingAssembly();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

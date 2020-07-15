@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using PetFoodShop.Controllers;
     using PetFoodShop.Foods.Controllers.Models;
-    using PetFoodShop.Foods.Services.Food;
+    using PetFoodShop.Foods.Services;
     using PetFoodShop.Foods.Services.Models.FoodBrand;
     using PetFoodShop.Infrastructure;
     using System.Threading.Tasks;

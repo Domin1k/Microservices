@@ -4,6 +4,7 @@
     using PetFoodShop.Services;
     using System.Linq;
     using System.Threading.Tasks;
+    using static InfrastructureConstants.AuthConstants;
 
     public class JwtHeaderAuthenticationMiddleware : IMiddleware
     {
@@ -16,7 +17,7 @@
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Headers[InfrastructureConstants.AuthorizationHeaderName].ToString();
+            var token = context.Request.Headers[AuthorizationHeaderName].ToString();
 
             if (!string.IsNullOrWhiteSpace(token))
             {

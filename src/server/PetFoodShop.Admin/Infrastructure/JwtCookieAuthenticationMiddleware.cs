@@ -2,9 +2,9 @@
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
-    using PetFoodShop.Infrastructure;
     using PetFoodShop.Services;
     using System.Threading.Tasks;
+    using static PetFoodShop.Infrastructure.InfrastructureConstants.AuthConstants;
 
     public class JwtCookieAuthenticationMiddleware : IMiddleware
     {
@@ -17,11 +17,11 @@
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Cookies[InfrastructureConstants.AuthenticationCookieName];
+            var token = context.Request.Cookies[AuthenticationCookieName];
             if (token != null)
             {
                 this.currentTokenService.Set(token);
-                context.Request.Headers.Add(InfrastructureConstants.AuthorizationHeaderName, $"{InfrastructureConstants.AuthorizationHeaderValuePrefix} {token}");
+                context.Request.Headers.Add(AuthorizationHeaderName, $"{AuthorizationHeaderValuePrefix} {token}");
             }
 
             await next.Invoke(context);

@@ -9,6 +9,7 @@
     using PetFoodShop.Infrastructure;
     using System;
     using System.Threading.Tasks;
+    using static PetFoodShop.Infrastructure.InfrastructureConstants.AuthConstants;
 
     public class IdentityController : AdministrationController
     {
@@ -35,7 +36,7 @@
                         .Login(this.mapper.Map<UserInputModel>(model));
 
                     this.Response.Cookies.Append(
-                        InfrastructureConstants.AuthenticationCookieName,
+                        AuthenticationCookieName,
                         result.Token,
                         new CookieOptions
                         {
@@ -50,7 +51,7 @@
         [AuthorizeAdministrator]
         public IActionResult Logout()
         {
-            this.Response.Cookies.Delete(InfrastructureConstants.AuthenticationCookieName);
+            this.Response.Cookies.Delete(AuthenticationCookieName);
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

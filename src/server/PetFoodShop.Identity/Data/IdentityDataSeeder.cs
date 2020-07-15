@@ -7,6 +7,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using static PetFoodShop.Infrastructure.InfrastructureConstants.AuthConstants;
 
     public class IdentityDataSeeder : IDataSeeder
     {
@@ -29,7 +30,7 @@
             Task
                 .Run(async () =>
                 {
-                    var adminRole = new IdentityRole(InfrastructureConstants.AdministratorRoleName);
+                    var adminRole = new IdentityRole(AdministratorRoleName);
 
                     await this.roleManager.CreateAsync(adminRole);
 
@@ -42,7 +43,7 @@
 
                     await userManager.CreateAsync(adminUser, "123456");
 
-                    await userManager.AddToRoleAsync(adminUser, InfrastructureConstants.AdministratorRoleName);
+                    await userManager.AddToRoleAsync(adminUser, AdministratorRoleName);
                 })
                 .GetAwaiter()
                 .GetResult();

@@ -1,6 +1,7 @@
 ﻿namespace PetFoodShop.Infrastructure.Extensions
 {
     using AutoMapper;
+    using GreenPipes;
     using MassTransit;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,10 @@
     using Microsoft.OpenApi.Models;
     using PetFoodShop.Models;
     using PetFoodShop.Services;
-    using RabbitMQ.Client;
     using System;
     using System.Reflection;
     using System.Text;
+    using static InfrastructureConstants.ConfigurationConstants;
 
     public static class ServiceCollectionExtensions
     {
@@ -41,7 +42,15 @@
            => services
                .AddScoped<DbContext, TDbContext>()
                .AddDbContext<TDbContext>(options => options
-                   .UseSqlServer(configuration.GetConnectionString(InfrastructureConstants.DefaultConnectionString)));
+                   .UseSqlServer(
+                            configuration.GetConnectionString(DefaultConnectionString),
+                            sqlOpts =>
+                            {
+                                sqlOpts.EnableRetryOnFailure(
+                                        maxRetryCount: DefaultMaxRetryCount,
+                                        maxRetryDelay: TimeSpan.FromSeconds(DefaultMaxTimeoutInSec),
+                                        errorNumbersToAdd: null);
+                            }));
 
         public static IServiceCollection AddTokenAuthentication(
             this IServiceCollection services,
@@ -84,9 +93,7 @@
             return services;
         }
 
-        public static IServiceCollection AddMessaging(
-            this IServiceCollection services,
-            params Type[] consumers)
+        public static IServiceCollection AddMessaging(this IServiceCollection services, params Type[] consumers)
         {
             services
                 .AddMassTransit(mt =>
@@ -101,10 +108,13 @@
                             host.Password("rabbitmq");
                         });
 
-                        consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
-                        {
-                            endpoint.ConfigureConsumer(bus, consumer);
-                        }));
+                        consumers.ForEach(consumer => 
+                            rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
+                            {
+                                endpoint.PrefetchCount = 4;
+                                endpoint.UseMessageRetry(x => x.Interval(5, 100));
+                                endpoint.ConfigureConsumer(bus, consumer);
+                            }));
                     }));
                 })
                 .AddMassTransitHostedService();
@@ -124,9 +134,7 @@
                    });
            });
 
-        public static IServiceCollection AddAutoMapperProfile(
-            this IServiceCollection services,
-            Assembly assembly)
+        public static IServiceCollection AddAutoMapperProfile(this IServiceCollection services, Assembly assembly)
             => services
                 .AddAutoMapper(
                     (_, config) => config

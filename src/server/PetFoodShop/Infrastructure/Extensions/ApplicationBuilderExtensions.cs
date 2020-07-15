@@ -6,7 +6,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PetFoodShop.Services;
-
+    using static InfrastructureConstants.SwaggerConstants;
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseWebService(this IApplicationBuilder app, IWebHostEnvironment env)
@@ -17,7 +17,6 @@
             }
 
             app
-                //.UseHttpsRedirection()
                 .UseRouting()
                 .UseCors(options => options
                     .AllowAnyOrigin()
@@ -37,7 +36,7 @@
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PetFoodShop API");
+                    options.SwaggerEndpoint(SwaggerEndpoint, SwaggerName);
                     options.RoutePrefix = string.Empty;
                 });
 

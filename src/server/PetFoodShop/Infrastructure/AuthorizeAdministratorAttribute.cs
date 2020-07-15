@@ -1,10 +1,10 @@
 ﻿namespace PetFoodShop.Infrastructure
 {
     using Microsoft.AspNetCore.Authorization;
+    using static InfrastructureConstants.AuthConstants;
 
     public class AuthorizeAdministratorAttribute : AuthorizeAttribute
     {
-        public AuthorizeAdministratorAttribute()
-            => this.Roles = InfrastructureConstants.AdministratorRoleName;
+        public AuthorizeAdministratorAttribute() => this.Roles = AdministratorRoleName;
     }
 }

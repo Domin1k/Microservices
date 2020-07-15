@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetFoodShop.Foods.Data;
 
-namespace PetFoodShop.Foods.Data.Migrations
+namespace PetFoodShop.Foods.Migrations
 {
     [DbContext(typeof(FoodDbContext))]
-    partial class PetFoodDbContextModelSnapshot : ModelSnapshot
+    partial class FoodDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

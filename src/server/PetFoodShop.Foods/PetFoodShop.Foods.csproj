@@ -18,4 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\PetFoodShop\PetFoodShop.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
     using PetFoodShop.Messages;
     using PetFoodShop.Services;
     using static InfrastructureConstants.SwaggerConstants;
+
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseWebService(this IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,14 +30,8 @@
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseSwaggerUI()
-                .UseHangFire()
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.MapHealthChecks("/health", new HealthCheckOptions
-                    {
-                        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                    });
-
                     endpoints.MapControllers();
                 });
 

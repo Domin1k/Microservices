@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace PetFoodShop.Foods.Migrations
+﻿namespace PetFoodShop.Foods.Migrations
 {
-    public partial class AddedMessageBase : Migration
+    using Microsoft.EntityFrameworkCore.Migrations;
+
+    public partial class Combined : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

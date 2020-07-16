@@ -39,11 +39,13 @@
         public Task StopAsync(CancellationToken cancellationToken)
             => Task.CompletedTask;
 
-        private void ProcessPendingMessages()
+        public void ProcessPendingMessages()
         {
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
+                
+
                 var pendingMessages = dbContext
                     .Set<Message>()
                     .Where(x => !x.Published)

@@ -9,8 +9,8 @@ using PetFoodShop.Foods.Data;
 namespace PetFoodShop.Foods.Migrations
 {
     [DbContext(typeof(FoodDbContext))]
-    [Migration("20200715173855_AddedMessageBase")]
-    partial class AddedMessageBase
+    [Migration("20200716071306_Combined")]
+    partial class Combined
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -124,7 +124,7 @@
                 })
                 .AddMassTransitHostedService();
 
-            /*services
+            services
                .AddHangfire(config => config
                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                .UseSimpleAssemblyNameTypeSerializer()
@@ -132,7 +132,7 @@
                .UseSqlServerStorage(configuration.GetConnectionString(DefaultConnectionString)))
                .AddHangfireServer();
 
-            services.AddHostedService<MessagesHostedService>();*/
+            services.AddHostedService<MessagesHostedService>();
 
             return services;
         }

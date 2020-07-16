@@ -12,6 +12,8 @@
 
     public class MessagesHostedService : IHostedService
     {
+        private const string FiveSecondsCronExpression = "*/5 * * * * *";
+
         private readonly IRecurringJobManager recurringJobManager;
         private readonly IServiceScopeFactory scopeFactory;
         private readonly IBus bus;
@@ -31,7 +33,7 @@
             this.recurringJobManager.AddOrUpdate(
                 nameof(MessagesHostedService),
                 () => this.ProcessPendingMessages(),
-                "*/5 * * * * *");
+                FiveSecondsCronExpression);
 
             return Task.CompletedTask;
         }
@@ -54,7 +56,7 @@
 
                 pendingMessages.ForEach(m =>
                 {
-                    this.bus.Publish(m);
+                    this.bus.Publish(m.Data, m.Type);
                     m.MarkAsPublished();
                     dbContext.SaveChanges();
                 });

@@ -51,7 +51,7 @@ namespace PetFoodShop.Foods.Gateway
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
-                .UseWebService(env)
+                .UseWebService(env, false)
                 .UseJwtHeaderAuthentication();
     }
 }

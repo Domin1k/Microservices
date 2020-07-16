@@ -14,7 +14,7 @@
 
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseWebService(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static IApplicationBuilder UseWebService(this IApplicationBuilder app, IWebHostEnvironment env, bool withDefaultHealthChecks = true)
         {
             if (env.IsDevelopment())
             {
@@ -32,6 +32,13 @@
                 .UseSwaggerUI()
                 .UseEndpoints(endpoints =>
                 {
+                    if (withDefaultHealthChecks)
+                    {
+                        endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                        {
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
+                    }
                     endpoints.MapControllers();
                 });
 

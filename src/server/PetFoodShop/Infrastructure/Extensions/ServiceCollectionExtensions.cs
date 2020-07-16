@@ -30,6 +30,7 @@
                 .AddTokenAuthentication(configuration)
                 .AddAutoMapperProfile(Assembly.GetCallingAssembly())
                 .AddSwagger()
+                .AddHealthCheck(configuration)
                 .AddControllers();
 
             return services;

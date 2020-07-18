@@ -55,7 +55,7 @@
 
                 foreach (var m in pendingMessages)
                 {
-                    this.bus.Publish(m.Data, m.Type, cancellationToken);
+                    this.bus.Publish(m.Data, m.Type, cancellationToken).GetAwaiter().GetResult();
                     m.MarkAsPublished();
                     dbContext.SaveChanges();
                 }

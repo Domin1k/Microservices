@@ -7,7 +7,6 @@ namespace PetFoodShop.Foods
     using PetFoodShop.Foods.Data;
     using PetFoodShop.Foods.Infrastructure.Extensions;
     using PetFoodShop.Foods.Services;
-    using PetFoodShop.Foods.Services;
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
 

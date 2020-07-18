@@ -131,19 +131,14 @@
         }
 
         public static IServiceCollection AddHangFire(this IServiceCollection services, IConfiguration configuration)
-        {
-            services
+            => services
                .AddHangfire(config => config
                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                .UseSimpleAssemblyNameTypeSerializer()
                .UseRecommendedSerializerSettings()
                .UseSqlServerStorage(configuration.GetConnectionString(DefaultConnectionString)))
-               .AddHangfireServer();
-
-            services.AddHostedService<MessagesHostedService>();
-
-            return services;
-        }
+               .AddHangfireServer()
+               .AddHostedService<MessagesHostedService>();
 
         public static IServiceCollection AddSwagger(this IServiceCollection services)
            => services.AddSwaggerGen(c =>

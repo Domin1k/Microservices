@@ -6,8 +6,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PetFoodShop.Data.Models;
-    using PetFoodShop.Messages.Foods;
-    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -34,16 +32,15 @@
         {
             this.recurringJobManager.AddOrUpdate(
                 nameof(MessagesHostedService),
-                () => this.ProcessPendingMessages(),
+                () => this.ProcessPendingMessages(cancellationToken),
                 FiveSecondsCronExpression);
 
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-        public void ProcessPendingMessages()
+        public void ProcessPendingMessages(CancellationToken cancellationToken)
         {
             using (var scope = this.scopeFactory.CreateScope())
             {
@@ -58,7 +55,7 @@
 
                 foreach (var m in pendingMessages)
                 {
-                    this.bus.Publish(m.Data, m.Type);
+                    this.bus.Publish(m.Data, m.Type, cancellationToken);
                     m.MarkAsPublished();
                     dbContext.SaveChanges();
                 }

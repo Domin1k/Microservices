@@ -7,12 +7,14 @@ How to run the application
 - run docker-compose build
 - run docker-compose up -d
 - open UI (SPA Angular) on http://localhost:4200
--- register an user and start rolling :)
+-> register an user and start rolling :)
 - open ADMIN UI (MVC .NET CORE) on http://localhost:5008/
--- use predefined admin user admin@mysite.com/123456
+-> use predefined admin user admin@mysite.com/123456
 
 
 
 IEEE Reference List Format:
-Kenov, Ivaylo (2020) Architecture of ASP.NET Core Microservices Applications 
+<br/>
+Kenov, Ivaylo (2020) Architecture of ASP.NET Core Microservices Applications
+<br/>
 [Source code]. https://github.com/ivaylokenov/Architecture-of-ASP.NET-Core-Microservices-Applications

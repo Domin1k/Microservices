@@ -8,7 +8,6 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using PetFoodShop.Messages;
@@ -99,6 +98,10 @@
 
         public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, params Type[] consumers)
         {
+            var appSettings = configuration.GetSection(nameof(AppSettings));
+            var rabbitHost = appSettings.GetValue<string>(nameof(AppSettings.RabbitHost));
+            var rabbitUser = appSettings.GetValue<string>(nameof(AppSettings.RabbitUsername));
+            var rabbitPass = appSettings.GetValue<string>(nameof(AppSettings.RabbitPassword));
             services
                 .AddMassTransit(mt =>
                 {
@@ -106,10 +109,10 @@
 
                     mt.AddBus(bus => Bus.Factory.CreateUsingRabbitMq(rmq =>
                     {
-                        rmq.Host("rabbitmq", host =>
+                        rmq.Host(rabbitHost, host =>
                         {
-                            host.Username("rabbitmq");
-                            host.Password("rabbitmq");
+                            host.Username(rabbitUser);
+                            host.Password(rabbitPass);
                         });
 
                         rmq.UseHealthCheck(bus);
@@ -124,6 +127,11 @@
                 })
                 .AddMassTransitHostedService();
 
+            return services;
+        }
+
+        public static IServiceCollection AddHangFire(this IServiceCollection services, IConfiguration configuration)
+        {
             services
                .AddHangfire(config => config
                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -159,10 +167,14 @@
         public static IServiceCollection AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {
             var healthChecks = services.AddHealthChecks();
-
+            var appSettings = configuration.GetSection(nameof(AppSettings));
+            var rabbitHost = appSettings.GetValue<string>(nameof(AppSettings.RabbitHost));
+            var rabbitUser = appSettings.GetValue<string>(nameof(AppSettings.RabbitUsername));
+            var rabbitPass = appSettings.GetValue<string>(nameof(AppSettings.RabbitPassword));
+            var rabbitConnection = $"amqp://{rabbitHost}:{rabbitUser}@{rabbitPass}/";
             healthChecks
                 .AddSqlServer(configuration.GetConnectionString(DefaultConnectionString))
-                .AddRabbitMQ(rabbitConnectionString: "amqp://rabbitmq:rabbitmq@rabbitmq/");
+                .AddRabbitMQ(rabbitConnectionString: rabbitConnection);
 
             return services;
         }

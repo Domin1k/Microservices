@@ -7,10 +7,8 @@ namespace PetFoodShop.Statistics
     using PetFoodShop.Infrastructure.Extensions;
     using PetFoodShop.Services;
     using PetFoodShop.Statistics.Data;
-    using PetFoodShop.Statistics.Data.Models;
     using PetFoodShop.Statistics.Messages;
     using PetFoodShop.Statistics.Services;
-    using System;
 
     public class Startup
     {

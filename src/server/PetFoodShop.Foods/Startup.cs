@@ -27,11 +27,13 @@ namespace PetFoodShop.Foods
                 .AddTransient<IFoodBrandService, FoodBrandService>()
                 .AddTransient<IFoodService, FoodService>()
                 .AddTransient<IFoodCategoryService, FoodCategoryService>()
+                .AddHangFire(this.Configuration)
                 .AddMessaging(this.Configuration);
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)
+                .UseHangFireDashboard()
                 .Initialize();
     }
 }

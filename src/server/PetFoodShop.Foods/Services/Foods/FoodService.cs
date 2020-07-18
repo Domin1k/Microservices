@@ -53,15 +53,15 @@
 
             food.Price = price;
             this.Data.Update(food);
-            var message = new PriceEditedMessage
+            var eventMessage = new PriceEditedMessage
             {
                 FoodId = food.Id,
                 Price = food.Price
             };
-
-            await this.Save(food, new Message(message));
-            await this.bus.Publish(message);
-            await this.MarkMessageAsPublished(food.Id);
+            var message = new Message(eventMessage);
+            await this.Save(food, message);
+            await this.bus.Publish(eventMessage);
+            await this.MarkMessageAsPublished(message.Id);
 
             return this.mapper.Map<FoodDetailModel>(food);
         }

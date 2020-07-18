@@ -34,7 +34,7 @@
                 {
                     if (withDefaultHealthChecks)
                     {
-                        endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                        endpoints.MapHealthChecks(InfrastructureConstants.ConfigurationConstants.HealthCheckUrl, new HealthCheckOptions
                         {
                             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                         });
@@ -73,7 +73,7 @@
             return app;
         }
 
-        public static IApplicationBuilder UseHangFire(this IApplicationBuilder app)
+        public static IApplicationBuilder UseHangFireDashboard(this IApplicationBuilder app)
         {
             if (app.ApplicationServices.GetService<MessagesHostedService>() != null)
             {

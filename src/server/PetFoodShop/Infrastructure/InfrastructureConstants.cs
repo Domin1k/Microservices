@@ -7,6 +7,7 @@
             public const string DefaultConnectionString = "DefaultConnection";
             public const int DefaultMaxRetryCount = 10;
             public const int DefaultMaxTimeoutInSec = 30;
+            public const string HealthCheckUrl = "/health";
         }
 
         public static class AuthConstants

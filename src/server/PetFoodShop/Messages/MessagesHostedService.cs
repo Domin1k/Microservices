@@ -6,6 +6,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PetFoodShop.Data.Models;
+    using PetFoodShop.Messages.Foods;
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -54,12 +56,13 @@
                     .OrderBy(x => x.Id)
                     .ToList();
 
-                pendingMessages.ForEach(m =>
+                foreach (var m in pendingMessages)
                 {
-                    this.bus.Publish(m.Data, m.Type);
+                    var actualMessage = m.Data as BrandCreatedMessage;
+                    this.bus.Publish(actualMessage);
                     m.MarkAsPublished();
                     dbContext.SaveChanges();
-                });
+                }
             }
         }
     }

@@ -89,6 +89,9 @@ services:
         env_file: server/PetFoodShop/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Foods;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
         restart: on-failure
         volumes:
             - ./.aspnet/foods/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
@@ -121,6 +124,10 @@ services:
         ports: 
             - "5012:80"
         env_file: server/PetFoodShop/Common.env
+        environment: 
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
         restart: on-failure
         volumes:
             - ./.aspnet/notifications/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
@@ -137,6 +144,9 @@ services:
         env_file: server/PetFoodShop/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Statistics;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
         restart: on-failure
         volumes:
             - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys

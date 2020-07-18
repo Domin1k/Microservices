@@ -58,8 +58,7 @@
 
                 foreach (var m in pendingMessages)
                 {
-                    var actualMessage = m.Data as BrandCreatedMessage;
-                    this.bus.Publish(actualMessage);
+                    this.bus.Publish(m.Data, m.Type);
                     m.MarkAsPublished();
                     dbContext.SaveChanges();
                 }

@@ -21,7 +21,7 @@
 
         public async Task<CartOutputModel> CheckoutCartAsync(string customerId, CartModel cart)
         {
-            if (cart?.Items == null || cart.Items.Any())
+            if (cart?.Items == null || !cart.Items.Any())
             {
                 throw new CheckoutFailedException($"Cannot send shippment for empty cart");
             }

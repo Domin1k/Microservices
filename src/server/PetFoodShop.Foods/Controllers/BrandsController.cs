@@ -10,21 +10,19 @@
     using PetFoodShop.Infrastructure;
     using System.Threading.Tasks;
 
-    [Authorize]
-    public class FoodBrandController : ApiController
+    public class BrandsController : ApiController
     {
         private readonly IFoodBrandService brandService;
         private readonly IMapper mapper;
 
-        public FoodBrandController(IFoodBrandService brandService, IMapper mapper)
+        public BrandsController(IFoodBrandService brandService, IMapper mapper)
         {
             this.brandService = brandService;
             this.mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost(nameof(Create))]
         [AuthorizeAdministrator]
-        [Route("/brands/create")]
         public async Task<IActionResult> Create(BrandInputModel model)
         {
             var serviceModel = this.mapper.Map<BrandModel>(model);

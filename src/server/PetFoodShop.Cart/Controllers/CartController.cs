@@ -11,7 +11,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    [Route("cart")]
     public class CartController : ApiController
     {
         private readonly ICartService userService;
@@ -25,8 +24,7 @@
             this.mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("checkout")]
+        [HttpPost("checkout")]
         public async Task<IActionResult> Checkout(CartInputModel model)
         {
             try

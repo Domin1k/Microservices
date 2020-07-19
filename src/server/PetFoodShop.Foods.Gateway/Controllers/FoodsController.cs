@@ -23,16 +23,14 @@
             this.mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("/foods/{brandId}/brands")]
+        [HttpGet("{brandId}/brands")]
         public async Task<IActionResult> GetFoodsPerBrand(int brandId)
         {
             var results = await this.foodsService.FoodsPerBrand(brandId);
             return this.Ok(results);
         }
 
-        [HttpGet]
-        [Route("/foods/{id}")]
+        [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {

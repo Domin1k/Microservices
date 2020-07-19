@@ -7,10 +7,10 @@
 
     public interface IStatisticsService
     {
-        [Get("/foodsviews")]
+        [Get("/api/v1/foodsviews")]
         Task<IEnumerable<FoodOutputModel>> GetTotalViews([Query(CollectionFormat.Multi)] IEnumerable<int> ids);
 
-        [Get("/foodsviews/{id}")]
+        [Get("/api/v1/foodsviews/{id}")]
         Task<int> GetTotalViews(int id);
     }
 }

@@ -8,19 +8,19 @@
 
     public interface IFoodService
     {
-        [Post("/brands/create")]
+        [Post("/api/v1/brands/create")]
         Task CreateBrand([FromBody]BrandInputModel model);
 
-        [Put("/foods/editPrice")]
+        [Put("/api/v1/foods/editPrice")]
         Task EditPrice([FromBody] FoodPriceInputModel model);
 
-        [Get("/categories/all")]
+        [Get("/api/v1/categories/all")]
         Task<IEnumerable<AllFoodCategoriesModel>> AllAsync();
 
-        [Get("/categories/{id}/brands")]
+        [Get("/api/v1/categories/{id}/brands")]
         Task<IEnumerable<FoodCategoryBrand>> CategoryBrandsAsync(int id);
 
-        [Get("/foods/{id}/brands")]
+        [Get("/api/v1/foods/{id}/brands")]
         Task<IEnumerable<FoodOutputModel>> FoodsPerBrand(int id);
     }
 }

@@ -6,7 +6,7 @@
 
     public interface IIdentityService
     {
-        [Post("/Identity/Login")]
+        [Post("/api/v1/Identity/Login")]
         Task<UserOutputModel> Login([Body] UserInputModel loginInput);
     }
 }

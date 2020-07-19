@@ -6,7 +6,7 @@
 
     public interface IStatisticsService
     {
-        [Get("/Statistics")]
+        [Get("/api/v1/Statistics")]
         Task<StatisticsOutputModel> Full();
     }
 }

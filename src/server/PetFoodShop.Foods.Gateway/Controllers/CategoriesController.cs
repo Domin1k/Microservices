@@ -5,25 +5,23 @@
     using PetFoodShop.Foods.Gateway.Services.Foods;
     using System.Threading.Tasks;
 
-    public class FoodCategoryController : ApiController
+    public class CategoriesController : ApiController
     {
         private readonly IFoodCategoriesService foodCategories;
 
-        public FoodCategoryController(IFoodCategoriesService foodCategories)
+        public CategoriesController(IFoodCategoriesService foodCategories)
         {
             this.foodCategories = foodCategories;
         }
 
-        [HttpGet]
-        [Route("/categories/all")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
             var results = await this.foodCategories.AllAsync();
             return this.Ok(results);
         }
 
-        [HttpGet]
-        [Route("/categories/{id}/brands")]
+        [HttpGet("{id}/brands")]
         public async Task<IActionResult> GetCategoryBrands(int id)
         {
             var results = await this.foodCategories.CategoryBrandsAsync(id);

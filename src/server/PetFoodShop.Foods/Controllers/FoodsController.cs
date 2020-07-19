@@ -7,27 +7,24 @@
     using PetFoodShop.Infrastructure;
     using System.Threading.Tasks;
 
-    [Route("foods")]
-    public class FoodController : ApiController
+    public class FoodsController : ApiController
     {
         private readonly IFoodService foodService;
 
-        public FoodController(IFoodService foodService)
+        public FoodsController(IFoodService foodService)
         {
             this.foodService = foodService;
         }
 
-        [HttpGet]
-        [Route("{brandId}/brands")]
+        [HttpGet("{brandId}/brands")]
         public async Task<IActionResult> GetFoodsPerBrand(int brandId)
         {
             var results = await this.foodService.FoodsPerBrand(brandId);
             return this.Ok(results);
         }
 
-        [HttpPut]
+        [HttpPut(nameof(EditPrice))]
         [AuthorizeAdministrator]
-        [Route(nameof(EditPrice))]
         public async Task<IActionResult> EditPrice(FoodPriceInputModel model)
         {
             var food = await this.foodService.EditPrice(model.FoodId, model.Price);
@@ -39,9 +36,8 @@
             return this.Ok(food);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         // Depend on Gateway to authorize the user [Authorize]
-        [Route("{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var food = await this.foodService.DetailsAsync(id);

@@ -8,10 +8,10 @@
 
     public interface IFoodCategoriesService
     {
-        [Get("/categories/all")]
+        [Get("/api/v1/categories/all")]
         Task<IEnumerable<AllFoodCategoriesModel>> AllAsync();
 
-        [Get("/categories/{id}/brands")]
+        [Get("/api/v1/categories/{id}/brands")]
         Task<IEnumerable<FoodCategoryBrand>> CategoryBrandsAsync(int id);
     }
 }

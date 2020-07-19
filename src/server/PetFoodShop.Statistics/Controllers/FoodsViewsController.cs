@@ -8,18 +8,16 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    [Route("foodsviews")]
-    public class FoodViewsController : ApiController
+    public class FoodsViewsController : ApiController
     {
         private readonly IFoodViewService foodViews;
 
-        public FoodViewsController(IFoodViewService foodViews)
+        public FoodsViewsController(IFoodViewService foodViews)
         {
             this.foodViews = foodViews;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<int> TotalViews(int id)
             => await this.foodViews.GetTotalViews(id);
 

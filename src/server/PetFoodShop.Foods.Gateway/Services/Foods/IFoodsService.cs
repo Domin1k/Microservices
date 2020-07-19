@@ -7,10 +7,10 @@
 
     public interface IFoodsService
     {
-        [Get("/foods/{id}")]
+        [Get("/api/v1/foods/{id}")]
         Task<FoodDetailModel> DetailsAsync(int id);
 
-        [Get("/foods/{brandId}/brands")]
+        [Get("/api/v1/foods/{brandId}/brands")]
         Task<IEnumerable<FoodOutputModel>> FoodsPerBrand(int brandId);
     }
 }

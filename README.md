@@ -1,6 +1,7 @@
-# Microservices using ASP.NET Core
+# PetFood microservices using ASP.NET Core
 
-Project business idea is an application that offers pet food online shop
+Project business idea is an application that offers pet food online shop.
+
 This repository contains my source code during [SoftUni course](https://softuni.bg/trainings/2999/architecture-of-asp-dot-net-core-microservices-applications-june-2020) about ASP.NET Core microservices architecture
 
 How to run the application

@@ -1,4 +1,4 @@
-# PetFood microservices using ASP.NET Core
+# PetFoodShop microservices using ASP.NET Core
 
 Project business idea is an application that offers pet food online shop.
 

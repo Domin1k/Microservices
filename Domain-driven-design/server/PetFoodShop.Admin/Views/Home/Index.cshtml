@@ -1,0 +1,17 @@
+﻿@model StatisticsOutputModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<hr />
+<div class="jumbotron mt-5">
+    <h2 class="display-4 text-center">
+        We're currently having
+        <span class="badge badge-success">@Model.TotalFoodBrands Food Brands </span> & <span class="badge badge-success"> @Model.TotalFoodViews Foods</span>
+    </h2>
+</div>

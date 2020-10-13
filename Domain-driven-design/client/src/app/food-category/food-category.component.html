@@ -1,0 +1,8 @@
+<li class="nav-item dropdown" *ngFor="let foodCategory of foodCategories" (click)="getCategoryBrands(foodCategory.id)">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        {{foodCategory.name}}
+    </a>
+    <div class="dropdown-menu" style="">
+        <app-food-brand [foodBrands]="foodBrands"></app-food-brand>
+    </div>
+</li>

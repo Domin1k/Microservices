@@ -1,0 +1,3 @@
+<a class="dropdown-item" (click)="goToBrandFoods(brand.id)" *ngFor="let brand of foodBrands">
+    <span>{{brand.name}} <span class="badge badge-primary badge-pill">totalFoods - {{brand.totalFoods}}</span></span>
+</a>

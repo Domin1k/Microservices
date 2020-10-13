@@ -1,0 +1,175 @@
+version: "3.8"
+
+services:
+ 
+    db:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+            - '1433:1433'
+        environment:
+            - 'ACCEPT_EULA=Y'
+            - "SA_PASSWORD=yourStrongPassword12!@"
+        volumes: 
+            - sqldata:/var/opt/mssql 
+        networks: 
+            - petfoodshop-network
+
+    messaging:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports: 
+            - '15672:15672'
+            - '5672:5672'
+        hostname: "rabbitmq"
+        environment:
+            - RABBITMQ_ERLANG_COOKIE=Rand0mR4bbitMqCo0k1e
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=rabbitmq
+        networks: 
+            - petfoodshop-network
+
+    identity:
+        container_name: identity
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Identity/dev.Dockerfile
+        ports: 
+            - "5002:80"
+        env_file: server/PetFoodShop/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Identity;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+        depends_on:
+            - db
+
+    admin:
+        container_name: admin
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Admin/dev.Dockerfile
+        ports: 
+            - "5008:80"
+        env_file: server/PetFoodShop/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/admin/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+
+    cart:
+        container_name: cart
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Cart/dev.Dockerfile
+        ports: 
+            - "5004:80"
+        env_file: server/PetFoodShop/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Cart;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/cart/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+        depends_on:
+            - db
+
+    foods:
+        container_name: foods
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Foods/dev.Dockerfile
+        ports: 
+            - "5000:80"
+        env_file: server/PetFoodShop/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Foods;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
+        restart: on-failure
+        volumes:
+            - ./.aspnet/foods/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+        depends_on:
+            - db
+
+    foodsgateway:
+        container_name: foodsgateway 
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Foods.Gateway/dev.Dockerfile
+        ports: 
+            - "5010:80"
+        env_file: server/PetFoodShop/Common.env
+        restart: on-failure
+        volumes:
+            - ./.aspnet/foodsgateway/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+        depends_on:
+            - foods
+
+    notifications:
+        container_name: notifications
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Notifications/dev.Dockerfile
+        ports: 
+            - "5012:80"
+        env_file: server/PetFoodShop/Common.env
+        environment: 
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
+        restart: on-failure
+        volumes:
+            - ./.aspnet/notifications/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+
+    statistics:
+        container_name: statistics
+        build:
+            context: ./server
+            dockerfile: ./PetFoodShop.Statistics/dev.Dockerfile
+        ports: 
+            - "5006:80"
+        env_file: server/PetFoodShop/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Statistics;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ConnectionStrings__RabbitHost=rabbitmq
+            - ConnectionStrings__RabbitUsername=rabbitmq
+            - ConnectionStrings__RabbitPassword=rabbitmq
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - petfoodshop-network
+        depends_on:
+            - db
+    client:
+        container_name: client
+        build:
+             context: ./client
+             dockerfile: ./Dockerfile
+        ports:
+          - "4200:4200"
+        networks: 
+            - petfoodshop-network
+        volumes:
+         - ./.aspnet/client/
+         - ./node_modules
+
+networks: 
+    petfoodshop-network:
+        driver: bridge
+
+volumes: 
+    sqldata:

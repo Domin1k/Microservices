@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-3" *ngFor="let food of foods">
+        <div class="card mb-3">
+            <h3 class="card-header">{{food.name}}</h3>
+
+            <img style="height: 200px; width: 100%; display: block;" src="{{food.image}}" alt="Card image">
+            <div class="card-body">
+                <p class="card-text">{{food.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"></li>
+            </ul>
+            <div class="card-body">
+                <a routerLink="/foods/details/{{food.id}}" class="card-link">See details</a>
+            </div>
+            <div class="card-footer text-muted">
+                Price: {{food.price}}
+            </div>
+        </div>
+    </div>
+</div>
+<h2 *ngIf="foods == undefined || foods.length == 0">
+    There are no foods for the selected brand.
+</h2>

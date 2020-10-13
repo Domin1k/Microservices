@@ -1,0 +1,15 @@
+<div class="jumbotron text-center">
+    <h1 class="display-3">Thank You!</h1>
+    <p class="lead">
+        <strong>Your order with unique ID ({{model.uniqueNumber}}):</strong> {{model.description}}
+    </p>
+    <p><strong>Delivery address:</strong>{{model.address}}</p>
+    <p><strong>Ordered at:</strong>{{model.shippmentDate}}</p>
+    <hr>
+    <p>
+        Expected delivery date - {{model.expectedDeliveryDate}}
+    </p>
+    <p class="lead">
+        <a class="btn btn-primary btn-sm" routerLink="/" role="button">Continue to homepage</a>
+    </p>
+</div>

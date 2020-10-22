@@ -1,0 +1,17 @@
+﻿namespace PetFoodShop.Statistics.Domain.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using PetFoodShop.Domain;
+
+    public class StatisticsData : IInitialData
+    {
+        public Type EntityType => typeof(Statistics);
+
+        public IEnumerable<object> GetData()
+            => new List<Statistics>
+            {
+                new Statistics()
+            };
+    }
+}

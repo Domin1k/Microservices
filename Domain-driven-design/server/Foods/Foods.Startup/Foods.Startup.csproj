@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>PetFoodShop.Foods.Startup</AssemblyName>
+    <RootNamespace>PetFoodShop.Foods.Startup</RootNamespace>
+    <UserSecretsId>a7b52a66-e4c6-403b-a9f3-97c132631aa1</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
+    <Content Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
+    <None Remove="Data\Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.Startup\Common.Startup.csproj" />
+    <ProjectReference Include="..\Foods.Infrastructure\Foods.Infrastructure.csproj" />
+    <ProjectReference Include="..\Foods.Web\Foods.Web.csproj" />
+    <ProjectReference Include="..\Foods.Infrastructure\Foods.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

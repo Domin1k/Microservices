@@ -1,12 +1,12 @@
 namespace PetFoodShop.Foods.Startup
 {
+    using Application;
     using Infrastructure;
     using Infrastructure.Common.Persistence;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using PetFoodShop.Application;
     using PetFoodShop.Domain;
     using PetFoodShop.Startup.Extensions;
     using Web;
@@ -21,19 +21,16 @@ namespace PetFoodShop.Foods.Startup
             => services
                 .AddWebService<FoodDbContext>(this.Configuration)
                 .AddCommonDomain()
-                .AddCommonApplication(this.Configuration)
+                .AddFoodsApplication(this.Configuration)
                 .AddFoodsInfrastructure(this.Configuration)
                 .AddFoodsWebComponents()
                 .AddHangFire(this.Configuration)
                 .AddMessaging(this.Configuration);
-        //.AddTransient<IDataSeeder, FoodDataSeeder>()
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)
                 .UseHangFireDashboard();
-
-        //  .Initialize();
     }
 }

@@ -5,6 +5,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Persistence;
     using PetFoodShop.Application.Contracts;
+    using PetFoodShop.Infrastructure;
 
     public static class StatisticsInfrastructureConfiguration
     {
@@ -18,11 +19,13 @@
             => services
                 .AddDbContext<StatisticsDbContext>(options => options
                     .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
                         sqlServer => sqlServer
                             .MigrationsAssembly(typeof(StatisticsDbContext).Assembly.FullName)))
-                .AddScoped<IStatisticsDbContext>(provider => provider.GetService<StatisticsDbContext>());
-        // .AddTransient<IInitializer, DatabaseInitializer>();
+                .EnsureDatabaseCreated<StatisticsDbContext>()
+                .AddScoped<IStatisticsDbContext>(provider => provider.GetService<StatisticsDbContext>())
+                .AddTransient<IInitializer, StatisticsDatabaseInitializer>();
+
 
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
             => services

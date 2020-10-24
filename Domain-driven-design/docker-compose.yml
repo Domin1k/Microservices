@@ -33,10 +33,10 @@ services:
         container_name: identity
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Identity/dev.Dockerfile
+            dockerfile: ./Identity/Identity.Startup/dev.Dockerfile
         ports: 
             - "5002:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Identity;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
@@ -51,10 +51,10 @@ services:
         container_name: admin
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Admin/dev.Dockerfile
+            dockerfile: ./Admin/Admin.Startup/dev.Dockerfile
         ports: 
             - "5008:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         restart: on-failure
         volumes:
             - ./.aspnet/admin/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
@@ -65,10 +65,10 @@ services:
         container_name: cart
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Cart/dev.Dockerfile
+            dockerfile: ./Cart/Cart.Startup/dev.Dockerfile
         ports: 
             - "5004:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Cart;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
@@ -83,10 +83,10 @@ services:
         container_name: foods
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Foods/dev.Dockerfile
+            dockerfile: ./Foods/Foods.Startup/dev.Dockerfile
         ports: 
             - "5000:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Foods;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
             - ConnectionStrings__RabbitHost=rabbitmq
@@ -104,10 +104,10 @@ services:
         container_name: foodsgateway 
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Foods.Gateway/dev.Dockerfile
+            dockerfile: ./Gateway/Gateway.Startup/dev.Dockerfile
         ports: 
             - "5010:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         restart: on-failure
         volumes:
             - ./.aspnet/foodsgateway/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
@@ -120,10 +120,10 @@ services:
         container_name: notifications
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Notifications/dev.Dockerfile
+            dockerfile: ./Notifications/Notifications.Startup/dev.Dockerfile
         ports: 
             - "5012:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         environment: 
             - ConnectionStrings__RabbitHost=rabbitmq
             - ConnectionStrings__RabbitUsername=rabbitmq
@@ -138,10 +138,10 @@ services:
         container_name: statistics
         build:
             context: ./server
-            dockerfile: ./PetFoodShop.Statistics/dev.Dockerfile
+            dockerfile: ./Statistics/Statistics.Startup/dev.Dockerfile
         ports: 
             - "5006:80"
-        env_file: server/PetFoodShop/Common.env
+        env_file: server/Common/Common.Infrastructure/Common.env
         environment:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Statistics;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
             - ConnectionStrings__RabbitHost=rabbitmq
@@ -154,18 +154,6 @@ services:
             - petfoodshop-network
         depends_on:
             - db
-    client:
-        container_name: client
-        build:
-             context: ./client
-             dockerfile: ./Dockerfile
-        ports:
-          - "4200:4200"
-        networks: 
-            - petfoodshop-network
-        volumes:
-         - ./.aspnet/client/
-         - ./node_modules
 
 networks: 
     petfoodshop-network:

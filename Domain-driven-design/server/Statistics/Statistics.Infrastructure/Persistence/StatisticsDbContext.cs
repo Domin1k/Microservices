@@ -3,8 +3,9 @@
     using System.Reflection;
     using Domain.Models;
     using Microsoft.EntityFrameworkCore;
+    using PetFoodShop.Infrastructure.Persistence;
 
-    public class StatisticsDbContext : DbContext, IStatisticsDbContext
+    public class StatisticsDbContext : MessageDbContext, IStatisticsDbContext
     {
         public StatisticsDbContext(DbContextOptions<StatisticsDbContext> options)
           : base(options)
@@ -15,9 +16,13 @@
 
         public DbSet<FoodView> FoodViews { get; set; }
 
+        protected override Assembly ConfigurationsAssembly => Assembly.GetExecutingAssembly();
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            //builder.ApplyConfiguration(new FoodCategoryConfiguration());
+
+            builder.ApplyConfigurationsFromAssembly(this.ConfigurationsAssembly);
 
             base.OnModelCreating(builder);
         }

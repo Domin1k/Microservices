@@ -19,7 +19,7 @@
                     configuration.GetSection(nameof(AppSettings)),
                     options => options.BindNonPublicProperties = true)
                 .AddAutoMapper((_, config) => config.AddProfile(new MappingProfile(Assembly.GetExecutingAssembly())), Array.Empty<Assembly>())
-                .AddMediatR(Assembly.GetExecutingAssembly())
+                //.AddMediatR(Assembly.GetExecutingAssembly())
                 //.AddEventHandlers()
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 

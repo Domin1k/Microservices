@@ -5,6 +5,7 @@
     using Categories;
     using Common.Persistence;
     using Foods;
+    using Hangfire;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@
     using PetFoodShop.Application.Contracts;
     using PetFoodShop.Infrastructure;
     using PetFoodShop.Infrastructure.Events;
+    using PetFoodShop.Infrastructure.Persistence.Models;
 
     public static class FoodInfrastructureConfiguration
     {
@@ -23,19 +25,18 @@
             => services
                 .AddDatabase(configuration)
                 .AddRepositories();
-              // .AddIdentity(configuration)
-              // .AddTransient<IEventDispatcher, EventDispatcher>();
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services
                 .AddDbContext<FoodDbContext>(options => options
                     .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
                         sqlServer => sqlServer
                             .MigrationsAssembly(typeof(FoodDbContext).Assembly.FullName)))
+                .EnsureDatabaseCreated<FoodDbContext>()
                 .AddScoped<IFoodDbContext>(provider => provider.GetService<FoodDbContext>())
-                .AddScoped<IFoodCategoryDbContext>(provider => provider.GetService<FoodDbContext>());
-               // .AddTransient<IInitializer, DatabaseInitializer>();
+                .AddScoped<IFoodCategoryDbContext>(provider => provider.GetService<FoodDbContext>())
+                .AddTransient<IInitializer, FoodsDatabaseInitializer>();
 
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
             => services
@@ -45,7 +46,7 @@
                         .AssignableTo(typeof(IRepository<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-
+        
         //private static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
         //{
         //    services

@@ -5,6 +5,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Persistence;
     using PetFoodShop.Application.Contracts;
+    using PetFoodShop.Infrastructure;
 
     public static class CartInfrastructureConfiguration
     {
@@ -18,10 +19,12 @@
             => services
                 .AddDbContext<CartDbContext>(options => options
                     .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
                         sqlServer => sqlServer
                             .MigrationsAssembly(typeof(CartDbContext).Assembly.FullName)))
-                .AddScoped<ICartDbContext>(provider => provider.GetService<CartDbContext>());
+                .EnsureDatabaseCreated<CartDbContext>()
+                .AddScoped<ICartDbContext>(provider => provider.GetService<CartDbContext>())
+                .AddTransient<IInitializer, CartDatabaseInitializer>();
 
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
             => services

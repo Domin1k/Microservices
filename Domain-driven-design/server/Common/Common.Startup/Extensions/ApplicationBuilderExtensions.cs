@@ -33,13 +33,16 @@
                 {
                     if (withDefaultHealthChecks)
                     {
-                        endpoints.MapHealthChecks(InfrastructureConstants.ConfigurationConstants.HealthCheckUrl, new HealthCheckOptions
-                        {
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                        endpoints.MapHealthChecks(InfrastructureConstants.ConfigurationConstants.HealthCheckUrl,
+                            new HealthCheckOptions
+                            {
+                                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                            });
                     }
+
                     endpoints.MapControllers();
-                });
+                })
+                .Initialize();
 
             return app;
         }
@@ -55,24 +58,38 @@
                     options.RoutePrefix = string.Empty;
                 });
 
-       /* public static IApplicationBuilder Initialize(this IApplicationBuilder app)
+        /* public static IApplicationBuilder Initialize(this IApplicationBuilder app)
+         {
+             using var serviceScope = app.ApplicationServices.CreateScope();
+             var serviceProvider = serviceScope.ServiceProvider;
+
+             var db = serviceProvider.GetRequiredService<DbContext>();
+
+             db.Database.Migrate();
+
+             var seeders = serviceProvider.GetServices<IDataSeeder>();
+
+             foreach (var seeder in seeders)
+             {
+                 seeder.SeedData();
+             }
+
+             return app;
+         }*/
+
+        public static IApplicationBuilder Initialize(this IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
-            var serviceProvider = serviceScope.ServiceProvider;
 
-            var db = serviceProvider.GetRequiredService<DbContext>();
+            var initializers = serviceScope.ServiceProvider.GetServices<IInitializer>();
 
-            db.Database.Migrate();
-
-            var seeders = serviceProvider.GetServices<IDataSeeder>();
-
-            foreach (var seeder in seeders)
+            foreach (var initializer in initializers)
             {
-                seeder.SeedData();
+                initializer.Initialize();
             }
 
             return app;
-        }*/
+        }
 
         public static IApplicationBuilder UseHangFireDashboard(this IApplicationBuilder app)
         {

@@ -3,7 +3,7 @@
   "profiles": {
     "PetFoodShop.Cart": {
       "commandName": "Project",
-      "launchUrl": "weatherforecast",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "http://+:80"

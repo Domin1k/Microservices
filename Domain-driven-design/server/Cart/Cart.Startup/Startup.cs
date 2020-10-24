@@ -1,17 +1,17 @@
-namespace Cart.Startup
+namespace PetFoodShop.Cart.Startup
 {
+    using Application;
+    using Application.Contracts;
+    using Infrastructure;
+    using Infrastructure.Persistence;
+    using Infrastructure.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using PetFoodShop.Application;
-    using PetFoodShop.Cart.Application.Contracts;
-    using PetFoodShop.Cart.Infrastructure;
-    using PetFoodShop.Cart.Infrastructure.Persistence;
-    using PetFoodShop.Cart.Infrastructure.Services;
-    using PetFoodShop.Cart.Web;
     using PetFoodShop.Domain;
     using PetFoodShop.Startup.Extensions;
+    using Web;
 
     public class Startup
     {
@@ -23,7 +23,7 @@ namespace Cart.Startup
             => services
                 .AddWebService<CartDbContext>(this.Configuration)
                 .AddCommonDomain()
-                .AddCommonApplication(this.Configuration)
+                .AddCartApplication(this.Configuration)
                 .AddCartInfrastructure(this.Configuration)
                 .AddCartWebComponents()
                 .AddTransient<IRandomizer, Randomizer>();

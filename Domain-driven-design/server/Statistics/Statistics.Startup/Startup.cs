@@ -1,12 +1,12 @@
 namespace PetFoodShop.Foods.Startup
 {
-    using Application;
     using Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Startup.Extensions;
+    using Statistics.Application;
     using Statistics.Infrastructure;
     using Statistics.Infrastructure.Events;
     using Statistics.Infrastructure.Persistence;
@@ -22,7 +22,7 @@ namespace PetFoodShop.Foods.Startup
             => services
                 .AddWebService<StatisticsDbContext>(this.Configuration)
                 .AddCommonDomain()
-                .AddCommonApplication(this.Configuration)
+                .AddStatisticsApplication(this.Configuration)
                 .AddInfrastructure(this.Configuration)
                 .AddWebComponents()
                 .AddHangFire(this.Configuration)
@@ -32,7 +32,5 @@ namespace PetFoodShop.Foods.Startup
             => app
                 .UseWebService(env)
                 .UseHangFireDashboard();
-
-        //  .Initialize();
     }
 }

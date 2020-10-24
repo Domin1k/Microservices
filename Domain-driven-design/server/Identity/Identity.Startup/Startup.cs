@@ -1,5 +1,6 @@
 namespace PetFoodShop.Identity.Startup
 {
+    using Application;
     using Application.Contracts;
     using Infrastructure;
     using Infrastructure.Persistence;
@@ -20,7 +21,7 @@ namespace PetFoodShop.Identity.Startup
         public void ConfigureServices(IServiceCollection services)
             => services
                 .AddWebService<AppIdentityDbContext>(this.Configuration)
-                .AddCommonApplication(this.Configuration)
+                .AddIdentityApplication(this.Configuration)
                 .AddIdentityInfrastructure(this.Configuration)
                 .AddWebComponents()
                 .AddTransient<ITokenGeneratorService, TokenGeneratorService>()

@@ -44,7 +44,6 @@
         {
             using var scope = this.scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
-                
 
             var pendingMessages = dbContext
                 .Set<Message>()

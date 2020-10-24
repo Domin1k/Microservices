@@ -7,18 +7,23 @@
     using PetFoodShop.Application;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using Persistence;
 
     public class IdentityService : IIdentityService
     {
         private const string InvalidErrorMessage = "Invalid credentials.";
 
+        private readonly AppIdentityDbContext ctx;
         private readonly UserManager<User> userManager;
         private readonly ITokenGeneratorService jwtTokenGenerator;
 
         public IdentityService(
+            AppIdentityDbContext ctx,
             UserManager<User> userManager,
             ITokenGeneratorService jwtTokenGenerator)
         {
+            this.ctx = ctx;
             this.userManager = userManager;
             this.jwtTokenGenerator = jwtTokenGenerator;
         }
@@ -30,7 +35,6 @@
                 Email = userInput.Email,
                 UserName = userInput.Email
             };
-
             await this.userManager.CreateAsync(user, userInput.Password);
 
             var data = await this.Login(userInput);

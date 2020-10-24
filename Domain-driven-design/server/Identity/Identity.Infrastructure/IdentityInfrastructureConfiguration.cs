@@ -6,6 +6,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Persistence;
     using Persistence.Models;
+    using PetFoodShop.Infrastructure;
 
     public static class IdentityInfrastructureConfiguration
     {
@@ -19,9 +20,11 @@
             => services
                 .AddDbContext<AppIdentityDbContext>(options => options
                     .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
                         sqlServer => sqlServer
-                            .MigrationsAssembly(typeof(AppIdentityDbContext).Assembly.FullName)));
+                            .MigrationsAssembly(typeof(AppIdentityDbContext).Assembly.FullName)))
+                .EnsureDatabaseCreated<AppIdentityDbContext>()
+                .AddTransient<IInitializer, IdentityDatabaseInitializer>();
 
         private static IServiceCollection AddUserStorage(this IServiceCollection services)
         {

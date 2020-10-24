@@ -7,6 +7,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyName>PetFoodShop.Notifications.Startup</AssemblyName>
     <RootNamespace>PetFoodShop.Notifications.Startup</RootNamespace>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

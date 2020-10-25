@@ -2,14 +2,11 @@
 {
     using Application;
     using Application.Contracts;
-    using Application.Mapping;
-    using AutoMapper;
     using GreenPipes;
     using Hangfire;
     using Infrastructure.Persistence.Models;
     using MassTransit;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
@@ -22,14 +19,12 @@
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddWebService<TDbContext>(this IServiceCollection services, IConfiguration configuration)
-            where TDbContext : DbContext
+        public static IServiceCollection AddWebService(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddDatabase<TDbContext>(configuration)
+                .AddApplicationSettings(configuration)
                 .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
-                .AddAutoMapperProfile(Assembly.GetCallingAssembly())
                 .AddSwagger()
                 .AddHealthCheck(configuration)
                 .AddControllers();
@@ -41,21 +36,6 @@
             => services
                 .Configure<AppSettings>(configuration
                     .GetSection(nameof(AppSettings)));
-
-        public static IServiceCollection AddDatabase<TDbContext>(this IServiceCollection services, IConfiguration configuration) 
-            where TDbContext : DbContext
-           => services
-               .AddScoped<DbContext, TDbContext>()
-               .AddDbContext<TDbContext>(options => options
-                   .UseSqlServer(
-                            configuration.GetConnectionString(DefaultConnectionString),
-                            sqlOpts =>
-                            {
-                                sqlOpts.EnableRetryOnFailure(
-                                        maxRetryCount: DefaultMaxRetryCount,
-                                        maxRetryDelay: TimeSpan.FromSeconds(DefaultMaxTimeoutInSec),
-                                        errorNumbersToAdd: null);
-                            }));
 
         public static IServiceCollection AddTokenAuthentication(
             this IServiceCollection services,
@@ -153,13 +133,6 @@
                        Version = "v1"
                    });
            });
-
-        public static IServiceCollection AddAutoMapperProfile(this IServiceCollection services, Assembly assembly)
-            => services
-                .AddAutoMapper(
-                    (_, config) => config
-                        .AddProfile(new MappingProfile(assembly)),
-                    Array.Empty<Assembly>());
 
         public static IServiceCollection AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
         {

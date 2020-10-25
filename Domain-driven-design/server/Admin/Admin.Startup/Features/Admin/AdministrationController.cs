@@ -1,12 +1,12 @@
-﻿namespace Admin.Startup.Features.Admin
+﻿namespace PetFoodShop.Admin.Startup.Features.Admin
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
-    using PetFoodShop.Web;
     using Refit;
+    using Web;
 
     [AuthorizeAdministrator]
     public abstract class AdministrationController : Controller

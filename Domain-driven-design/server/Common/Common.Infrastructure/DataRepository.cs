@@ -16,6 +16,15 @@
 
         protected IQueryable<TEntity> All() => this.Data.Set<TEntity>();
 
+        public async Task MarkMessageAsPublished(object id, CancellationToken cancellationToken = default)
+        {
+            var message = await this.Data.Set<Message>().FindAsync(id);
+
+            message.MarkAsPublished();
+
+            await this.Data.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task Save(TEntity entity, CancellationToken cancellationToken = default)
         {
             this.Data.Update(entity);

@@ -52,7 +52,7 @@ namespace PetFoodShop.Foods.Infrastructure.Common.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int?>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -74,7 +74,7 @@ namespace PetFoodShop.Foods.Infrastructure.Common.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("Id");
 
                     b.ToTable("FoodBrands");
                 });
@@ -120,7 +120,7 @@ namespace PetFoodShop.Foods.Infrastructure.Common.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -162,7 +162,7 @@ namespace PetFoodShop.Foods.Infrastructure.Common.Migrations
                 {
                     b.HasOne("PetFoodShop.Foods.Domain.Categories.Models.FoodCategory", null)
                         .WithMany("Brands")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

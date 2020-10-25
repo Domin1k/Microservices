@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Admin.Startup.Features.Foods.Models.BrandFoodOutputModel>
+﻿@model IEnumerable<PetFoodShop.Admin.Startup.Features.Foods.Models.BrandFoodOutputModel>
 
 <h2>Brand Foods</h2>
 <div class="container">
@@ -25,14 +25,13 @@
                             <td>@item.Name</td>
                             <td>@item.Price</td>
                             <td>
-                                <a 
-                                   asp-area="" 
-                                   asp-controller="Foods" 
-                                   asp-action="EditPrice" 
-                                   asp-route-foodId="@item.Id" 
-                                   asp-route-price="@item.Price" 
+                                <a asp-area=""
+                                   asp-controller="Foods"
+                                   asp-action="EditPrice"
+                                   asp-route-foodId="@item.Id"
+                                   asp-route-price="@item.Price"
                                    class="btn btn-primary">
-                                Edit price
+                                    Edit price
                                 </a>
                             </td>
                         </tr>

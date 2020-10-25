@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Statistics
+﻿namespace PetFoodShop.Admin.Startup.Features.Statistics
 {
     using System.Threading.Tasks;
     using Models;

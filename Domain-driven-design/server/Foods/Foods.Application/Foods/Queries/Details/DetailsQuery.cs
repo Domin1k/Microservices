@@ -20,7 +20,10 @@
             public async Task<FoodDetailModelOutputModel> Handle(
                 DetailsQuery request,
                 CancellationToken cancellationToken)
-                    => await this.foodsRepository.Details(request.FoodId, cancellationToken);
+            {
+                var result = await this.foodsRepository.Details(request.FoodId, cancellationToken);
+                return result;
+            }
         }
     }
 }

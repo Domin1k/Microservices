@@ -19,13 +19,13 @@ namespace PetFoodShop.Foods.Startup
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<FoodDbContext>(this.Configuration)
+                .AddWebService(this.Configuration)
+                .AddMessaging(this.Configuration)
                 .AddCommonDomain()
                 .AddFoodsApplication(this.Configuration)
                 .AddFoodsInfrastructure(this.Configuration)
                 .AddFoodsWebComponents()
-                .AddHangFire(this.Configuration)
-                .AddMessaging(this.Configuration);
+                .AddHangFire(this.Configuration);
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

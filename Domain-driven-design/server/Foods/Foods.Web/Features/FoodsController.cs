@@ -13,10 +13,11 @@
     public class FoodsController : ApiController
     {
         private const string BrandIdPath = "{brandId}";
+        private const string FoodIdPath = "{foodId}";
         
         [HttpGet(BrandIdPath + PathSeparator + nameof(Brands))]
         [AuthorizeAdministrator]
-        public async Task<ActionResult<IEnumerable<BrandFoodsQuery.BrandFoodOutputModel>>> Brands([FromQuery]BrandFoodsQuery query)
+        public async Task<ActionResult<IEnumerable<BrandFoodsQuery.BrandFoodOutputModel>>> Brands([FromRoute]BrandFoodsQuery query)
             => await this.Send(query);
 
         [HttpPut(nameof(EditPrice))]
@@ -24,9 +25,9 @@
         public async Task<ActionResult<FoodDetailModelOutputModel>> EditPrice(EditPriceCommand command)
             => await this.Send(command);
 
-        [HttpGet(Id)]
+        [HttpGet(FoodIdPath)]
         // Depend on Gateway to authorize the user [Authorize]
-        public async Task<ActionResult<FoodDetailModelOutputModel>> Details([FromQuery]DetailsQuery query)
+        public async Task<ActionResult<FoodDetailModelOutputModel>> Details([FromRoute]DetailsQuery query)
             => await this.Send(query);
     }
 }

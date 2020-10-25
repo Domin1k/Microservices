@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Common.Persistence;
+    using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Domain;
     using PetFoodShop.Infrastructure;
 
@@ -11,5 +12,8 @@
             : base(db, initialDataProviders)
         {
         }
+
+        protected override DbSet<TEntity> GetSet<TEntity>()
+            => this.Db.Set<TEntity>();
     }
 }

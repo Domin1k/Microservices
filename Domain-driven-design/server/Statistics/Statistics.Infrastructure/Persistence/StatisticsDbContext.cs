@@ -2,13 +2,15 @@
 {
     using System.Reflection;
     using Domain.Models;
+    using MassTransit;
     using Microsoft.EntityFrameworkCore;
+    using PetFoodShop.Domain.Factories;
     using PetFoodShop.Infrastructure.Persistence;
 
     public class StatisticsDbContext : MessageDbContext, IStatisticsDbContext
     {
-        public StatisticsDbContext(DbContextOptions<StatisticsDbContext> options)
-          : base(options)
+        public StatisticsDbContext(DbContextOptions<StatisticsDbContext> options, IBus bus, IMessageFactory messageFactory)
+          : base(options, bus, messageFactory)
         {
         }
 

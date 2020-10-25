@@ -1,5 +1,6 @@
 ﻿namespace PetFoodShop.Foods.Infrastructure
 {
+    using System;
     using System.Security.Principal;
     using System.Text;
     using Categories;
@@ -28,11 +29,18 @@
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services
+                .AddScoped<DbContext, FoodDbContext>()
                 .AddDbContext<FoodDbContext>(options => options
                     .UseSqlServer(
                         configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
-                        sqlServer => sqlServer
-                            .MigrationsAssembly(typeof(FoodDbContext).Assembly.FullName)))
+                        sqlOpts =>
+                        {
+                            sqlOpts.MigrationsAssembly(typeof(FoodDbContext).Assembly.FullName);
+                            sqlOpts.EnableRetryOnFailure(
+                                maxRetryCount: InfrastructureConstants.ConfigurationConstants.DefaultMaxRetryCount,
+                                maxRetryDelay: TimeSpan.FromSeconds(InfrastructureConstants.ConfigurationConstants.DefaultMaxTimeoutInSec),
+                                errorNumbersToAdd: null);
+                        }))
                 .EnsureDatabaseCreated<FoodDbContext>()
                 .AddScoped<IFoodDbContext>(provider => provider.GetService<FoodDbContext>())
                 .AddScoped<IFoodCategoryDbContext>(provider => provider.GetService<FoodDbContext>())

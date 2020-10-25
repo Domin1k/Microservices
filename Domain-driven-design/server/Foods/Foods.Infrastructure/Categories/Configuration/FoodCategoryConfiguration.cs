@@ -21,7 +21,7 @@
             builder
                 .HasMany(x => x.Brands)
                 .WithOne()
-                .HasForeignKey("CategoryId")
+                .HasForeignKey("Id")
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

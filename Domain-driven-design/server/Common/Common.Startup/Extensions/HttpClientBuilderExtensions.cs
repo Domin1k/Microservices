@@ -36,7 +36,7 @@
                     client.DefaultRequestHeaders.Authorization = authorizationHeader;
                 })
                 .AddTransientHttpErrorPolicy(policy => policy
-                    .OrResult(result => result.StatusCode == HttpStatusCode.NotFound)
+                    .OrResult(result => result.StatusCode == HttpStatusCode.InternalServerError)
                     .WaitAndRetryAsync(6, retry => TimeSpan.FromSeconds(Math.Pow(2, retry))))
                     .AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(InfrastructureConstants.ConfigurationConstants.DefaultMaxTimeoutInSec)));
     }

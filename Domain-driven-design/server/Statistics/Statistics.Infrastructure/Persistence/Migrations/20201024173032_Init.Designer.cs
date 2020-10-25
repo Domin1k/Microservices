@@ -10,8 +10,8 @@ using PetFoodShop.Statistics.Infrastructure.Persistence;
 namespace PetFoodShop.Statistics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(StatisticsDbContext))]
-    [Migration("20201022200133_AddedMessagesToStatistics")]
-    partial class AddedMessagesToStatistics
+    [Migration("20201024173032_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -2,13 +2,15 @@
 {
     using System.Reflection;
     using Domain.Models;
+    using MassTransit;
     using Microsoft.EntityFrameworkCore;
+    using PetFoodShop.Domain.Factories;
     using PetFoodShop.Infrastructure.Persistence;
 
     public class CartDbContext : MessageDbContext, ICartDbContext
     {
-        public CartDbContext(DbContextOptions<CartDbContext> options)
-            : base(options)
+        public CartDbContext(DbContextOptions<CartDbContext> options, IBus bus, IMessageFactory messageFactory)
+            : base(options, bus, messageFactory)
         {
         }
 

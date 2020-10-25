@@ -1,0 +1,25 @@
+﻿@model PetFoodShop.Admin.Startup.Features.FoodCategories.Models.FoodCategoryBrandOutputModel
+<h2>Category Brands</h2>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Total Foods</th>
+            <th scope="col">#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Brands)
+        {
+            <tr>
+                <th scope="row">@Model.CategoryId</th>
+                <td>@item.Name</td>
+                <td>0</td>
+                <td>
+                    <a asp-area="" asp-controller="Foods" asp-action="GetFoodsPerBrand" asp-route-brandId="@item.Id" class="btn btn-primary">Show foods</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

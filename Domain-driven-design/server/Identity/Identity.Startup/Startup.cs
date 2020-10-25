@@ -20,7 +20,7 @@ namespace PetFoodShop.Identity.Startup
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<AppIdentityDbContext>(this.Configuration)
+                .AddWebService(this.Configuration)
                 .AddIdentityApplication(this.Configuration)
                 .AddIdentityInfrastructure(this.Configuration)
                 .AddWebComponents()

@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Foods
+﻿namespace PetFoodShop.Admin.Startup.Features.Foods
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

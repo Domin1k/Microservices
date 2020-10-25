@@ -1,5 +1,6 @@
 ﻿namespace PetFoodShop.Identity.Infrastructure
 {
+    using System;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -18,11 +19,18 @@
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services
+                .AddScoped<DbContext, AppIdentityDbContext>()
                 .AddDbContext<AppIdentityDbContext>(options => options
                     .UseSqlServer(
                         configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
-                        sqlServer => sqlServer
-                            .MigrationsAssembly(typeof(AppIdentityDbContext).Assembly.FullName)))
+                        sqlOpts =>
+                        {
+                            sqlOpts.MigrationsAssembly(typeof(AppIdentityDbContext).Assembly.FullName);
+                            sqlOpts.EnableRetryOnFailure(
+                                maxRetryCount: InfrastructureConstants.ConfigurationConstants.DefaultMaxRetryCount,
+                                maxRetryDelay: TimeSpan.FromSeconds(InfrastructureConstants.ConfigurationConstants.DefaultMaxTimeoutInSec),
+                                errorNumbersToAdd: null);
+                        }))
                 .EnsureDatabaseCreated<AppIdentityDbContext>()
                 .AddTransient<IInitializer, IdentityDatabaseInitializer>();
 

@@ -26,7 +26,7 @@
             => await this.mapper
                 .ProjectTo<FoodDetailModelOutputModel>(
                     this.All().Where(x => x.Id == id))
-                .FirstOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
 
         public async Task<IEnumerable<BrandFoodsQuery.BrandFoodOutputModel>> BrandFoods(
             int brandId,

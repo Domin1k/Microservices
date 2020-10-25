@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features
+﻿namespace PetFoodShop.Admin.Startup.Features
 {
     using System;
     using System.Linq;
@@ -10,6 +10,8 @@
         public string Statistics { get; private set; }
 
         public string Foods { get; private set; }
+
+        public string FoodCategories { get; private set; }
 
         public string this[string service]
             => this.GetType()

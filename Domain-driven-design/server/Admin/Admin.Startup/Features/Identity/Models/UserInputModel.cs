@@ -1,6 +1,6 @@
-﻿namespace Admin.Startup.Features.Identity.Models
+﻿namespace PetFoodShop.Admin.Startup.Features.Identity.Models
 {
-    using PetFoodShop.Application.Mapping;
+    using Application.Mapping;
 
     public class UserInputModel : IMapFrom<LoginCommandInputModel>
     {

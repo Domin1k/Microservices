@@ -19,6 +19,8 @@
             this.initialDataProviders = initialDataProviders;
         }
 
+        protected Context Db => this.db;
+
         public void Initialize()
         {
             foreach (var initialDataProvider in this.initialDataProviders)
@@ -40,8 +42,8 @@
         private bool DataSetIsEmpty(Type type)
         {
             var setMethod = this.GetType()
-                    .GetMethod(nameof(this.GetSet), BindingFlags.Instance | BindingFlags.NonPublic)!
-                .MakeGenericMethod(type);
+                    .GetMethod(nameof(this.GetSet), BindingFlags.Instance | BindingFlags.NonPublic)
+                    !.MakeGenericMethod(type);
 
             var set = setMethod.Invoke(this, Array.Empty<object>());
 
@@ -55,8 +57,7 @@
             return result == 0;
         }
 
-        private DbSet<TEntity> GetSet<TEntity>()
-            where TEntity : class
-            => this.db.Set<TEntity>();
+        protected abstract DbSet<TEntity> GetSet<TEntity>()
+            where TEntity : class;
     }
 }

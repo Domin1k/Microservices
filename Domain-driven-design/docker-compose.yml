@@ -154,6 +154,18 @@ services:
             - petfoodshop-network
         depends_on:
             - db
+    client:
+        container_name: client
+        build:
+             context: ./client
+             dockerfile: ./Dockerfile
+        ports:
+          - "4200:4200"
+        networks: 
+            - petfoodshop-network
+        volumes:
+         - ./.aspnet/client/
+         - ./node_modules
 
 networks: 
     petfoodshop-network:

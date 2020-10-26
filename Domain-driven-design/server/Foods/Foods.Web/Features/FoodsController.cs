@@ -16,7 +16,6 @@
         private const string FoodIdPath = "{foodId}";
         
         [HttpGet(BrandIdPath + PathSeparator + nameof(Brands))]
-        [AuthorizeAdministrator]
         public async Task<ActionResult<IEnumerable<BrandFoodsQuery.BrandFoodOutputModel>>> Brands([FromRoute]BrandFoodsQuery query)
             => await this.Send(query);
 

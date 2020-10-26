@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./food-brand.component.css']
 })
 export class FoodBrandComponent implements OnInit {
-  @Input() foodBrands: Array<PetFoodCategoryBrand>;
+  @Input() category: PetFoodCategoryBrand;
   constructor(private router: Router) { }
 
   ngOnInit() {

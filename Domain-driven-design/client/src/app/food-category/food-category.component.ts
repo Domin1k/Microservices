@@ -10,7 +10,7 @@ import { PetFoodCategoryBrand } from '../shared/model/petFood-categoryBrand.mode
 })
 export class FoodCategoryComponent implements OnInit {
   foodCategories: Array<PetFoodCategoryModel>;
-  foodBrands: Array<PetFoodCategoryBrand>;
+  category: PetFoodCategoryBrand;
   constructor(private foodCategorySvc: PetFoodCategoryService) { }
 
   ngOnInit() {
@@ -21,7 +21,7 @@ export class FoodCategoryComponent implements OnInit {
 
   getCategoryBrands(foodCategoryId: number) {
     this.foodCategorySvc.getCategoryBrands(foodCategoryId).subscribe(res => {
-      this.foodBrands = res;
+      this.category = res;
       console.log(res);
     });
   }

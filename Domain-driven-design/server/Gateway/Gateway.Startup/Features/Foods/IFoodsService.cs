@@ -10,5 +10,8 @@
     {
         [Get("/api/v1/foods/{foodId}")]
         Task<FoodDetailModelOutputModel> Details([FromRoute]int foodId);
+
+        [Get("/api/v1/foods/{brandId}/brands")]
+        Task<IEnumerable<BrandFoodOutputModel>> Brands([FromRoute] int brandId);
     }
 }

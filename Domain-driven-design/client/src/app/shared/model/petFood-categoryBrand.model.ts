@@ -1,6 +1,7 @@
+import {PetFoodBrandModel} from './petFood-brand.model';
+
 export interface PetFoodCategoryBrand {
-    id: number,
-    name: string,
     categoryId: number,
-    totalFoods: number;
+    totalFoods: number,
+    brands: Array<PetFoodBrandModel>;
 }

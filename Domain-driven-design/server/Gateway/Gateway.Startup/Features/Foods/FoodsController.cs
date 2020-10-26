@@ -1,17 +1,20 @@
 ﻿namespace PetFoodShop.Gateway.Startup.Features.Foods
 {
-    using System;
-    using System.Net;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Models;
-    using Refit;
     using Statistics;
+    using System.Net;
+    using System.Threading.Tasks;
+    using Refit;
     using Web.Controllers.v1;
 
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class FoodsController : ApiController
     {
+        private const string BrandIdPath = "{brandId}";
+
         private readonly IFoodsService foodsService;
         private readonly IStatisticsService statisticsService;
         private readonly IMapper mapper;
@@ -23,8 +26,14 @@
             this.mapper = mapper;
         }
 
+        [HttpGet(BrandIdPath + PathSeparator + nameof(Brands))]
+        public async Task<IActionResult> Brands(int brandId)
+        {
+            var result = await this.foodsService.Brands(brandId);
+            return this.Ok(result);
+        }
+
         [HttpGet(Id)]
-        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> Details(int id)
         {
             try

@@ -11,7 +11,7 @@
         public IEnumerable<object> GetData()
         => new List<FoodCategory>
         {
-            new FoodCategory("Dog") ,
+            new FoodCategory("Dog"),
             new FoodCategory("Cat"),
             new FoodCategory("Bird" ),
         };

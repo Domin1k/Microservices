@@ -11,19 +11,20 @@
         where Context : DbContext
     {
         private readonly Context db;
-        private readonly IEnumerable<IInitialData> initialDataProviders;
 
         protected DatabaseInitializer(Context db, IEnumerable<IInitialData> initialDataProviders)
         {
             this.db = db;
-            this.initialDataProviders = initialDataProviders;
+            this.InitialDataProviders = initialDataProviders;
         }
 
         protected Context Db => this.db;
 
-        public void Initialize()
+        protected IEnumerable<IInitialData> InitialDataProviders { get;  }
+
+        public virtual void Initialize()
         {
-            foreach (var initialDataProvider in this.initialDataProviders)
+            foreach (var initialDataProvider in this.InitialDataProviders)
             {
                 if (this.DataSetIsEmpty(initialDataProvider.EntityType))
                 {
@@ -39,7 +40,7 @@
             this.db.SaveChanges();
         }
 
-        private bool DataSetIsEmpty(Type type)
+        protected bool DataSetIsEmpty(Type type)
         {
             var setMethod = this.GetType()
                     .GetMethod(nameof(this.GetSet), BindingFlags.Instance | BindingFlags.NonPublic)

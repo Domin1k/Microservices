@@ -19,7 +19,7 @@ namespace PetFoodShop.Foods.Startup
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService(this.Configuration)
+                .AddWebService(this.Configuration, databaseHealthChecks: true, messagingHealthChecks: true)
                 .AddMessaging(this.Configuration, new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) })
                 .AddStatisticsDomain()
                 .AddStatisticsApplication(this.Configuration)

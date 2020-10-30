@@ -20,7 +20,6 @@ namespace PetFoodShop.Admin.Startup
     using Services;
     using System;
     using System.Reflection;
-    using Microsoft.AspNetCore.Authentication.Cookies;
 
     public class Startup
     {
@@ -37,6 +36,7 @@ namespace PetFoodShop.Admin.Startup
             services
                 .AddAutoMapper((_, config) => config.AddProfile(new MappingProfile(Assembly.GetExecutingAssembly())), Array.Empty<Assembly>())
                 .AddTokenAuthentication(this.Configuration)
+                .AddHealthCheck(this.Configuration, databaseHealthChecks: false, messagingHealthChecks: false)
                 .AddScoped<ICurrentTokenService, CurrentTokenService>()
                 .AddTransient<JwtCookieAuthenticationMiddleware>()
                 .AddControllersWithViews(options => options
@@ -75,7 +75,9 @@ namespace PetFoodShop.Admin.Startup
                 .UseRouting()
                 .UseJwtCookieAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(e => e.MapDefaultControllerRoute());
+                .UseEndpoints(endpoints => endpoints
+                        .MapHealthChecks()
+                        .MapDefaultControllerRoute());
         }
     }
 }

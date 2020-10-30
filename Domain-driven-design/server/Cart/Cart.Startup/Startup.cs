@@ -18,7 +18,7 @@ namespace PetFoodShop.Cart.Startup
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService(this.Configuration)
+                .AddWebService(this.Configuration, databaseHealthChecks: true, messagingHealthChecks: true)
                 .AddMessaging(this.Configuration)
                 .AddCommonDomain()
                 .AddCartApplication(this.Configuration)

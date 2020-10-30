@@ -14,19 +14,23 @@
     using System;
     using System.Reflection;
     using System.Text;
+    using Infrastructure;
     using Web.Services;
     using static Infrastructure.InfrastructureConstants.ConfigurationConstants;
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddWebService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddWebService(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            bool databaseHealthChecks = true,
+            bool messagingHealthChecks = true)
         {
             services
                 .AddApplicationSettings(configuration)
-                .AddApplicationSettings(configuration)
                 .AddTokenAuthentication(configuration)
                 .AddSwagger()
-                .AddHealthCheck(configuration)
+                .AddHealthCheck(configuration, databaseHealthChecks, messagingHealthChecks)
                 .AddControllers();
 
             return services;
@@ -80,10 +84,7 @@
 
         public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, params Type[] consumers)
         {
-            var appSettings = configuration.GetSection(nameof(AppSettings));
-            var rabbitHost = appSettings.GetValue<string>(nameof(AppSettings.RabbitHost));
-            var rabbitUser = appSettings.GetValue<string>(nameof(AppSettings.RabbitUsername));
-            var rabbitPass = appSettings.GetValue<string>(nameof(AppSettings.RabbitPassword));
+            var messagingSettings = GetMessageQueueSettings(configuration);
             services
                 .AddMassTransit(mt =>
                 {
@@ -91,10 +92,10 @@
 
                     mt.AddBus(bus => Bus.Factory.CreateUsingRabbitMq(rmq =>
                     {
-                        rmq.Host(rabbitHost, host =>
+                        rmq.Host(messagingSettings.Host, host =>
                         {
-                            host.Username(rabbitUser);
-                            host.Password(rabbitPass);
+                            host.Username(messagingSettings.UserName);
+                            host.Password(messagingSettings.Password);
                         });
 
                         rmq.UseHealthCheck(bus);
@@ -134,19 +135,42 @@
                    });
            });
 
-        public static IServiceCollection AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddHealthCheck(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            bool databaseHealthChecks = true,
+            bool messagingHealthChecks = true)
         {
             var healthChecks = services.AddHealthChecks();
-            var appSettings = configuration.GetSection(nameof(AppSettings));
-            var rabbitHost = appSettings.GetValue<string>(nameof(AppSettings.RabbitHost));
-            var rabbitUser = appSettings.GetValue<string>(nameof(AppSettings.RabbitUsername));
-            var rabbitPass = appSettings.GetValue<string>(nameof(AppSettings.RabbitPassword));
-            var rabbitConnection = $"amqp://{rabbitHost}:{rabbitUser}@{rabbitPass}/";
-            healthChecks
-                .AddSqlServer(configuration.GetConnectionString(DefaultConnectionString))
-                .AddRabbitMQ(rabbitConnectionString: rabbitConnection);
+
+            if (databaseHealthChecks)
+            {
+                healthChecks
+                    .AddSqlServer(configuration.GetConnectionString(DefaultConnectionString));
+            }
+
+            if (messagingHealthChecks)
+            {
+                var messageQueueSettings = GetMessageQueueSettings(configuration);
+
+                var messageQueueConnectionString =
+                    $"amqp://{messageQueueSettings.UserName}:{messageQueueSettings.Password}@{messageQueueSettings.Host}/";
+
+                healthChecks
+                    .AddRabbitMQ(rabbitConnectionString: messageQueueConnectionString);
+            }
 
             return services;
+        }
+
+        private static MessageQueueSettings GetMessageQueueSettings(IConfiguration configuration)
+        {
+            var settings = configuration.GetSection(nameof(MessageQueueSettings));
+
+            return new MessageQueueSettings(
+                settings.GetValue<string>(nameof(MessageQueueSettings.Host)),
+                settings.GetValue<string>(nameof(MessageQueueSettings.UserName)),
+                settings.GetValue<string>(nameof(MessageQueueSettings.Password)));
         }
     }
 }

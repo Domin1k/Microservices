@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Web.Middleware;
@@ -33,11 +34,7 @@
                 {
                     if (withDefaultHealthChecks)
                     {
-                        endpoints.MapHealthChecks(InfrastructureConstants.ConfigurationConstants.HealthCheckUrl,
-                            new HealthCheckOptions
-                            {
-                                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                            });
+                        endpoints.MapHealthChecks();
                     }
 
                     endpoints.MapControllers();
@@ -45,6 +42,16 @@
                 .Initialize();
 
             return app;
+        }
+
+        public static IEndpointRouteBuilder MapHealthChecks(this IEndpointRouteBuilder endpoints)
+        {
+            endpoints.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            return endpoints;
         }
 
         public static IApplicationBuilder UseSwaggerUI(this IApplicationBuilder app)

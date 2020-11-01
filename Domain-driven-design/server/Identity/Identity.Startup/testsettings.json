@@ -1,0 +1,11 @@
+{
+	"General": {
+		"WebAssemblyName": "PetFoodShop.Identity.Startup"
+	},
+	"AppSettings": {
+		"Secret": "My Fake Secret"
+	},
+	"ConnectionStrings": {
+		"DefaultConnection": "My Fake DB"
+	}
+}

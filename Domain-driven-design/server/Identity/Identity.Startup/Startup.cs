@@ -24,6 +24,7 @@ namespace PetFoodShop.Identity.Startup
                 .AddWebComponents()
                 .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
                 .AddTransient<IIdentityService, IdentityService>();
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)

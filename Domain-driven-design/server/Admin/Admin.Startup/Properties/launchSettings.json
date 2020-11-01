@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "PetFoodShop.Admin": {
+    "PetFoodShop.Admin.Startup": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

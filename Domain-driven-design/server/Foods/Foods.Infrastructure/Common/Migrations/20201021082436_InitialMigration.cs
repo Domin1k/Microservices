@@ -91,7 +91,7 @@
             migrationBuilder.CreateIndex(
                 name: "IX_FoodBrands_CategoryId",
                 table: "FoodBrands",
-                column: "CategoryId");
+                column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

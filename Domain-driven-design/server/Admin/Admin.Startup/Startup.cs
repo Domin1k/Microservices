@@ -1,22 +1,25 @@
-namespace Admin.Startup
+namespace PetFoodShop.Admin.Startup
 {
+    using Application.Contracts;
+    using Application.Mapping;
+    using AutoMapper;
+    using Features;
+    using Features.FoodCategories;
+    using Features.Foods;
+    using Features.Identity;
+    using Features.Statistics;
+    using global::PetFoodShop.Startup.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using System.Reflection;
-    using Features;
-    using Features.FoodCategories;
-    using Features.Foods;
-    using Features.Identity;
-    using Features.Statistics;
     using Middlewares;
-    using PetFoodShop.Application.Contracts;
-    using PetFoodShop.Services;
-    using PetFoodShop.Startup.Extensions;
     using Refit;
+    using Services;
+    using System;
+    using System.Reflection;
 
     public class Startup
     {
@@ -31,8 +34,9 @@ namespace Admin.Startup
                 .Get<ServiceEndpoints>(config => config.BindNonPublicProperties = true);
 
             services
-                .AddAutoMapperProfile(Assembly.GetExecutingAssembly())
+                .AddAutoMapper((_, config) => config.AddProfile(new MappingProfile(Assembly.GetExecutingAssembly())), Array.Empty<Assembly>())
                 .AddTokenAuthentication(this.Configuration)
+                .AddHealthCheck(this.Configuration, databaseHealthChecks: false, messagingHealthChecks: false)
                 .AddScoped<ICurrentTokenService, CurrentTokenService>()
                 .AddTransient<JwtCookieAuthenticationMiddleware>()
                 .AddControllersWithViews(options => options
@@ -49,7 +53,7 @@ namespace Admin.Startup
                 .WithConfiguration(serviceEndpoints.Foods);
             services
                 .AddRefitClient<IFoodCategoryService>()
-                .WithConfiguration(serviceEndpoints.Foods);
+                .WithConfiguration(serviceEndpoints.FoodCategories);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -71,7 +75,9 @@ namespace Admin.Startup
                 .UseRouting()
                 .UseJwtCookieAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(e => e.MapDefaultControllerRoute());
+                .UseEndpoints(endpoints => endpoints
+                        .MapHealthChecks()
+                        .MapDefaultControllerRoute());
         }
     }
 }

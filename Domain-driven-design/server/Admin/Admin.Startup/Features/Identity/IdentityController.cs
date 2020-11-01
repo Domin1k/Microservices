@@ -1,16 +1,19 @@
-﻿namespace Admin.Startup.Features.Identity
+﻿namespace PetFoodShop.Admin.Startup.Features.Identity
 {
     using System;
+    using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Admin;
     using AutoMapper;
     using Common;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Models;
-    using PetFoodShop.Web;
-    using static PetFoodShop.Web.WebConstants.AuthConstants;
+    using Web;
+    using static Web.WebConstants.AuthConstants;
 
     public class IdentityController : AdministrationController
     {
@@ -25,7 +28,7 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login() => this.View("/Features/Identity/Views/Login.cshtml");
+        public IActionResult Login() => this.View();
 
         [HttpPost]
         [AllowAnonymous]
@@ -43,13 +46,15 @@
                         {
                             HttpOnly = true,
                             Secure = false,
-                            MaxAge = TimeSpan.FromDays(1)
+                            MaxAge = TimeSpan.FromDays(10)
                         });
                 },
                 success: this.RedirectToAction(nameof(HomeController.Index), "Home"),
-                failure: this.View("/Features/Common/Views/Home/Index.cshtml", model));
+                failure: this.View( model));
 
-        [AuthorizeAdministrator]
+        // [AuthorizeAdministrator]
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Logout()
         {
             this.Response.Cookies.Delete(AuthenticationCookieName);

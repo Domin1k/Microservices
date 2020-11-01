@@ -23,13 +23,13 @@
                   .Include(x => x.Brands)
                   .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<IEnumerable<CategoryBrandQuery.FoodCategoryBrandOutputModel>> FindCategoryBrands(
+        public async Task<FoodCategoryBrandOutputModel> FindCategoryBrands(
             int id,
             CancellationToken cancellationToken)
             => await this.mapper
-                .ProjectTo<CategoryBrandQuery.FoodCategoryBrandOutputModel>(
-                    this.All().Where(x => x.Id == id).Select(x => x.Brands))
-                .ToListAsync(cancellationToken);
+                .ProjectTo<FoodCategoryBrandOutputModel>(
+                    this.All().Include(x => x.Brands).Where(x => x.Id == id))
+                .SingleOrDefaultAsync(cancellationToken);
 
         public async Task<IEnumerable<AllCategoriesQuery.AllCategoryOutputModel>> All(CancellationToken cancellationToken)
             => await this.mapper

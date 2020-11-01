@@ -60,6 +60,18 @@
 
         public int CategoryId { get; private set; }
 
+        public Food UpdateBrand(int brandId)
+        {
+            this.BrandId = brandId;
+            return this;
+        }
+
+        public Food UpdateCategory(int categoryId)
+        {
+            this.CategoryId = categoryId;
+            return this;
+        }
+
         public Food UpdatePrice(decimal price)
         {
             // validate

@@ -1,7 +1,10 @@
 namespace PetFoodShop.Gateway.Startup
 {
+    using System;
     using System.Reflection;
     using Application.Contracts;
+    using Application.Mapping;
+    using AutoMapper;
     using Features;
     using Features.FoodCategories;
     using Features.Foods;
@@ -31,11 +34,11 @@ namespace PetFoodShop.Gateway.Startup
                 .Get<ServiceEndpoints>(config => config.BindNonPublicProperties = true);
 
             services
-                .AddAutoMapperProfile(Assembly.GetExecutingAssembly())
+                .AddTransient<JwtHeaderAuthenticationMiddleware>()
+                .AddAutoMapper((_, config) => config.AddProfile(new MappingProfile(Assembly.GetExecutingAssembly())), Array.Empty<Assembly>())
                 .AddTokenAuthentication(this.Configuration)
                 .AddSwagger()
                 .AddScoped<ICurrentTokenService, CurrentTokenService>()
-                .AddTransient<JwtHeaderAuthenticationMiddleware>()
                 .AddControllers();
 
             services
@@ -48,12 +51,12 @@ namespace PetFoodShop.Gateway.Startup
 
             services
                 .AddRefitClient<IFoodCategoriesService>()
-                .WithConfiguration(serviceEndpoints.Foods);
+                .WithConfiguration(serviceEndpoints.FoodCategories);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
-                .UseWebService(env, false)
-                .UseJwtHeaderAuthentication();
+                .UseJwtHeaderAuthentication()
+                .UseWebService(env, false);
     }
 }

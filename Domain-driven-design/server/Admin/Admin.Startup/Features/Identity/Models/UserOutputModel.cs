@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Identity.Models
+﻿namespace PetFoodShop.Admin.Startup.Features.Identity.Models
 {
     public class UserOutputModel
     {

@@ -17,6 +17,7 @@
             private readonly IShipmentFactory shipmentFactory;
             private readonly ICurrentUserService currentUser;
             private readonly IRandomizer randomizer;
+
             public CheckoutCartCommandHandler(
                 ICartRepository cartRepository,
                 IShipmentFactory shipmentFactory,

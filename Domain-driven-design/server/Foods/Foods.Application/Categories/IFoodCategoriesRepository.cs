@@ -12,7 +12,7 @@
     {
         Task<FoodCategory> Find(int id, CancellationToken cancellationToken);
 
-        Task<IEnumerable<CategoryBrandQuery.FoodCategoryBrandOutputModel>> FindCategoryBrands(int id, CancellationToken cancellationToken);
+        Task<FoodCategoryBrandOutputModel> FindCategoryBrands(int id, CancellationToken cancellationToken);
 
         Task<IEnumerable<AllCategoriesQuery.AllCategoryOutputModel>> All(CancellationToken cancellationToken);
     }

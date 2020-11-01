@@ -1,0 +1,32 @@
+﻿@model PetFoodShop.Admin.Startup.Features.FoodCategories.Models.CreateBrandCommand
+
+@{
+    ViewData["Title"] = "Create Brand Page";
+}
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4">
+        <h2>Create Brand</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4">
+        <form asp-controller="FoodBrand" asp-action="CreateBrand" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" class="form-control" id="brandName" aria-describedby="emailHelp" placeholder="Enter brand name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="FoodCategoryId" type="hidden" class="form-control" id="foodCategoryId" />
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

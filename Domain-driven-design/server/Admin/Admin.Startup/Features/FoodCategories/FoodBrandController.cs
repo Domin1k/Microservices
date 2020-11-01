@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.FoodCategories
+﻿namespace PetFoodShop.Admin.Startup.Features.FoodCategories
 {
     using System.Threading.Tasks;
     using Admin;
@@ -15,10 +15,9 @@
         [HttpGet]
         [Route("{id}")]
         public IActionResult Create(int id) 
-            => this.View("/Features/FoodCategories/Views/CreateBrand.cshtml", new CreateBrandCommand { FoodCategoryId = id });
+            => this.View(new CreateBrandCommand { FoodCategoryId = id });
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBrand(CreateBrandCommand model)
             => await this.Handle(
                 async () =>
@@ -26,6 +25,6 @@
                     await this.foodBrandService.CreateBrand(model);
                 },
                 success: this.RedirectToAction(nameof(HomeController.Index), "Home"),
-                failure: this.View("/Features/FoodCategories/Views/CreateBrand.cshtml", model));
+                failure: this.View(nameof(Create), model));
     }
 }

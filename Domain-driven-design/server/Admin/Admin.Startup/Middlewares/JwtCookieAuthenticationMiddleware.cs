@@ -1,10 +1,13 @@
-﻿namespace Admin.Startup.Middlewares
+﻿namespace PetFoodShop.Admin.Startup.Middlewares
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Application.Contracts;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
-    using PetFoodShop.Application.Contracts;
-    using static PetFoodShop.Web.WebConstants.AuthConstants;
+    using static Web.WebConstants.AuthConstants;
 
     public class JwtCookieAuthenticationMiddleware : IMiddleware
     {

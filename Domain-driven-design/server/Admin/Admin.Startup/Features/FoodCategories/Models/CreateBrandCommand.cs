@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.FoodCategories.Models
+﻿namespace PetFoodShop.Admin.Startup.Features.FoodCategories.Models
 {
     using System.ComponentModel.DataAnnotations;
 

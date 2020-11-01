@@ -15,10 +15,10 @@
 
             public int TotalFoodBrands { get; set; }
 
-            public void Mapping(Profile mapper)
-                => mapper
-                    .CreateMap<Statistics, FullStatisticsOutputModel>()
-                    .ForMember(d => d.TotalFoodViews, cfg => cfg.MapFrom(d => d.TotalFoods));
+            //public void Mapping(Profile mapper)
+            //    => mapper
+            //        .CreateMap<Statistics, FullStatisticsOutputModel>()
+            //        .ForMember(d => d.TotalFoodViews, cfg => cfg.MapFrom(d => d.FoodViews.Count));
         }
 
         public class StatisticsOutputModelHandler : IRequestHandler<ShowFullStatisticsQuery, FullStatisticsOutputModel>

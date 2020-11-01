@@ -5,7 +5,7 @@
     using System.Linq;
     using Events;
 
-    public abstract class Entity<TId>
+    public abstract class Entity<TId> : IEntity
         where TId : struct
     {
         private readonly ICollection<IDomainEvent> events;
@@ -25,7 +25,7 @@
 
         public DateTime? ModifiedOn { get; set; }
 
-        public IReadOnlyCollection<IDomainEvent> Events=> this.events.ToList().AsReadOnly();
+        public IReadOnlyCollection<IDomainEvent> Events => this.events.ToList().AsReadOnly();
 
         public void ClearEvents() => this.events.Clear();
 

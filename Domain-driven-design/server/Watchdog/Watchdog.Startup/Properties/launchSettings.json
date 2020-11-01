@@ -1,14 +1,22 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "PetFoodShop.Watchdog": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "healthchecks-ui",
-      "applicationUrl": "https://localhost:5015;http://localhost:5014",
+      "launchUrl": "healthchecks",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://+:80"
+      },
+      "applicationUrl": "https://localhost:5501;http://localhost:5500"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/healthchecks",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

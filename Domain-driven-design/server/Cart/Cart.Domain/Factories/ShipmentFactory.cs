@@ -3,7 +3,7 @@
     using System;
     using Models;
 
-    public class ShipmentFactory : IShipmentFactory
+    internal class ShipmentFactory : IShipmentFactory
     {
         private int uniqueNumber;
         private string description;

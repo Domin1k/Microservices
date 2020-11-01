@@ -18,7 +18,7 @@
 
         public static class DataConstants
         {
-            public const string MigrationConnectionString = ".;Database=TestDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+            public const string MigrationConnectionString = "Server=DESKTOP-P3EKCVL\\DEVMSSQLSERVER;Database=PetShopDB-Statistics;Trusted_Connection=True;MultipleActiveResultSets=true";
         }
     }
 }

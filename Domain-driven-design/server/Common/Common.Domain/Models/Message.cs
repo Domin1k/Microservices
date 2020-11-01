@@ -4,11 +4,11 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using Newtonsoft.Json;
 
-    public class Message
+    public class Message : IAggregateRoot
     {
         private string serializedData; // Note: this is a field!
         
-        public Message(object data)
+        internal Message(object data)
         {
             this.Data = data;
         }

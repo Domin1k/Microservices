@@ -1,4 +1,4 @@
-namespace Admin.Startup.Features.Common.Models
+namespace PetFoodShop.Admin.Startup.Features.Common.Models
 {
     public class ErrorViewModel
     {

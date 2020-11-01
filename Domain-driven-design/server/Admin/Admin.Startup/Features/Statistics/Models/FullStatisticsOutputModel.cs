@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Statistics.Models
+﻿namespace PetFoodShop.Admin.Startup.Features.Statistics.Models
 {
     public class FullStatisticsOutputModel
     {

@@ -11,6 +11,6 @@
         Task<IEnumerable<AllCategoryOutputModel>> All();
 
         [Get("/api/v1/categories/{id}/brands")]
-        Task<IEnumerable<FoodCategoryBrandOutputModel>> Brands(int id);
+        Task<FoodCategoryBrandOutputModel> Brands(int id);
     }
 }

@@ -1,15 +1,14 @@
 namespace PetFoodShop.Foods.Startup
 {
-    using Application;
-    using Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using PetFoodShop.Startup.Extensions;
+    using Statistics.Application;
+    using Statistics.Domain;
     using Statistics.Infrastructure;
     using Statistics.Infrastructure.Events;
-    using Statistics.Infrastructure.Persistence;
     using Statistics.Web;
 
     public class Startup
@@ -20,19 +19,17 @@ namespace PetFoodShop.Foods.Startup
 
         public void ConfigureServices(IServiceCollection services)
             => services
-                .AddWebService<StatisticsDbContext>(this.Configuration)
-                .AddCommonDomain()
-                .AddCommonApplication(this.Configuration)
+                .AddWebService(this.Configuration, databaseHealthChecks: true, messagingHealthChecks: true)
+                .AddMessaging(this.Configuration, new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) })
+                .AddStatisticsDomain()
+                .AddStatisticsApplication(this.Configuration)
                 .AddInfrastructure(this.Configuration)
                 .AddWebComponents()
-                .AddHangFire(this.Configuration)
-                .AddMessaging(this.Configuration, new[] { typeof(BrandCreatedConsumer), typeof(FoodViewedConsumer) });
+                .AddHangFire(this.Configuration);
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseWebService(env)
                 .UseHangFireDashboard();
-
-        //  .Initialize();
     }
 }

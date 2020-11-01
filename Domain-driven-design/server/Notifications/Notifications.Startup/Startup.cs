@@ -1,12 +1,12 @@
 namespace PetFoodShop.Notifications
 {
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PetFoodShop.Notifications.Hub;
-    using PetFoodShop.Notifications.Infrastructure;
     using PetFoodShop.Notifications.Messages;
     using PetFoodShop.Startup.Extensions;
 
@@ -20,6 +20,7 @@ namespace PetFoodShop.Notifications
             => services
                 .AddCors()
                 .AddTokenAuthentication(this.Configuration, JwtConfiguration.BearerEvents)
+                .AddHealthCheck(this.Configuration, databaseHealthChecks: false)
                 .AddMessaging(this.Configuration, new[] { typeof(PriceEditedConsumer), typeof(BrandCreatedConsumer) })
                 .AddSignalR();
 
@@ -30,17 +31,22 @@ namespace PetFoodShop.Notifications
                 app.UseDeveloperExceptionPage();
             }
 
+            var allowedOrigins = this.Configuration
+                .GetSection(nameof(NotificationSettings))
+                .GetValue<string>(nameof(NotificationSettings.AllowedOrigins));
+
             app
                 .UseRouting()
                 .UseCors(options => options
-                    .WithOrigins("http://localhost:4200")
+                    .WithOrigins(allowedOrigins)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials())
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints
-                .MapHub<NotificationsHub>("/notifications"));
+                    .MapHealthChecks()
+                    .MapHub<NotificationsHub>("/notifications"));
         }
     }
 }

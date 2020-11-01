@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.FoodCategories
+﻿namespace PetFoodShop.Admin.Startup.Features.FoodCategories
 {
     using System.Threading.Tasks;
     using Admin;
@@ -13,11 +13,11 @@
         [HttpGet]
         [Route("/categories/all")]
         public async Task<IActionResult> GetAllCategories() 
-            => this.View("/Features/FoodCategories/Views/AllCategories.cshtml", await this.service.All());
+            => this.View(await this.service.All());
 
         [HttpGet]
         [Route("{id}/brands")]
         public async Task<IActionResult> GetCategoryBrands(int id) 
-            => this.View("/Features/FoodCategories/Views/CategoryBrands.cshtml", await this.service.Brands(id));
+            => this.View(await this.service.Brands(id));
     }
 }

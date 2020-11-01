@@ -6,6 +6,7 @@
     public class ServiceEndpoints
     {
         public string Foods { get; private set; }
+        public string FoodCategories { get; private set; }
 
         public string Statistics { get; private set; }
 

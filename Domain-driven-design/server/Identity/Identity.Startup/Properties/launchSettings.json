@@ -1,7 +1,9 @@
 ﻿{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "PetFoodShop.Identity": {
+    "PetFoodShop.Identity.Startup": {
+      "launchBrowser": true,
+      "launchUrl": "",
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",

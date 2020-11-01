@@ -1,10 +1,12 @@
 ﻿namespace PetFoodShop.Foods.Infrastructure
 {
+    using System;
     using System.Security.Principal;
     using System.Text;
     using Categories;
     using Common.Persistence;
     using Foods;
+    using Hangfire;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,7 @@
     using PetFoodShop.Application.Contracts;
     using PetFoodShop.Infrastructure;
     using PetFoodShop.Infrastructure.Events;
+    using PetFoodShop.Infrastructure.Persistence.Models;
 
     public static class FoodInfrastructureConfiguration
     {
@@ -23,19 +26,25 @@
             => services
                 .AddDatabase(configuration)
                 .AddRepositories();
-              // .AddIdentity(configuration)
-              // .AddTransient<IEventDispatcher, EventDispatcher>();
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
             => services
+                .AddScoped<DbContext, FoodDbContext>()
                 .AddDbContext<FoodDbContext>(options => options
                     .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        sqlServer => sqlServer
-                            .MigrationsAssembly(typeof(FoodDbContext).Assembly.FullName)))
+                        configuration.GetConnectionString(InfrastructureConstants.ConfigurationConstants.DefaultConnectionString),
+                        sqlOpts =>
+                        {
+                            sqlOpts.MigrationsAssembly(typeof(FoodDbContext).Assembly.FullName);
+                            sqlOpts.EnableRetryOnFailure(
+                                maxRetryCount: InfrastructureConstants.ConfigurationConstants.DefaultMaxRetryCount,
+                                maxRetryDelay: TimeSpan.FromSeconds(InfrastructureConstants.ConfigurationConstants.DefaultMaxTimeoutInSec),
+                                errorNumbersToAdd: null);
+                        }))
+                .EnsureDatabaseCreated<FoodDbContext>()
                 .AddScoped<IFoodDbContext>(provider => provider.GetService<FoodDbContext>())
-                .AddScoped<IFoodCategoryDbContext>(provider => provider.GetService<FoodDbContext>());
-               // .AddTransient<IInitializer, DatabaseInitializer>();
+                .AddScoped<IFoodCategoryDbContext>(provider => provider.GetService<FoodDbContext>())
+                .AddTransient<IInitializer, FoodsDatabaseInitializer>();
 
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
             => services
@@ -45,7 +54,7 @@
                         .AssignableTo(typeof(IRepository<>)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-
+        
         //private static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
         //{
         //    services

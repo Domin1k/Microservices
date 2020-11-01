@@ -1,4 +1,4 @@
-namespace Admin.Startup
+namespace PetFoodShop.Admin.Startup
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;

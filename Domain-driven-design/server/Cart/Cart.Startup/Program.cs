@@ -1,4 +1,4 @@
-namespace Cart.Startup
+namespace PetFoodShop.Cart.Startup
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;

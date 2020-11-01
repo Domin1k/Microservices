@@ -1,4 +1,4 @@
-namespace PetFoodShop.Watchdog
+namespace PetFoodShop.Watchdog.Startup
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -19,6 +19,8 @@ namespace PetFoodShop.Watchdog
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app
                 .UseRouting()
-                .UseEndpoints(endpoints => endpoints.MapHealthChecksUI());
+                .UseEndpoints(endpoints => endpoints
+                    .MapHealthChecksUI(healthChecks => healthChecks
+                        .UIPath = "/healthchecks"));
     }
 }

@@ -1,4 +1,4 @@
-namespace PetFoodShop.Watchdog
+namespace PetFoodShop.Watchdog.Startup
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;

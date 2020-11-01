@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Foods
+﻿namespace PetFoodShop.Admin.Startup.Features.Foods
 {
     using System.Threading.Tasks;
     using Admin;
@@ -15,12 +15,12 @@
         [HttpGet]
         [Route("/foods/{brandId}/brands")]
         public async Task<IActionResult> GetFoodsPerBrand(int brandId) 
-            => this.View("/Features/Foods/Views/FoodsPerBrand.cshtml", await this.foodService.Brands(brandId));
+            => this.View(await this.foodService.Brands(brandId));
 
         [HttpGet]
         [Route(nameof(EditPrice))]
         public IActionResult EditPrice(int foodId, decimal price) 
-            => this.View("/Features/Foods/Views/EditPrice.cshtml", new EditPriceCommand(foodId, price));
+            => this.View(new EditPriceCommand(foodId, price));
 
         [HttpPost]
         [Route(nameof(EditPrice))]
@@ -31,6 +31,6 @@
                         await this.foodService.EditPrice(command);
                     },
                     success: this.RedirectToAction(nameof(HomeController.Index), "Home"),
-                    failure: this.View("/Features/Foods/Views/EditPrice.cshtml", command));
+                    failure: this.View(command));
     }
 }

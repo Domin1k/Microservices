@@ -1,4 +1,4 @@
-﻿namespace Admin.Startup.Features.Foods.Models
+﻿namespace PetFoodShop.Admin.Startup.Features.Foods.Models
 {
     public class BrandFoodOutputModel
     {

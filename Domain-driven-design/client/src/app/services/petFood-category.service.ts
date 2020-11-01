@@ -16,7 +16,7 @@ export class PetFoodCategoryService {
         return this.http.get<Array<PetFoodCategoryModel>>(`${this.path}/all`);
     }
 
-    getCategoryBrands(categoryId: number): Observable<Array<PetFoodCategoryBrand>> {
-        return this.http.get<Array<PetFoodCategoryBrand>>(`${this.path}/${categoryId}/brands`);
+    getCategoryBrands(categoryId: number): Observable<PetFoodCategoryBrand> {
+        return this.http.get<PetFoodCategoryBrand>(`${this.path}/${categoryId}/brands`);
     }
 }

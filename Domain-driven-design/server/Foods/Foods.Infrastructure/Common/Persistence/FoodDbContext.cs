@@ -7,12 +7,14 @@
     using Microsoft.EntityFrameworkCore;
     using PetFoodShop.Infrastructure.Persistence;
     using System.Reflection;
+    using MassTransit;
+    using PetFoodShop.Domain.Factories;
 
     // Public because AddWebService TODO to be refactored
     public class FoodDbContext : MessageDbContext, IFoodCategoryDbContext, IFoodDbContext
     {
-        public FoodDbContext(DbContextOptions<FoodDbContext> options)
-            : base(options)
+        public FoodDbContext(DbContextOptions<FoodDbContext> options, IBus bus, IMessageFactory messageFactory)
+            : base(options, bus, messageFactory)
         {
         }
 

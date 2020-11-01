@@ -9,7 +9,7 @@ pipeline {
     stage('Run Unit Tests') {
       steps {
         powershell(script: """ 
-          cd Domain-driven-design\server\
+          cd Domain-driven-design/server
           dotnet test
           cd ..
         """)

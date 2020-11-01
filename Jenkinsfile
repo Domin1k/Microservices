@@ -17,34 +17,48 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-        powershell(script: 'docker-compose build')     
+		powershell(script: """ 
+		  cd Domain-driven-design
+          docker-compose build
+        """)   
         powershell(script: 'docker images -a')
+		echo "Docker builded successfully"
       }
     }
 	stage('Run Test Application') {
       steps {
-        powershell(script: 'docker-compose up -d')    
+		powershell(script: """ 
+		  cd Domain-driven-design
+          docker-compose up -d
+        """)  
+        echo "Docker images are up and running"    
       }
     }
     stage('Run Integration Tests') {
       steps {
-        powershell(script: './Tests/ContainerTests.ps1') 
+		powershell(script: """ 
+		  cd Domain-driven-design/tests
+		  ContainerTests.ps1
+        """)
       }
     }
-    //stage('Stop Test Application') {
-    //  steps {
-    //    powershell(script: 'docker-compose down') 
-    //    // powershell(script: 'docker volumes prune -f')   		
-    //  }
-    //  post {
-	//    success {
-	//      echo "Build successfull! You should deploy! :)"
-	//    }
-	//    failure {
-	//      echo "Build failed! You should receive an e-mail! :("
-	//    }
-    //  }
-    //}
+    stage('Stop Test Application') {
+      steps {
+		powershell(script: """ 
+		  cd Domain-driven-design
+		  docker-compose down
+        """)
+        // powershell(script: 'docker volumes prune -f')   		
+      }
+      post {
+	    success {
+	      echo "Build successfull! You should deploy! :)"
+	    }
+	    failure {
+	      echo "Build failed! You should receive an e-mail! :("
+	    }
+      }
+    }
     //stage('Push Images') {
     //  when { branch 'master' }
     //  steps {

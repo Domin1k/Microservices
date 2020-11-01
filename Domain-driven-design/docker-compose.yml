@@ -26,11 +26,14 @@ services:
             - RABBITMQ_ERLANG_COOKIE=Rand0mR4bbitMqCo0k1e
             - RABBITMQ_DEFAULT_USER=rabbitmq
             - RABBITMQ_DEFAULT_PASS=rabbitmq
+        volumes:
+            - rabbitmq:/var/lib/rabbitmq/mnesia
         networks: 
             - petfoodshop-network
 
     identity:
         container_name: identity
+        image: kristianlyubenov/petfoodshop-identity-ms
         build:
             context: ./server
             dockerfile: ./Identity/Identity.Startup/dev.Dockerfile
@@ -41,7 +44,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetShopDB-Identity;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
         restart: on-failure
         volumes:
-            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
         depends_on:
@@ -49,6 +52,7 @@ services:
 
     admin:
         container_name: admin
+        image: kristianlyubenov/petfoodshop-admin-client
         build:
             context: ./server
             dockerfile: ./Admin/Admin.Startup/dev.Dockerfile
@@ -62,12 +66,13 @@ services:
             - ServiceEndpoints__FoodCategories=http://foods
         restart: on-failure
         volumes:
-            - ./.aspnet/admin/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
 
     cart:
         container_name: cart
+        image: kristianlyubenov/petfoodshop-cart-ms
         build:
             context: ./server
             dockerfile: ./Cart/Cart.Startup/dev.Dockerfile
@@ -81,7 +86,7 @@ services:
             - MessageQueueSettings__Password=rabbitmq
         restart: on-failure
         volumes:
-            - ./.aspnet/cart/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
         depends_on:
@@ -89,6 +94,7 @@ services:
 
     foods:
         container_name: foods
+        image: kristianlyubenov/petfoodshop-foods-ms
         build:
             context: ./server
             dockerfile: ./Foods/Foods.Startup/dev.Dockerfile
@@ -102,14 +108,15 @@ services:
             - MessageQueueSettings__Password=rabbitmq
         restart: on-failure
         volumes:
-            - ./.aspnet/foods/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
         depends_on:
             - db
 
     foodsgateway:
-        container_name: foodsgateway 
+        container_name: foodsgateway
+        image: kristianlyubenov/petfoodshop-foodsgateway-api
         build:
             context: ./server
             dockerfile: ./Gateway/Gateway.Startup/dev.Dockerfile
@@ -118,7 +125,7 @@ services:
         env_file: server/Common/Common.Infrastructure/Common.env
         restart: on-failure
         volumes:
-            - ./.aspnet/foodsgateway/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
         depends_on:
@@ -126,6 +133,7 @@ services:
 
     notifications:
         container_name: notifications
+        image: kristianlyubenov/petfoodshop-notifications-ms
         build:
             context: ./server
             dockerfile: ./Notifications/Notifications.Startup/dev.Dockerfile
@@ -139,12 +147,13 @@ services:
             - MessageQueueSettings__Password=rabbitmq
         restart: on-failure
         volumes:
-            - ./.aspnet/notifications/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
 
     statistics:
         container_name: statistics
+        image: kristianlyubenov/petfoodshop-statistics-ms
         build:
             context: ./server
             dockerfile: ./Statistics/Statistics.Startup/dev.Dockerfile
@@ -158,13 +167,14 @@ services:
             - MessageQueueSettings__Password=rabbitmq
         restart: on-failure
         volumes:
-            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+            - data-protection:/root/.aspnet/DataProtection-Keys
         networks: 
             - petfoodshop-network
         depends_on:
             - db
     watchdog:
         container_name: watchdog
+        image: kristianlyubenov/petfoodshop-watchdog
         build:
             context: ./server
             dockerfile: ./Watchdog/Watchdog.Startup/dev.Dockerfile
@@ -195,6 +205,7 @@ services:
             - admin
     client:
         container_name: client
+        image: kristianlyubenov/petfoodshop-angular-client
         build:
              context: ./client
              dockerfile: ./Dockerfile
@@ -219,3 +230,5 @@ networks:
 
 volumes: 
     sqldata:
+    rabbitmq:
+    data-protection:

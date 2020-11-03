@@ -46,10 +46,10 @@ pipeline {
           cd Domain-driven-design
           docker-compose down
         ''')
-        powershell(script: '''
-          cd Domain-driven-design
-          docker volumes prune -f
-        ''')
+        // powershell(script: '''
+        //   cd Domain-driven-design
+        //   docker volumes prune -f
+        // ''')
       }
       post {
         success {

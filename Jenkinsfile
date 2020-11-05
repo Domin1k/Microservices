@@ -23,6 +23,14 @@ pipeline {
         ''')
         powershell(script: 'docker images -a')
       }
+      post {
+        success {
+          echo 'Docker-Build succeed!'
+        }
+        failure {
+          echo 'Docker-Build FAILED!'
+        }
+      }
     }
     stage('3.Run Application') {
       steps {
@@ -31,9 +39,18 @@ pipeline {
           docker-compose up -d
         ''')
       }
+      post {
+        success {
+          echo 'Docker-Up succeed!'
+        }
+        failure {
+          echo 'Docker-Up FAILED!'
+        }
+      }
     }
     stage('4.Run e2e Tests') {
       steps {
+        powershell(script 'ls')
         powershell(script: '''
           cd Domain-driven-design/tests
           ContainerTests.ps1

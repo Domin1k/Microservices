@@ -37,6 +37,7 @@ pipeline {
         powershell(script: '''
           cd Domain-driven-design
           docker-compose up -d
+          cd ..
         ''')
       }
       post {
@@ -50,7 +51,6 @@ pipeline {
     }
     stage('4.Run e2e Tests') {
       steps {
-        powershell(script 'dir')
         powershell(script: '''
           cd Domain-driven-design/tests
           ContainerTests.ps1

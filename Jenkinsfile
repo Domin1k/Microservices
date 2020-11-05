@@ -3,9 +3,7 @@ pipeline {
   stages {
     stage('Verify Branch') {
      steps {
-       for(e in env){
-        echo e + " is " + ${e}
-       }
+        echo  'Pulling ... ' + env.BRANCH_NAME
      }
     }
     // stage('1.Run Unit&Integration Tests') {

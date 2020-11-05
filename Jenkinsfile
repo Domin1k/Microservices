@@ -50,7 +50,7 @@ pipeline {
     }
     stage('4.Run e2e Tests') {
       steps {
-        powershell(script 'ls')
+        powershell(script 'dir')
         powershell(script: '''
           cd Domain-driven-design/tests
           ContainerTests.ps1

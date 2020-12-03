@@ -55,8 +55,27 @@ namespace PetFoodShop.Gateway.Startup
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            => app
+        {
+            var allowedOrigins = this.Configuration
+                .GetSection(nameof(GatewaySettings))
+                .GetValue<string>(nameof(GatewaySettings.AllowedOrigins));
+
+            app
                 .UseJwtHeaderAuthentication()
-                .UseWebService(env, false);
+                .UseRouting()
+                .UseCors(options => options
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials())
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseSwaggerUI()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                })
+                .Initialize();
+        }
     }
 }

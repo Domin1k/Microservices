@@ -14,7 +14,10 @@
 
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseWebService(this IApplicationBuilder app, IWebHostEnvironment env, bool withDefaultHealthChecks = true)
+        public static IApplicationBuilder UseWebService(
+            this IApplicationBuilder app,
+            IWebHostEnvironment env,
+            bool withDefaultHealthChecks = true)
         {
             if (env.IsDevelopment())
             {

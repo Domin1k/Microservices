@@ -1,7 +1,7 @@
 pipeline {
-  parameters {
-      string(name: 'currentEnvironment', defaultValue: 'development')
-  }
+  environment {
+        CURRENT_ENV = 'development'
+    }
 
   agent any
   stages {
@@ -30,9 +30,9 @@ pipeline {
           def userInput = input(
           message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
           if ("${userInput}" == "yes") {
-            $currentEnvironment = 'production'
+            $CURRENT_ENV = 'production'
           }
-          echo "Environment -->  ${currentEnvironment}"
+          echo "Environment -->  ${CURRENT_ENV}"
         }
       }
     }
@@ -44,11 +44,11 @@ pipeline {
           cd client
         ''')
         
-        if ($currentEnvironment == 'production') {
+        if ($CURRENT_ENV == 'production') {
           powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
         } else {
-          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=\"${env.currentEnvironment}\" .")
+          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID}")
         }
       }

@@ -5,37 +5,37 @@ pipeline {
 
   agent any
   stages {
-    stage('1.Verify Branch') {
-      steps {
-        echo 'BRANCH --> ' + env.BRANCH_NAME
-      }
-    }
-    stage('2.Pull Changes') {
-      steps {
-        powershell(script: "git pull")
-      }
-    }
-    stage('3.Run Unit&Integration Tests') {
-      steps {
-        powershell(script: '''
-          cd Domain-driven-design/server
-          dotnet test
-          cd ..
-        ''')
-      }
-    }
-    stage('4.Deploy to PROD?') {
-      steps {
-        script {
-          def userInput = input(
-          message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
-          if ("${userInput}" == "yes") {
-            $CURRENT_ENV = 'production'
-          }
-          echo "Environment -->  ${CURRENT_ENV}"
-        }
-      }
-    }
+    // stage('1.Verify Branch') {
+    //   steps {
+    //     echo 'BRANCH --> ' + env.BRANCH_NAME
+    //   }
+    // }
+    // stage('2.Pull Changes') {
+    //   steps {
+    //     powershell(script: "git pull")
+    //   }
+    // }
+    // stage('3.Run Unit&Integration Tests') {
+    //   steps {
+    //     powershell(script: '''
+    //       cd Domain-driven-design/server
+    //       dotnet test
+    //       cd ..
+    //     ''')
+    //   }
+    // }
+    // stage('4.Deploy to PROD?') {
+    //   steps {
+    //     script {
+    //       def userInput = input(
+    //       message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
+    //       if ("${userInput}" == "yes") {
+    //         $CURRENT_ENV = 'production'
+    //       }
+    //       echo "Environment -->  ${CURRENT_ENV}"
+    //     }
+    //   }
+    // }
     stage('5.Run Docker Build') {
       steps {
         // powershell(script: '''
@@ -43,12 +43,12 @@ pipeline {
         //   docker-compose build
         // ''')
          
-        powershell(script: '''
+        sh '''
           cd Domain-driven-design
           cd client
-          docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
+          docker build -t kristianlyubenov/petfoodshop-user-client-$CURRENT_ENV:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
           docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}
-        ''')
+        '''
       }
       post {
         success {

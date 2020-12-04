@@ -21,7 +21,7 @@ pipeline {
           cd Domain-driven-design
           docker-compose build
         ''')
-        powershell(script: 'docker images -a')
+        //powershell(script: 'docker images -a')
       }
       post {
         success {

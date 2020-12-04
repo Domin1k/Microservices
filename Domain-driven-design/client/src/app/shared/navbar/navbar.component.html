@@ -8,7 +8,7 @@
             <li class="nav-item active">
                 <a class="nav-link" (click)="route('/')">Home <span class="sr-only">(current)</span></a>
             </li>
-            <app-food-category style="display:inline-flex;"></app-food-category>
+            <app-food-category *ngIf="token" style="display:inline-flex;"></app-food-category>
             <li class="nav-item" *ngIf="token">
                 <a class="nav-link" (click)="route('cart')">
                     Cart <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>

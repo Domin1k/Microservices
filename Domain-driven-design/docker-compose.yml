@@ -123,6 +123,8 @@ services:
         ports: 
             - "5010:80"
         env_file: server/Common/Common.Infrastructure/Common.env
+        environment:
+            - GatewaySettings__AllowedOrigins=http://localhost
         restart: on-failure
         volumes:
             - data-protection:/root/.aspnet/DataProtection-Keys
@@ -210,7 +212,7 @@ services:
              context: ./client
              dockerfile: ./Dockerfile
              args:
-                configuration: development
+                configuration: local
         ports:
           - "80:80"
         networks: 

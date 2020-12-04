@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sqlserver-database-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver-database
+spec:
+  clusterIP: None
+  ports:
+    - port: 1433
+      targetPort: 1433
+  selector:
+    database: sqlserver
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sqlserver-database
+spec:
+  serviceName: sqlserver-database
+  selector:
+    matchLabels:
+      database: sqlserver
+  template:
+    metadata:
+      labels:
+        database: sqlserver
+        system: database
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: sqlserver-database
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1433
+          resources:
+            limits:
+              memory: 2Gi
+              cpu: 1000m
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: sqlserver-database-sa-password
+          volumeMounts:
+            - name: sqlserver-database-data
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: sqlserver-database-data
+          persistentVolumeClaim:
+            claimName: sqlserver-database-data

@@ -5,46 +5,42 @@ pipeline {
 
   agent any
   stages {
-    // stage('1.Verify Branch') {
-    //   steps {
-    //     echo 'BRANCH --> ' + env.BRANCH_NAME
-    //   }
-    // }
-    // stage('2.Pull Changes') {
-    //   steps {
-    //     powershell(script: "git pull")
-    //   }
-    // }
-    // stage('3.Run Unit&Integration Tests') {
-    //   steps {
-    //     powershell(script: '''
-    //       cd Domain-driven-design/server
-    //       dotnet test
-    //       cd ..
-    //     ''')
-    //   }
-    // }
-    // stage('4.Deploy to PROD?') {
-    //   steps {
-    //     script {
-    //       def userInput = input(
-    //       message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
-    //       if ("${userInput}" == "yes") {
-    //         $CURRENT_ENV = 'production'
-    //       }
-    //       echo "Environment -->  ${CURRENT_ENV}"
-    //     }
-    //   }
-    // }
-    stage('5.Run Docker Build') {
+    stage('1.Verify Branch') {
       steps {
-        // powershell(script: '''
-        //   cd Domain-driven-design
-        //   docker-compose build
-        // ''')
-         
+        echo 'BRANCH --> ' + env.BRANCH_NAME
+      }
+    }
+    stage('2.Pull Changes') {
+      steps {
+        powershell(script: "git pull")
+      }
+    }
+    stage('3.Run Unit&Integration Tests') {
+      steps {
+        powershell(script: '''
+          cd Domain-driven-design/server
+          dotnet test
+          cd ..
+        ''')
+      }
+    }
+    stage('4.Deploy to PROD?') {
+      steps {
+        script {
+          def userInput = input(
+          message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
+          if ("${userInput}" == "yes") {
+            $CURRENT_ENV = 'production'
+          }
+          echo "Environment -->  ${CURRENT_ENV}"
+        }
+      }
+    }
+    stage('5.Run Docker Build') {
+      steps {         
         powershell(script: """
           cd Domain-driven-design
+          docker-compose build
           cd client
           docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
           docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}
@@ -76,7 +72,7 @@ pipeline {
         }
       }
     }
-    stage('7.Run e2e Tests') {
+    stage('7.Run e2e tests on docker images') {
       steps {
         powershell(script: '''
           cd Domain-driven-design/tests
@@ -161,6 +157,23 @@ pipeline {
           recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
           subject: 'Pushing docker images failed'
         }
+      }
+    }
+    stage('10.Deploy to k8s') {
+      steps {
+        // withKubeConfig([credentialsId: 'DevelopmentServer', serverUrl: 'https://']) {
+		    //    powershell(script: 'kubectl apply -f ./.k8s/.environment/development.yml') 
+		    //    powershell(script: 'kubectl apply -f ./.k8s/databases') 
+		    //    powershell(script: 'kubectl apply -f ./.k8s/event-bus') 
+		    //    powershell(script: 'kubectl apply -f ./.k8s/web-services') 
+        //    powershell(script: 'kubectl apply -f ./.k8s/clients') 
+        //    powershell(script: 'kubectl set image deployments/user-client user-client=kristianlyubenov/petfoodshop-user-client-development:latest')
+        // }
+      }
+    }
+    stage('11.Run automation tests on cluster') {
+      steps {
+        
       }
     }
   }

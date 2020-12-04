@@ -30,9 +30,9 @@ pipeline {
           def userInput = input(
           message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
           if ("${userInput}" == "yes") {
-            env.currentEnvironment = 'production'
+            $currentEnvironment = 'production'
           }
-          echo "Environment -->  ${env.currentEnvironment}"
+          echo "Environment -->  ${currentEnvironment}"
         }
       }
     }
@@ -44,7 +44,7 @@ pipeline {
           cd client
         ''')
         
-        if (env.currentEnvironment == 'production') {
+        if ($currentEnvironment == 'production') {
           powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
         } else {

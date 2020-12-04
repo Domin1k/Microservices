@@ -1,12 +1,21 @@
 pipeline {
+  parameters {
+      string(name: 'currentEnvironment', defaultValue: 'development')
+  }
+
   agent any
   stages {
-    stage('Verify Branch') {
+    stage('1.Verify Branch') {
      steps {
-       echo  'Pulling ... ' + env.BRANCH_NAME
+       echo  'BRANCH --> ' + env.BRANCH_NAME
      }
     }
-    stage('1.Run Unit&Integration Tests') {
+	stage('2.Pull Changes') {
+      steps {
+        powershell(script: "git pull")
+      }
+    }
+    stage('3.Run Unit&Integration Tests') {
       steps {
         powershell(script: '''
           cd Domain-driven-design/server
@@ -15,24 +24,44 @@ pipeline {
         ''')
       }
     }
-    stage('2.Run Docker Build') {
+    stage('4.Deploy to PROD?') {
+      steps {
+        script {
+          def userInput = input(
+          message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
+          if ("${userInput}" == "yes") {
+            env.currentEnvironment = 'production'
+          }
+          echo "Environment -->  ${env.currentEnvironment}"
+        }
+      }
+    }
+    stage('5.Run Docker Build') {
       steps {
         powershell(script: '''
           cd Domain-driven-design
           docker-compose build
+          cd client
         ''')
-        //powershell(script: 'docker images -a')
+        
+        if (env.currentEnvironment == 'production') {
+          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=""${env.currentEnvironment}"" .")
+          powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
+        } else {
+          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=""${env.currentEnvironment}"" .")
+          powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID}")
+        }
       }
       post {
         success {
           echo 'Docker-Build succeed!'
         }
         failure {
-          echo 'Docker-Build FAILED!'
+          echo '------------------------->[ERROR] Docker-Build FAILED!'
         }
       }
     }
-    stage('3.Run Application') {
+    stage('6.Run Application') {
       steps {
         powershell(script: '''
           cd Domain-driven-design
@@ -45,11 +74,11 @@ pipeline {
           echo 'Docker-Up succeed!'
         }
         failure {
-          echo 'Docker-Up FAILED!'
+          echo '------------------------->[ERROR] Docker-Up FAILED!'
         }
       }
     }
-    stage('4.Run e2e Tests') {
+    stage('7.Run e2e Tests') {
       steps {
         powershell(script: '''
           cd Domain-driven-design/tests
@@ -57,7 +86,7 @@ pipeline {
         ''')
       }
     }
-    stage('5.Stop Application') {
+    stage('8.Stop Application') {
       steps {
         powershell(script: '''
           cd Domain-driven-design
@@ -73,7 +102,7 @@ pipeline {
         }
       }
     }
-    stage('6.Publish Docker Images') {
+    stage('9.Publish Docker Images') {
       when { branch 'master' }
       steps {
         script {
@@ -99,10 +128,6 @@ pipeline {
             statisticsImage.push("0.0.${env.BUILD_ID}")
             statisticsImage.push('latest')
 
-            def watchdogImage = docker.image('kristianlyubenov/petfoodshop-watchdog')
-            watchdogImage.push("0.0.${env.BUILD_ID}")
-            watchdogImage.push('latest')
-
             // Gateway image
             def foodsgatewayImage = docker.image('kristianlyubenov/petfoodshop-foodsgateway-api')
             foodsgatewayImage.push("0.0.${env.BUILD_ID}")
@@ -116,12 +141,16 @@ pipeline {
             def angularClientImage = docker.image('kristianlyubenov/petfoodshop-angular-client')
             angularClientImage.push("0.0.${env.BUILD_ID}")
             angularClientImage.push('latest')
+
+            def watchdogImage = docker.image('kristianlyubenov/petfoodshop-watchdog')
+            watchdogImage.push("0.0.${env.BUILD_ID}")
+            watchdogImage.push('latest')
           }
         }
       }
       post {
         success {
-          emailext body: 'Build successfull! You should deploy! :)', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Successfully pushed docker images'
+          emailext body: 'Job executed successful :)', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Successfully pushed docker images'
         }
         failure {
           emailext body: 'docker image push failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Pushing docker images failed'

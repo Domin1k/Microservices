@@ -5,7 +5,7 @@ metadata:
 data:
   event-bus-host: rabbitmq
   event-bus-user: rabbitmq
-  notifications-allowed-origins: http://35.238.194.133
+  notifications-allowed-origins: http://34.69.192.222
   admin-identity-endpoint: http://identity-service:5002
   admin-foods-endpoint: http://foods-service:5000
   admin-statistics-endpoint: http://statistics-service:5006

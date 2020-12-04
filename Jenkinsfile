@@ -45,10 +45,10 @@ pipeline {
         ''')
         
         if (env.currentEnvironment == 'production') {
-          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=""${env.currentEnvironment}"" .")
+          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
         } else {
-          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=""${env.currentEnvironment}"" .")
+          powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=\"${env.currentEnvironment}\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID}")
         }
       }

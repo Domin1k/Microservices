@@ -38,13 +38,17 @@ pipeline {
     }
     stage('5.Run Docker Build') {
       steps {
+        // powershell(script: '''
+        //   cd Domain-driven-design
+        //   docker-compose build
+        // ''')
+         
         powershell(script: '''
           cd Domain-driven-design
-          docker-compose build
           cd client
+          docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
+          docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}
         ''')
-        powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .")
-        powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}")
       }
       post {
         success {

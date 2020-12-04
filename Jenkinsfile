@@ -43,16 +43,8 @@ pipeline {
           docker-compose build
           cd client
         ''')
-
-        script {
-          if ("${CURRENT_ENV}" == 'production') {
-            powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
-            powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
-          } else {
-            powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .")
-            powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-development:0.0.${env.BUILD_ID}")
-          }
-        }
+        powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .")
+        powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}")
       }
       post {
         success {

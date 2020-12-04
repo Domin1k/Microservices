@@ -43,12 +43,12 @@ pipeline {
         //   docker-compose build
         // ''')
          
-        sh '''
+        powershell(script: """
           cd Domain-driven-design
           cd client
-          docker build -t kristianlyubenov/petfoodshop-user-client-$CURRENT_ENV:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
+          docker build -t kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID} --build-arg configuration=\"${CURRENT_ENV}\" .
           docker push kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}
-        '''
+        """)
       }
       post {
         success {

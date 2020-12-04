@@ -1,0 +1,24 @@
+{
+  "Environment": {
+    "Development": {
+      "Clients": {
+        "UserClientUrl": "http://34.69.192.222"
+      },
+      "Services": {
+        "IdentityServiceUrl": "http://34.67.218.240:5002",
+        "FoodsServiceUrl": "http://35.225.251.242:5000",
+        "CartServiceUrl": "http://104.155.180.245:5014"
+      }
+    },
+    "Production": {
+      "Clients": {
+        "UserClientUrl": "http://34.69.192.222"
+      },
+      "Services": {
+        "IdentityServiceUrl": "http://34.67.218.240:5002",
+        "FoodsServiceUrl": "http://35.225.251.242:5000",
+        "CartServiceUrl": "http://104.155.180.245:5014"
+      }
+    }
+  } 
+}

@@ -44,7 +44,7 @@ pipeline {
           cd client
         ''')
 
-        if ($CURRENT_ENV == 'production') {
+        if ("${CURRENT_ENV}" == 'production') {
           powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
         } else {

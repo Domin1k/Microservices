@@ -173,7 +173,11 @@ pipeline {
     }
     stage('11.Run automation tests on cluster') {
       steps {
-        
+        steps {
+        powershell(script: """
+          cd Domain-driven-design/tests/PetFoodShop-Automations
+          launchTests-${CURRENT_ENV}.cmd
+        """)
       }
     }
   }

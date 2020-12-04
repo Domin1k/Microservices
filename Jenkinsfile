@@ -1,16 +1,16 @@
 pipeline {
   environment {
-        CURRENT_ENV = 'development'
-    }
+    CURRENT_ENV = 'development'
+  }
 
   agent any
   stages {
     stage('1.Verify Branch') {
-     steps {
-       echo  'BRANCH --> ' + env.BRANCH_NAME
-     }
+      steps {
+        echo 'BRANCH --> ' + env.BRANCH_NAME
+      }
     }
-	stage('2.Pull Changes') {
+    stage('2.Pull Changes') {
       steps {
         powershell(script: "git pull")
       }
@@ -43,8 +43,8 @@ pipeline {
           docker-compose build
           cd client
         ''')
-        
-        if (${CURRENT_ENV} == 'production') {
+
+        if ($CURRENT_ENV == 'production') {
           powershell(script: "docker build -t kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID} --build-arg configuration=\"production\" .")
           powershell(script: "docker push kristianlyubenov/petfoodshop-user-client-production:0.0.${env.BUILD_ID}")
         } else {
@@ -98,12 +98,16 @@ pipeline {
           echo 'Build successfull! You should deploy! :)'
         }
         failure {
-          emailext body: 'docker-compose up failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Docker-Compose up (Run application failed)'
+          emailext body: 'docker-compose up failed',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'Docker-Compose up (Run application failed)'
         }
       }
     }
     stage('9.Publish Docker Images') {
-      when { branch 'master' }
+      when {
+        branch 'master'
+      }
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
@@ -150,10 +154,14 @@ pipeline {
       }
       post {
         success {
-          emailext body: 'Job executed successful :)', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Successfully pushed docker images'
+          emailext body: 'Job executed successful :)',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'Successfully pushed docker images'
         }
         failure {
-          emailext body: 'docker image push failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Pushing docker images failed'
+          emailext body: 'docker image push failed',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'Pushing docker images failed'
         }
       }
     }

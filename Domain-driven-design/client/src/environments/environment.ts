@@ -4,7 +4,7 @@
 export const environment = {
   production: false,
   gatewayUrl: "http://localhost:5000/api/v1/",
-  identityServiceUrl: "http://localhost:5002/api/v1/",
+  identityServiceUrl: "http://local:5002/api/v1/",
   cartServiceUrl: "http://localhost:5014/api/v1/",
   notificationsUrl:"http://localhost:5012/"
 };

@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  gatewayUrl: "http://104.155.180.245:5000/api/v1/",
-  identityServiceUrl: "http://35.232.62.161:5002/api/v1/",
-  cartServiceUrl: "http://104.197.108.52:5014/api/v1/",
+  gatewayUrl: "http://35.225.251.242:5000/api/v1/",
+  identityServiceUrl: "http://34.67.218.240:5002/api/v1/",
+  cartServiceUrl: "http://104.155.180.245:5014/api/v1/",
   notificationsUrl:"http://localhost:5012/"
 };
 

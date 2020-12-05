@@ -75,7 +75,8 @@ pipeline {
     stage('7.Run e2e tests on docker images') {
       steps {
         powershell(script: '''
-          cd Domain-driven-design/tests
+          cd Domain-driven-design
+          cd tests
           ContainerTests.ps1
         ''')
       }
@@ -88,66 +89,66 @@ pipeline {
         ''')
       }
     }
-    stage('9.publish docker images') {
+    stage('9.Publish docker images') {
       when {
         branch 'master'
       }
       steps {
         script {
-          docker.withregistry('https://index.docker.io/v1/', 'dockerhub') {
+          docker.withregistry('https://index.docker.io/v1/', 'DockerHub') {
             // microservice images
             def identityimage = docker.image('kristianlyubenov/petfoodshop-identity-ms')
-            identityimage.push("0.0.${env.build_id}")
+            identityimage.push("0.0.${env.BUILD_ID}")
             identityimage.push('latest')
 	
             def cartimage = docker.image('kristianlyubenov/petfoodshop-cart-ms')
-            cartimage.push("0.0.${env.build_id}")
+            cartimage.push("0.0.${env.BUILD_ID}")
             cartimage.push('latest')
 	
             def foodsimage = docker.image('kristianlyubenov/petfoodshop-foods-ms')
-            foodsimage.push("0.0.${env.build_id}")
+            foodsimage.push("0.0.${env.BUILD_ID}")
             foodsimage.push('latest')
 	
             def notificationsimage = docker.image('kristianlyubenov/petfoodshop-notifications-ms')
-            notificationsimage.push("0.0.${env.build_id}")
+            notificationsimage.push("0.0.${env.BUILD_ID}")
             notificationsimage.push('latest')
 	
             def statisticsimage = docker.image('kristianlyubenov/petfoodshop-statistics-ms')
-            statisticsimage.push("0.0.${env.build_id}")
+            statisticsimage.push("0.0.${env.BUILD_ID}")
             statisticsimage.push('latest')
 	
             // gateway image
             def foodsgatewayimage = docker.image('kristianlyubenov/petfoodshop-foodsgateway-api')
-            foodsgatewayimage.push("0.0.${env.build_id}")
+            foodsgatewayimage.push("0.0.${env.BUILD_ID}")
             foodsgatewayimage.push('latest')
 	
             // admin and ui clients
             def adminimage = docker.image('kristianlyubenov/petfoodshop-admin-client')
-            adminimage.push("0.0.${env.build_id}")
+            adminimage.push("0.0.${env.BUILD_ID}")
             adminimage.push('latest')
 	
             def angularclientimage = docker.image('kristianlyubenov/petfoodshop-angular-client')
-            angularclientimage.push("0.0.${env.build_id}")
+            angularclientimage.push("0.0.${env.BUILD_ID}")
             angularclientimage.push('latest')
 	
             def watchdogimage = docker.image('kristianlyubenov/petfoodshop-watchdog')
-            watchdogimage.push("0.0.${env.build_id}")
+            watchdogimage.push("0.0.${env.BUILD_ID}")
             watchdogimage.push('latest')
           }
         }
       }
-      // post {
-      //   success {
-      //     emailext body: 'job executed successful :)',
-      //     recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-      //     subject: 'successfully pushed docker images'
-      //   }
-      //   failure {
-      //     emailext body: 'docker image push failed',
-      //     recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-      //     subject: 'pushing docker images failed'
-      //   }
-      // }
+      post {
+        success {
+          emailext body: 'job executed successful :)',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'successfully pushed docker images'
+        }
+        failure {
+          emailext body: 'docker image push failed',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'pushing docker images failed'
+        }
+      }
     }
     stage('10.Deploy to k8s') {
       steps {

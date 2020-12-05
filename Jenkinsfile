@@ -92,9 +92,9 @@ pipeline {
           echo 'Build successfull! You should deploy! :)'
         }
         failure {
-          // emailext body: 'docker-compose up failed',
-          // recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-          // subject: 'Docker-Compose up (Run application failed)'
+          emailext body: 'docker-compose up failed',
+          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+          subject: 'Docker-Compose up (Run application failed)'
         }
       }
     }
@@ -148,14 +148,14 @@ pipeline {
       }
       post {
         success {
-          // emailext body: 'job executed successful :)',
-          // recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-          // subject: 'successfully pushed docker images'
+          emailext body: 'job executed successful :)',
+          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+          subject: 'successfully pushed docker images'
         }
         failure {
-          // emailext body: 'docker image push failed',
-          // recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-          // subject: 'pushing docker images failed'
+          emailext body: 'docker image push failed',
+          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+          subject: 'pushing docker images failed'
         }
       }
     }
@@ -212,13 +212,9 @@ pipeline {
           }
         }
       }
-
     }
     stage('11.Run automation tests on cluster') {
-      steps {
-        sleep 10
-        echo "Waiting  for ${secondsToWait} in order for pods to be up";
-        
+      steps {        
         powershell(script: """
           cd Domain-driven-design/tests/PetFoodShop-Automations
           launchTests-${CURRENT_ENV}.cmd

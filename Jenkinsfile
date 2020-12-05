@@ -37,7 +37,7 @@ pipeline {
       }
     }
     stage('5.Run Docker Build') {
-      steps {         
+      steps {
         powershell(script: """
           cd Domain-driven-design
           docker-compose build
@@ -166,42 +166,42 @@ pipeline {
           // Replace image tag for webservices to point to concrete version
           def filePath = "./Domain-driven-design/.k8s/web-services/";
           contentReplace(
-            configs: [
-            fileContentReplaceConfig(
-            configs: [
-              fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-cart-ms:latest', replace: "image: kristianlyubenov/petfoodshop-cart-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}cart-service.yml")])
+          configs: [
+          fileContentReplaceConfig(
+          configs: [
+          fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-cart-ms:latest', replace: "image: kristianlyubenov/petfoodshop-cart-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}cart-service.yml")])
           contentReplace(
-            configs: [
-            fileContentReplaceConfig(
-            configs: [
-              fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-foods-ms:latest', replace: "image: kristianlyubenov/petfoodshop-foods-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}foods-service.yml")])
+          configs: [
+          fileContentReplaceConfig(
+          configs: [
+          fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-foods-ms:latest', replace: "image: kristianlyubenov/petfoodshop-foods-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}foods-service.yml")])
           contentReplace(
-            configs: [
-            fileContentReplaceConfig(
-            configs: [
-              fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-identity-ms:latest', replace: "image: kristianlyubenov/petfoodshop-identity-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}identity-service.yml")])
+          configs: [
+          fileContentReplaceConfig(
+          configs: [
+          fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-identity-ms:latest', replace: "image: kristianlyubenov/petfoodshop-identity-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}identity-service.yml")])
           // kubectl apply them all
           withKubeConfig([credentialsId: 'ProductionServer', serverUrl: 'https://']) {
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml') 
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases') 
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus') 
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml')
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases')
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus')
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/identity-service.yml')
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/foods-service.yml')
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/cart-service.yml')
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/clients/user-client.yml') 
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/clients/user-client.yml')
             powershell(script: "kubectl set image deployments/user-client user-client=kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:0.0.${env.BUILD_ID}")
           }
         } else {
           withKubeConfig([credentialsId: 'DevelopmentServer', serverUrl: 'https://34.71.199.17']) {
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml') 
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases') 
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus') 
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml')
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases')
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus')
 
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/identity-service.yml')
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/foods-service.yml')
             powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/cart-service.yml')
 
-            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/clients/user-client.yml') 
+            powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/clients/user-client.yml')
             powershell(script: "kubectl set image deployments/user-client user-client=kristianlyubenov/petfoodshop-user-client-${CURRENT_ENV}:latest")
           }
         }
@@ -210,10 +210,11 @@ pipeline {
     stage('11.Run automation tests on cluster') {
       steps {
         steps {
-        powershell(script: """
+          powershell(script: """
           cd Domain-driven-design/tests/PetFoodShop-Automations
           launchTests-${CURRENT_ENV}.cmd
         """)
+        }
       }
     }
   }

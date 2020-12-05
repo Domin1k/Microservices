@@ -12,8 +12,8 @@ pipeline {
                 fileContentReplaceConfig(
                     configs: [
                         fileContentReplaceItemConfig(
-                            search: '(image:).\w+./\w+.\w*.\w*:latest',
-                            replace: "(image:).\w+./\w+.\w*.\w*:0.0.${env.BUILD_ID}",
+                            search: "(image:)\s*\w+./\w+.\w*.\w*:latest",
+                            replace: "(image:)\s*\w+./\w+.\w*.\w*:latest:0.0.${env.BUILD_ID}",
                             matchCount: 1)
                         ],
                     fileEncoding: 'UTF-8',

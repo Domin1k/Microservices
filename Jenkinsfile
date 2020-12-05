@@ -1,7 +1,5 @@
+def CURRENT_ENV
 pipeline {
-  environment {
-    CURRENT_ENV = 'development'
-  }
 
   agent any
   stages {
@@ -30,8 +28,11 @@ pipeline {
           def userInput = input(
           message: 'User input required - Deploy to PRODUCTION?', parameters: [[$class: 'ChoiceParameterDefinition', choices: ['yes', 'no'].join('\n'), name: 'input', description: 'Menu - select box option']])
           if ("${userInput}" == "yes") {
-            $CURRENT_ENV = 'production'
+            CURRENT_ENV = 'production'
+          } else {
+            CURRENT_ENV = 'development'
           }
+          
           echo "Environment -->  ${CURRENT_ENV}"
         }
       }
@@ -154,7 +155,7 @@ pipeline {
       steps {
         // DUE to gcloud limitations we can apply only 4 external IPs
         script {
-          if ("${CURRENT_ENV}" == "production") {
+          if (CURRENT_ENV == "production") {
             // Replace image tag for webservices to point to concrete version
             stage('Deploy to PROD') {
               def filePath = "./Domain-driven-design/.k8s/web-services/";

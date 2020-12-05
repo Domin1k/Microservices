@@ -87,16 +87,6 @@ pipeline {
           docker-compose down
         ''')
       }
-      post {
-        success {
-          echo 'Build successfull! You should deploy! :)'
-        }
-        failure {
-          emailext body: 'docker-compose up failed',
-          recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-          subject: 'Docker-Compose up (Run application failed)'
-        }
-      }
     }
     stage('9.publish docker images') {
       when {
@@ -146,18 +136,18 @@ pipeline {
           }
         }
       }
-      post {
-        success {
-          emailext body: 'job executed successful :)',
-          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-          subject: 'successfully pushed docker images'
-        }
-        failure {
-          emailext body: 'docker image push failed',
-          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
-          subject: 'pushing docker images failed'
-        }
-      }
+      // post {
+      //   success {
+      //     emailext body: 'job executed successful :)',
+      //     recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+      //     subject: 'successfully pushed docker images'
+      //   }
+      //   failure {
+      //     emailext body: 'docker image push failed',
+      //     recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+      //     subject: 'pushing docker images failed'
+      //   }
+      // }
     }
     stage('10.Deploy to k8s') {
       steps {

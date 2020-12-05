@@ -216,8 +216,7 @@ pipeline {
     }
     stage('11.Run automation tests on cluster') {
       steps {
-        def secondsToWait = 10
-        sleep secondsToWait
+        sleep 10
         echo "Waiting  for ${secondsToWait} in order for pods to be up";
         
         powershell(script: """

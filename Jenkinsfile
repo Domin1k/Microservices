@@ -98,67 +98,67 @@ pipeline {
         }
       }
     }
-    // stage('9.Publish Docker Images') {
-    //   when {
-    //     branch 'master'
-    //   }
-    //   steps {
-    //     script {
-    //       docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
-    //         // Microservice images
-    //         def identityImage = docker.image('kristianlyubenov/petfoodshop-identity-ms')
-    //         identityImage.push("0.0.${env.BUILD_ID}")
-    //         identityImage.push('latest')
-
-    //         def cartImage = docker.image('kristianlyubenov/petfoodshop-cart-ms')
-    //         cartImage.push("0.0.${env.BUILD_ID}")
-    //         cartImage.push('latest')
-
-    //         def foodsImage = docker.image('kristianlyubenov/petfoodshop-foods-ms')
-    //         foodsImage.push("0.0.${env.BUILD_ID}")
-    //         foodsImage.push('latest')
-
-    //         def notificationsImage = docker.image('kristianlyubenov/petfoodshop-notifications-ms')
-    //         notificationsImage.push("0.0.${env.BUILD_ID}")
-    //         notificationsImage.push('latest')
-
-    //         def statisticsImage = docker.image('kristianlyubenov/petfoodshop-statistics-ms')
-    //         statisticsImage.push("0.0.${env.BUILD_ID}")
-    //         statisticsImage.push('latest')
-
-    //         // Gateway image
-    //         def foodsgatewayImage = docker.image('kristianlyubenov/petfoodshop-foodsgateway-api')
-    //         foodsgatewayImage.push("0.0.${env.BUILD_ID}")
-    //         foodsgatewayImage.push('latest')
-
-    //         // Admin and UI clients
-    //         def adminImage = docker.image('kristianlyubenov/petfoodshop-admin-client')
-    //         adminImage.push("0.0.${env.BUILD_ID}")
-    //         adminImage.push('latest')
-
-    //         def angularClientImage = docker.image('kristianlyubenov/petfoodshop-angular-client')
-    //         angularClientImage.push("0.0.${env.BUILD_ID}")
-    //         angularClientImage.push('latest')
-
-    //         def watchdogImage = docker.image('kristianlyubenov/petfoodshop-watchdog')
-    //         watchdogImage.push("0.0.${env.BUILD_ID}")
-    //         watchdogImage.push('latest')
-    //       }
-    //     }
-    //   }
-    //   post {
-    //     success {
-    //       emailext body: 'Job executed successful :)',
-    //       recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-    //       subject: 'Successfully pushed docker images'
-    //     }
-    //     failure {
-    //       emailext body: 'docker image push failed',
-    //       recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-    //       subject: 'Pushing docker images failed'
-    //     }
-    //   }
-    // }
+    stage('9.publish docker images') {
+      when {
+        branch 'master'
+      }
+      steps {
+        script {
+          docker.withregistry('https://index.docker.io/v1/', 'dockerhub') {
+            // microservice images
+            def identityimage = docker.image('kristianlyubenov/petfoodshop-identity-ms')
+            identityimage.push("0.0.${env.build_id}")
+            identityimage.push('latest')
+	
+            def cartimage = docker.image('kristianlyubenov/petfoodshop-cart-ms')
+            cartimage.push("0.0.${env.build_id}")
+            cartimage.push('latest')
+	
+            def foodsimage = docker.image('kristianlyubenov/petfoodshop-foods-ms')
+            foodsimage.push("0.0.${env.build_id}")
+            foodsimage.push('latest')
+	
+            def notificationsimage = docker.image('kristianlyubenov/petfoodshop-notifications-ms')
+            notificationsimage.push("0.0.${env.build_id}")
+            notificationsimage.push('latest')
+	
+            def statisticsimage = docker.image('kristianlyubenov/petfoodshop-statistics-ms')
+            statisticsimage.push("0.0.${env.build_id}")
+            statisticsimage.push('latest')
+	
+            // gateway image
+            def foodsgatewayimage = docker.image('kristianlyubenov/petfoodshop-foodsgateway-api')
+            foodsgatewayimage.push("0.0.${env.build_id}")
+            foodsgatewayimage.push('latest')
+	
+            // admin and ui clients
+            def adminimage = docker.image('kristianlyubenov/petfoodshop-admin-client')
+            adminimage.push("0.0.${env.build_id}")
+            adminimage.push('latest')
+	
+            def angularclientimage = docker.image('kristianlyubenov/petfoodshop-angular-client')
+            angularclientimage.push("0.0.${env.build_id}")
+            angularclientimage.push('latest')
+	
+            def watchdogimage = docker.image('kristianlyubenov/petfoodshop-watchdog')
+            watchdogimage.push("0.0.${env.build_id}")
+            watchdogimage.push('latest')
+          }
+        }
+      }
+      post {
+        success {
+          emailext body: 'job executed successful :)',
+          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+          subject: 'successfully pushed docker images'
+        }
+        failure {
+          emailext body: 'docker image push failed',
+          recipientproviders: [[$class: 'developersrecipientprovider'], [$class: 'requesterrecipientprovider']],
+          subject: 'pushing docker images failed'
+        }
+      }
+    }
     stage('10.Deploy to k8s') {
       steps {
         // DUE to gcloud limitations we can apply only 4 external IPs
@@ -183,8 +183,8 @@ pipeline {
               configs: [
               fileContentReplaceItemConfig(search: 'image: kristianlyubenov/petfoodshop-identity-ms:latest', replace: "image: kristianlyubenov/petfoodshop-identity-ms:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: "${filePath}identity-service.yml")])
               // kubectl apply them all
-              withKubeConfig([credentialsId: 'ProductionServer', serverUrl: 'https://']) {
-                powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml')
+              withKubeConfig([credentialsId: 'ProductionServer', serverUrl: 'https://34.68.98.149']) {
+                powershell(script: "kubectl apply -f ./Domain-driven-design/.k8s/.environment/${CURRENT_ENV}.yml")
                 powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases')
                 powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus')
                 powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/web-services/identity-service.yml')
@@ -197,7 +197,7 @@ pipeline {
           } else {
             stage('Deploy to DEV') {
               withKubeConfig([credentialsId: 'DevelopmentServer', serverUrl: 'https://34.71.199.17']) {
-                powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/.environment/development.yml')
+                powershell(script: "kubectl apply -f ./Domain-driven-design/.k8s/.environment/${CURRENT_ENV}.yml")
                 powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/databases')
                 powershell(script: 'kubectl apply -f ./Domain-driven-design/.k8s/event-bus')
 
@@ -216,13 +216,15 @@ pipeline {
     }
     stage('11.Run automation tests on cluster') {
       steps {
-        steps {
-          powershell(script: """
+        def secondsToWait = 10
+        sleep secondsToWait
+        echo "Waiting  for ${secondsToWait} in order for pods to be up";
+        
+        powershell(script: """
           cd Domain-driven-design/tests/PetFoodShop-Automations
           launchTests-${CURRENT_ENV}.cmd
         """)
         }
-      }
     }
   }
 }

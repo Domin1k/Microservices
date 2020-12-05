@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: environment-settings
+data:
+  event-bus-host: rabbitmq
+  event-bus-user: rabbitmq
+  notifications-allowed-origins: http://104.155.180.245
+  admin-identity-endpoint: http://identity-service:5002
+  admin-foods-endpoint: http://foods-service:5000
+  admin-statistics-endpoint: http://statistics-service:5006
+  admin-foodcategories-endpoint: http://foods-service:5000
+  watchdog-identity-health: http://identity-service:5002/health
+  watchdog-cart-health: http://cart-service:5014/health
+  watchdog-foods-health: http://foods-service:5000/health
+  watchdog-statistics-health: http://statistics-service:5006/health
+  watchdog-notifications-health: http://notifications-service:5012/health
+  watchdog-admin-health: http://admin-client:5008/health
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: environment-secrets
+data:
+  sqlserver-database-sa-password: eW91clN0cm9uZ1Bhc3N3b3JkMTIhQA==
+  event-bus-password: cmFiYml0bXE=
+
+  security-token-secret: UzBNMyBNNEcxQyBVTjFDMFJOUyBHM04zUjRUM0QgVEgxUyBTM0NSM1Q=
+
+  identity-service-connection-string: U2VydmVyPXNxbHNlcnZlci1kYXRhYmFzZTtEYXRhYmFzZT1QZXRTaG9wREItSWRlbnRpdHk7VXNlciBJZD1zYTsgUGFzc3dvcmQ9eW91clN0cm9uZ1Bhc3N3b3JkMTIhQDtNdWx0aXBsZUFjdGl2ZVJlc3VsdFNldHM9dHJ1ZQ==
+  foods-service-connection-string: U2VydmVyPXNxbHNlcnZlci1kYXRhYmFzZTtEYXRhYmFzZT1QZXRTaG9wREItRm9vZHM7VXNlciBJZD1zYTsgUGFzc3dvcmQ9eW91clN0cm9uZ1Bhc3N3b3JkMTIhQDtNdWx0aXBsZUFjdGl2ZVJlc3VsdFNldHM9dHJ1ZQ==
+  cart-service-connection-string: U2VydmVyPXNxbHNlcnZlci1kYXRhYmFzZTtEYXRhYmFzZT1QZXRTaG9wREItQ2FydDtVc2VyIElkPXNhOyBQYXNzd29yZD15b3VyU3Ryb25nUGFzc3dvcmQxMiFAO011bHRpcGxlQWN0aXZlUmVzdWx0U2V0cz10cnVl
+  statistics-service-connection-string: U2VydmVyPXNxbHNlcnZlci1kYXRhYmFzZTtEYXRhYmFzZT1QZXRTaG9wREItU3RhdGlzdGljcztVc2VyIElkPXNhOyBQYXNzd29yZD15b3VyU3Ryb25nUGFzc3dvcmQxMiFAO011bHRpcGxlQWN0aXZlUmVzdWx0U2V0cz10cnVl

@@ -13,7 +13,7 @@ pipeline {
           fileContentReplaceConfig(
           configs: [
           fileContentReplaceItemConfig(
-          search: '(Version=)\\d+.\\d+.\\d+', replace: '$11.0.${BUILD_ID}', matchCount: 1)], fileEncoding: 'UTF-8', filePath: './Domain-driven-design/.k8s/web-services/cart-service.yml')])
+          search: '(image\:)\s*\w+./\w+.\w*.\w*:latest', replace: "(image\:)\s*\w+./\w+.\w*.\w*:0.0.${env.BUILD_ID}", matchCount: 1)], fileEncoding: 'UTF-8', filePath: './Domain-driven-design/.k8s/web-services/cart-service.yml')])
       }
     }
   }

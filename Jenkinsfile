@@ -95,7 +95,7 @@ pipeline {
       }
       steps {
         script {
-          docker.withregistry('https://index.docker.io/v1/', 'DockerHub') {
+          docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
             // microservice images
             def identityimage = docker.image('kristianlyubenov/petfoodshop-identity-ms')
             identityimage.push("0.0.${env.BUILD_ID}")

@@ -41,26 +41,26 @@ namespace PetFoodShopAutomations
         [Fact]
         public async Task AllMicroServicesHealthChecks_ShouldReturn200OkWithStatusHealthy()
         {
-            //var foodsServiceResponse = await $"{this._environment.Services.FoodsServiceUrl}/health".GetJsonAsync<HealthResponse>();
-            //var cartServiceResponse = await $"{this._environment.Services.CartServiceUrl}/health".GetJsonAsync<HealthResponse>();
+            var foodsServiceResponse = await $"{this._environment.Services.FoodsServiceUrl}/health".GetJsonAsync<HealthResponse>();
+            var cartServiceResponse = await $"{this._environment.Services.CartServiceUrl}/health".GetJsonAsync<HealthResponse>();
 
             var identityServiceResponse = await $"{this._environment.Services.IdentityServiceUrl}/health".GetJsonAsync<HealthResponse>();
 
-            //foodsServiceResponse.Should().NotBeNull();
-            //foodsServiceResponse.Status.Should().NotBeNull();
-            //foodsServiceResponse.Entries.Should().NotBeNull();
-            //foodsServiceResponse.Entries.Sqlserver.Should().NotBeNull();
-            //foodsServiceResponse.Entries.Sqlserver.Status.Should().NotBeNull();
-            //foodsServiceResponse.Status.Should().Be(Healthy);
-            //foodsServiceResponse.Entries.Sqlserver.Status.Should().Be(Healthy);
+            foodsServiceResponse.Should().NotBeNull();
+            foodsServiceResponse.Status.Should().NotBeNull();
+            foodsServiceResponse.Entries.Should().NotBeNull();
+            foodsServiceResponse.Entries.Sqlserver.Should().NotBeNull();
+            foodsServiceResponse.Entries.Sqlserver.Status.Should().NotBeNull();
+            foodsServiceResponse.Status.Should().Be(Healthy);
+            foodsServiceResponse.Entries.Sqlserver.Status.Should().Be(Healthy);
 
-            //cartServiceResponse.Should().NotBeNull();
-            //cartServiceResponse.Status.Should().NotBeNull();
-            //cartServiceResponse.Entries.Should().NotBeNull();
-            //cartServiceResponse.Entries.Sqlserver.Should().NotBeNull();
-            //cartServiceResponse.Entries.Sqlserver.Status.Should().NotBeNull();
-            //cartServiceResponse.Status.Should().Be(Healthy);
-            //cartServiceResponse.Entries.Sqlserver.Status.Should().Be(Healthy);
+            cartServiceResponse.Should().NotBeNull();
+            cartServiceResponse.Status.Should().NotBeNull();
+            cartServiceResponse.Entries.Should().NotBeNull();
+            cartServiceResponse.Entries.Sqlserver.Should().NotBeNull();
+            cartServiceResponse.Entries.Sqlserver.Status.Should().NotBeNull();
+            cartServiceResponse.Status.Should().Be(Healthy);
+            cartServiceResponse.Entries.Sqlserver.Status.Should().Be(Healthy);
 
             identityServiceResponse.Should().NotBeNull();
             identityServiceResponse.Status.Should().NotBeNull();
